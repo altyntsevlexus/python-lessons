@@ -787,6 +787,17 @@ turtle.<span class="cf">done</span>()</pre>
         </tr>
       </table>
 
+      <div class="tip-box">
+        <strong>Насправді можна використати range()</strong><br><br>
+        Список <code>[120, 60, 120, 60]</code> — це просто дві сторони, які повторюються двічі. Замість того щоб писати їх двічі, можна взяти <code>range(2)</code> — тобто зробити 2 повторення — і всередині намалювати одну пару сторін:
+<pre class="code-block" style="margin-top:10px;"><span class="ck">for</span> i <span class="ck">in</span> <span class="cf">range</span>(<span class="cn">2</span>):   <span class="cm"># 2 повторення</span>
+    t.<span class="cf">forward</span>(<span class="cn">120</span>)   <span class="cm"># довга сторона</span>
+    t.<span class="cf">left</span>(<span class="cn">90</span>)
+    t.<span class="cf">forward</span>(<span class="cn">60</span>)    <span class="cm"># коротка сторона</span>
+    t.<span class="cf">left</span>(<span class="cn">90</span>)</pre>
+        Кожне повторення малює одну довгу і одну коротку сторону. Два повторення — чотири сторони — прямокутник готовий.
+      </div>
+
       <div class="try-box">
         <div class="try-label">Спробуй сам!</div>
         <ul>

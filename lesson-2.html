@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Урок 2 · Python Turtle · Самостійне вивчення</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #060a0f;
+  --surface: #0b1018;
+  --card:    #101820;
+  --border:  #182030;
+  --border2: #203040;
+  --text:    #d5e5f5;
+  --muted:   #4a6080;
+
+  --acc:     #ffc845;
+  --acc-d:   rgba(255,200,69,.12);
+  --acc-b:   rgba(255,200,69,.25);
+  --teal:    #00d4aa;
+  --teal-d:  rgba(0,212,170,.12);
+  --gold:    #ffc845;
+  --green:   #50e3a4;
+  --coral:   #ff7a6e;
+  --violet:  #c084fc;
+  --blue:    #5b9cf6;
+
+  --cm: #5a9e5a;
+  --ck: #c084fc;
+  --cf: #5b9cf6;
+  --cs: #6adf8a;
+  --cn: #ffc845;
+  --co: #9ab8d0;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+body::before {
+  content:'';
+  position:fixed;inset:0;
+  background-image: radial-gradient(rgba(255,200,69,.04) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events:none;z-index:0;
+}
+
+.wrap {
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── HEADER ── */
+header {
+  padding: 52px 0 40px;
+  border-bottom: 1px solid var(--border2);
+  margin-bottom: 40px;
+}
+
+.eyebrow {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--acc);
+  margin-bottom: 12px;
+}
+
+h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(36px, 6vw, 64px);
+  line-height: .95;
+  letter-spacing: 2px;
+  color: #fff;
+  margin-bottom: 16px;
+}
+
+h1 .acc { color: var(--acc); }
+
+.header-sub {
+  font-size: 13.5px;
+  color: var(--muted);
+  max-width: 600px;
+  line-height: 1.7;
+}
+
+.header-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.chip {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 10.5px;
+  padding: 4px 12px;
+  border: 1px solid var(--border2);
+  color: var(--text);
+}
+
+.chip.t {
+  background: var(--acc-d);
+  border-color: var(--acc-b);
+  color: var(--acc);
+  font-weight: 600;
+}
+
+/* ── STEP ── */
+.step {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 0 20px;
+  margin-bottom: 48px;
+}
+
+.step-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 44px;
+  line-height: 1;
+  color: var(--acc);
+  letter-spacing: 1px;
+  padding-top: 2px;
+  user-select: none;
+}
+
+.step-inner {}
+
+.step-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px;
+  letter-spacing: 1.5px;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.step-sub {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+
+.step-body {
+  font-size: 13.5px;
+  line-height: 1.75;
+  color: var(--text);
+}
+
+.step-body p { margin-bottom: 12px; }
+.step-body p:last-child { margin-bottom: 0; }
+.step-body strong { color: #fff; }
+.step-body em { color: var(--acc); font-style: normal; }
+
+/* ── SECTION DIVIDER ── */
+.sdiv {
+  height: 1px;
+  background: var(--border);
+  margin: 16px 0 20px;
+}
+
+/* ── INLINE CODE ── */
+code {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 14px;
+  color: var(--gold);
+  background: rgba(255,200,69,.1);
+  padding: 1px 6px;
+  border-radius: 2px;
+}
+
+/* ── CODE BLOCK ── */
+.code-block {
+  background: #030810;
+  border: 1px solid var(--border2);
+  border-left: 3px solid var(--acc);
+  font-family: 'Source Code Pro', monospace;
+  font-size: 14px;
+  line-height: 1.75;
+  padding: 14px 18px;
+  color: var(--co);
+  margin: 14px 0;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.code-block .cm { color: var(--cm); }
+.code-block .ck { color: var(--ck); }
+.code-block .cf { color: var(--cf); }
+.code-block .cs { color: var(--cs); }
+.code-block .cn { color: var(--cn); }
+.code-block .co { color: var(--co); }
+.code-block .hi { background: rgba(255,200,69,.10); }
+
+/* ── TRY BOX ── */
+.try-box {
+  background: rgba(80,227,164,.06);
+  border: 1px solid rgba(80,227,164,.22);
+  border-left: 3px solid var(--green);
+  padding: 14px 18px;
+  margin: 14px 0;
+}
+
+.try-label {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 9.5px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 8px;
+}
+
+.try-box p, .try-box li {
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.65;
+}
+
+.try-box ul { padding-left: 18px; }
+.try-box ul li { margin-bottom: 4px; }
+
+/* ── TIP BOX ── */
+.tip-box {
+  background: rgba(91,156,246,.07);
+  border: 1px solid rgba(91,156,246,.2);
+  border-left: 3px solid var(--blue);
+  padding: 12px 16px;
+  margin: 12px 0;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.tip-box strong { color: var(--blue); }
+
+/* ── WARN BOX ── */
+.warn-box {
+  background: rgba(255,122,110,.06);
+  border: 1px solid rgba(255,122,110,.2);
+  border-left: 3px solid var(--coral);
+  padding: 12px 16px;
+  margin: 12px 0;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.warn-box strong { color: var(--coral); }
+.warn-box ul { padding-left: 18px; margin-top: 6px; }
+.warn-box li { margin-bottom: 4px; }
+
+/* ── COMMAND TABLE ── */
+.cmd-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 14px 0;
+  font-size: 13px;
+}
+
+.cmd-table th {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 8px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border2);
+  background: var(--card);
+}
+
+.cmd-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  line-height: 1.5;
+}
+
+.cmd-table tr:last-child td { border-bottom: none; }
+.cmd-table tr:hover td { background: rgba(255,255,255,.02); }
+
+.cmd-table td:first-child {
+  font-family: 'Source Code Pro', monospace;
+  color: var(--acc);
+  white-space: nowrap;
+  width: 200px;
+}
+
+/* ── COMPARE BLOCK ── */
+.compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 14px 0;
+}
+
+@media(max-width:580px) {
+  .compare { grid-template-columns: 1fr; }
+}
+
+.compare-block {
+  background: #030810;
+  border: 1px solid var(--border2);
+  overflow: hidden;
+}
+
+.compare-label {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 9.5px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 7px 12px;
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+}
+
+.compare-label.bad  { color: var(--coral); }
+.compare-label.good { color: var(--green); }
+
+.compare-code {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 14px;
+  line-height: 1.75;
+  padding: 12px 14px;
+  color: var(--co);
+  white-space: pre;
+  overflow-x: auto;
+}
+
+.compare-code .cm { color: var(--cm); }
+.compare-code .ck { color: var(--ck); }
+.compare-code .cf { color: var(--cf); }
+.compare-code .cn { color: var(--cn); }
+
+/* ── POLYGON TABLE ── */
+.poly-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 8px;
+  margin: 14px 0;
+}
+
+.poly-card {
+  background: var(--card);
+  border: 1px solid var(--border2);
+  padding: 12px 14px;
+  text-align: center;
+}
+
+.poly-n {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  color: var(--acc);
+  line-height: 1;
+}
+
+.poly-name {
+  font-size: 11px;
+  color: var(--text);
+  margin: 2px 0 6px;
+}
+
+.poly-angle {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 13px;
+  color: var(--teal);
+}
+
+/* ── SUMMARY TABLE ── */
+.summary {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  margin-bottom: 32px;
+  overflow: hidden;
+}
+
+.summary-head {
+  padding: 12px 18px;
+  background: var(--card);
+  border-bottom: 1px solid var(--border2);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  letter-spacing: 1.5px;
+  color: var(--acc);
+}
+
+.summary table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+
+.summary table th {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 7px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--border2);
+  background: var(--card);
+}
+
+.summary table td {
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  line-height: 1.5;
+}
+
+.summary table tr:last-child td { border-bottom: none; }
+.summary table td:first-child {
+  font-family: 'Source Code Pro', monospace;
+  color: var(--acc);
+  white-space: nowrap;
+}
+
+/* ── SLABEL ── */
+.slabel {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.slabel::after { content:''; flex:1; height:1px; background:var(--border); }
+
+/* ── RESULT PAIR ── */
+.result-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 14px 0;
+}
+
+@media(max-width:560px){
+  .result-row { grid-template-columns: 1fr; }
+  .step { grid-template-columns: 48px 1fr; gap: 0 12px; }
+  .step-num { font-size: 34px; }
+}
+
+.res-block {
+  border: 1px solid var(--border2);
+  overflow: hidden;
+}
+
+.res-label {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 9.5px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 7px 12px;
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+}
+
+.res-block svg { width:100%; display:block; background:#fff; }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding-top: 18px;
+  margin-top: 32px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+footer span {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 1px;
+}
+
+ol.steps-list {
+  padding-left: 20px;
+  margin: 10px 0;
+}
+ol.steps-list li {
+  margin-bottom: 6px;
+  font-size: 13.5px;
+  line-height: 1.65;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HEADER -->
+<header>
+  <div class="eyebrow">Самостійне вивчення · Python Turtle · 7 клас</div>
+  <h1>УРОК <span class="acc">2</span><br>ЦИКЛ FOR</h1>
+  <p class="header-sub">
+    Сьогодні навчимося писати цикл <code>for</code> — одну з найпотужніших ідей у програмуванні. Замість восьми однакових рядків — три. Читай кожен крок по порядку і запускай приклади в Trinket.
+  </p>
+  <div class="header-chips">
+    <span class="chip t">Самостійне вивчення</span>
+    <span class="chip">Python · Turtle</span>
+    <span class="chip">7 клас</span>
+    <span class="chip">~45 хвилин</span>
+  </div>
+</header>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- КРОК 0 — ПРОБЛЕМА                                      -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="step">
+  <div class="step-num">00</div>
+  <div class="step-inner">
+    <div class="step-title">Проблема — занадто багато рядків</div>
+    <div class="step-sub">Зв'язок з уроком 1 · навіщо потрібен цикл</div>
+    <div class="step-body">
+
+      <p>На уроці 1 ти малював квадрат так: написав <code>forward</code> + <code>right</code> чотири рази вручну. Це 8 рядків коду для однієї простої фігури.</p>
+
+      <p>А тепер уяви: що якби треба було намалювати <strong>36-кутник</strong> або <strong>100-кутник</strong>? Це 72 або 200 рядків одноманітного коду!</p>
+
+      <div class="compare">
+        <div class="compare-block">
+          <div class="compare-label bad">Квадрат БЕЗ циклу — 8 рядків</div>
+          <div class="compare-code"><span class="cm"># Повторюємо вручну 4 рази</span>
+t.<span class="cf">forward</span>(<span class="cn">100</span>); t.<span class="cf">left</span>(<span class="cn">90</span>)
+t.<span class="cf">forward</span>(<span class="cn">100</span>); t.<span class="cf">left</span>(<span class="cn">90</span>)
+t.<span class="cf">forward</span>(<span class="cn">100</span>); t.<span class="cf">left</span>(<span class="cn">90</span>)
+t.<span class="cf">forward</span>(<span class="cn">100</span>); t.<span class="cf">left</span>(<span class="cn">90</span>)</div>
+        </div>
+        <div class="compare-block">
+          <div class="compare-label good">Квадрат З циклом — 3 рядки ✨</div>
+          <div class="compare-code"><span class="cm"># Цикл робить це сам!</span>
+<span class="ck">for</span> i <span class="ck">in</span> <span class="cf">range</span>(<span class="cn">4</span>):
+    t.<span class="cf">forward</span>(<span class="cn">100</span>)
+    t.<span class="cf">left</span>(<span class="cn">90</span>)</div>
+        </div>
+      </div>
+
+      <p>Це не просто менше рядків — це <em>інший спосіб думати</em>. Цикл каже: «повтори це 4 рази», і комп'ютер сам рахує.</p>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- КРОК 1 — СИНТАКСИС FOR                                 -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="step">
+  <div class="step-num">01</div>
+  <div class="step-inner">
+    <div class="step-title">Цикл for — як записати</div>
+    <div class="step-sub">синтаксис · двокрапка · відступ</div>
+    <div class="step-body">
+
+      <p>Цикл <code>for</code> складається з двох частин:</p>
+
+      <pre class="code-block"><span class="ck">for</span> i <span class="ck">in</span> <span class="cf">range</span>(<span class="cn">4</span>):   <span class="cm"># ← заголовок: двокрапка обов'язкова!</span>
+    t.<span class="cf">forward</span>(<span class="cn">100</span>)  <span class="cm"># ← тіло: Tab (= 2 або 4 пробіли)</span>
+    t.<span class="cf">left</span>(<span class="cn">90</span>)     <span class="cm"># ← тіло: теж з відступом</span></pre>
+
+      <table class="cmd-table">
+        <tr><th>Частина</th><th>Що означає</th></tr>
+        <tr>
+          <td>for i in range(4):</td>
+          <td>Повторити тіло <strong>4 рази</strong>; змінна <code>i</code> по черзі приймає значення 0, 1, 2, 3</td>
+        </tr>
+        <tr>
+          <td>Двокрапка :</td>
+          <td>Обов'язковий символ після заголовку — без неї <code>SyntaxError</code></td>
+        </tr>
+        <tr>
+          <td>Відступ (1 Tab)</td>
+          <td>Все, що є частиною тіла циклу, <strong>повинно мати відступ</strong>. Один Tab = 2 або 4 пробіли. Trinket додає його автоматично після двокрапки</td>
+        </tr>
+        <tr>
+          <td>i</td>
+          <td>Лічильник — змінна, яка зростає на кожній ітерації. Назву можна змінити: <code>step</code>, <code>x</code>, <code>n</code> — але <code>i</code> — традиція</td>
+        </tr>
+      </table>
+
+      <div class="sdiv"></div>
+
+      <p><strong>Що таке відступ (Tab) і чому Python без нього не працює?</strong></p>
+
+      <p>Коли ти натискаєш клавішу <em>Tab</em> на клавіатурі, курсор зміщується вправо на 4 пробіли. Саме так Python визначає, які рядки належать <strong>всередині циклу</strong>, а які виконуються після нього.</p>
+
+      <p>На відміну від багатьох інших мов, Python <strong>не використовує фігурні дужки <code>{}</code></strong> для позначення блоків коду. Замість них — відступи. Це не просто стиль оформлення: це вимога мови.</p>
+
+      <div class="compare">
+        <div class="compare-block">
+          <div class="compare-label good">✓ Правильно — з відступом (Tab)</div>
+          <div class="compare-code"><span class="ck">for</span> i <span class="ck">in</span> <span class="cf">range</span>(<span class="cn">4</span>):
+    t.<span class="cf">forward</span>(<span class="cn">100</span>)  <span class="cm"># ← Tab!</span>
+    t.<span class="cf">left</span>(<span class="cn">90</span>)      <span class="cm"># ← Tab!</span>
+<span class="cm"># без відступу — вже поза циклом</span></div>
+        </div>
+        <div class="compare-block">
+          <div class="compare-label bad">✗ Помилка — без відступу</div>
+          <div class="compare-code"><span class="ck">for</span> i <span class="ck">in</span> <span class="cf">range</span>(<span class="cn">4</span>):
+t.<span class="cf">forward</span>(<span class="cn">100</span>)  <span class="cm"># ← без Tab!</span>
+t.<span class="cf">left</span>(<span class="cn">90</span>)
+<span class="cm"># → IndentationError ↑</span></div>
+        </div>
+      </div>
+
+      <div class="tip-box">
+        <strong>Добра новина:</strong> Trinket.io автоматично додає Tab після двокрапки — просто натисни <strong>Enter</strong> і редактор сам зробить відступ. Якщо випадково видалив — натисни <strong>Tab</strong> на початку рядка. Усі рядки всередині одного циклу повинні мати <em>однаковий</em> відступ.
+      </div>
+
+      <div class="warn-box">
+        <strong>Типові помилки — прочитай до практики!</strong>
+        <ul>
+          <li>Забута <strong>двокрапка</strong> після <code>range(n)</code> → <code>SyntaxError</code></li>
+          <li>Немає <strong>відступу</strong> в тілі → <code>IndentationError</code></li>
+          <li><code>range(4)</code> → 0, 1, 2, 3 — <strong>чотири числа, але починає з нуля!</strong> Не 1, 2, 3, 4</li>
+          <li>Змішані пробіли і Tab → <code>TabError</code>. Використовуй тільки Tab або тільки пробіли</li>
+        </ul>
+      </div>
+
+      <div class="try-box">
+        <div class="try-label">Спробуй сам!</div>
+        <ul>
+          <li>Напиши квадрат через цикл і запусти — переконайся, що він малюється</li>
+          <li>Навмисне видали двокрапку → прочитай повідомлення помилки</li>
+          <li>Навмисне видали відступ → прочитай повідомлення помилки</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- КРОК 2 — ПРАВИЛЬНИЙ N-КУТНИК                          -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="step">
+  <div class="step-num">02</div>
+  <div class="step-inner">
+    <div class="step-title">Правильний n-кутник</div>
+    <div class="step-sub">формула кута · 360 ÷ n</div>
+    <div class="step-body">
+
+      <p>Будь-який правильний n-кутник малюється за однією формулою: <em>forward(сторона)</em> + поворот на <em>360 ÷ n</em> градусів, повторити <em>n</em> разів.</p>
+
+      <div class="poly-grid">
+        <div class="poly-card">
+          <div class="poly-n">3</div>
+          <div class="poly-name">Трикутник</div>
+          <div class="poly-angle">360 ÷ 3 = 120°</div>
+        </div>
+        <div class="poly-card">
+          <div class="poly-n">4</div>
+          <div class="poly-name">Квадрат</div>
+          <div class="poly-angle">360 ÷ 4 = 90°</div>
+        </div>
+        <div class="poly-card">
+          <div class="poly-n">5</div>
+          <div class="poly-name">П'ятикутник</div>
+          <div class="poly-angle">360 ÷ 5 = 72°</div>
+        </div>
+        <div class="poly-card">
+          <div class="poly-n">6</div>
+          <div class="poly-name">Шестикутник</div>
+          <div class="poly-angle">360 ÷ 6 = 60°</div>
+        </div>
+        <div class="poly-card">
+          <div class="poly-n">36</div>
+          <div class="poly-name">36-кутник</div>
+          <div class="poly-angle">360 ÷ 36 = 10°</div>
+        </div>
+        <div class="poly-card">
+          <div class="poly-n">∞</div>
+          <div class="poly-name">Майже коло</div>
+          <div class="poly-angle">кут → 0°</div>
+        </div>
+      </div>
+
+      <p>Замість жорсткого числа — змінна <code>n</code>. Зміниш одне число — отримаєш іншу фігуру:</p>
+
+      <pre class="code-block"><span class="ck">import</span> turtle
+t = turtle.<span class="cf">Turtle</span>()
+t.<span class="cf">speed</span>(<span class="cn">0</span>)
+
+n = <span class="cn">6</span>  <span class="cm"># ← змінити: 3, 4, 5, 6, 36, 72, 360 …</span>
+<span class="ck">for</span> i <span class="ck">in</span> <span class="cf">range</span>(n):
+    t.<span class="cf">forward</span>(<span class="cn">80</span>)
+    t.<span class="cf">left</span>(<span class="cn">360</span> / n)
+
+turtle.<span class="cf">done</span>()</pre>
+
+      <div class="result-row">
+        <div class="res-block">
+          <div class="res-label">n = 6 — шестикутник</div>
+          <svg viewBox="-150 -150 300 300" xmlns="http://www.w3.org/2000/svg">
+            <rect x="-150" y="-150" width="300" height="300" fill="#ffffff"/>
+            <g transform="scale(1,-1)">
+              <polygon points="80,0 40,69.28 -40,69.28 -80,0 -40,-69.28 40,-69.28" fill="none" stroke="#333" stroke-width="2"/>
+            </g>
+          </svg>
+        </div>
+        <div class="res-block">
+          <div class="res-label">n = 36 — майже коло</div>
+          <svg viewBox="-150 -150 300 300" xmlns="http://www.w3.org/2000/svg">
+            <rect x="-150" y="-150" width="300" height="300" fill="#ffffff"/>
+            <g transform="scale(1,-1)">
+              <circle cx="0" cy="0" r="80" fill="none" stroke="#333" stroke-width="2" stroke-dasharray="14,1"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+
+      <div class="try-box">
+        <div class="try-label">Спробуй сам!</div>
+        <ul>
+          <li>Запусти код з n=6 — шестикутник</li>
+          <li>Зміни n на 3, 5, 8 — порівняй результати</li>
+          <li>Поспробуй n=36, n=72 — що нагадує фігура?</li>
+          <li>Додай заливку <code>fillcolor</code> до свого n-кутника</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- КРОК 3 — FOR ЗІ СПИСКОМ                               -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="step">
+  <div class="step-num">03</div>
+  <div class="step-inner">
+    <div class="step-title">for зі списком значень</div>
+    <div class="step-sub">for side in [...] · коли сторони різні</div>
+    <div class="step-body">
+
+      <p><code>range(4)</code> дає одне й те саме число чотири рази — підходить для квадрата. Але прямокутник має <strong>дві різні довжини сторін</strong>. Тут використовують список:</p>
+
+      <pre class="code-block"><span class="ck">import</span> turtle
+t = turtle.<span class="cf">Turtle</span>()
+
+<span class="cm"># range(4) НЕ підходить — сторони різні</span>
+<span class="cm"># for side in [120, 60, 120, 60] — кожне значення окремо</span>
+<span class="ck">for</span> side <span class="ck">in</span> [<span class="cn">120</span>, <span class="cn">60</span>, <span class="cn">120</span>, <span class="cn">60</span>]:
+    t.<span class="cf">forward</span>(side)
+    t.<span class="cf">left</span>(<span class="cn">90</span>)
+
+turtle.<span class="cf">done</span>()</pre>
+
+      <p>На кожній ітерації <code>side</code> приймає наступне значення зі списку: спочатку 120, потім 60, потім знову 120, потім 60.</p>
+
+      <table class="cmd-table">
+        <tr><th>Запис</th><th>Коли використовувати</th></tr>
+        <tr>
+          <td>for i in range(n):</td>
+          <td>Коли всі сторони <strong>однакові</strong> і потрібно просто повторити n разів</td>
+        </tr>
+        <tr>
+          <td>for side in [a, b, c, d]:</td>
+          <td>Коли сторони <strong>різні</strong> і треба задати кожну окремо</td>
+        </tr>
+      </table>
+
+      <div class="try-box">
+        <div class="try-label">Спробуй сам!</div>
+        <ul>
+          <li>Намалюй прямокутник 150×80 через список</li>
+          <li>Зміни числа у списку — отримай вузький і довгий прямокутник</li>
+          <li>Спробуй список з трьох різних чисел — яка фігура вийде?</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- КРОК 4 — RANGE()                                       -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="step">
+  <div class="step-num">04</div>
+  <div class="step-inner">
+    <div class="step-title">range() — три форми</div>
+    <div class="step-sub">range(n) · range(a, b) · range(a, b, step)</div>
+    <div class="step-body">
+
+      <p><code>range()</code> — це генератор послідовності чисел. Він існує у трьох формах:</p>
+
+      <table class="cmd-table">
+        <tr><th>Форма</th><th>Послідовність</th><th>Приклад</th></tr>
+        <tr>
+          <td>range(n)</td>
+          <td>0, 1, 2, … n-1</td>
+          <td><code>range(4)</code> → 0, 1, 2, 3</td>
+        </tr>
+        <tr>
+          <td>range(a, b)</td>
+          <td>a, a+1, … b-1</td>
+          <td><code>range(1, 5)</code> → 1, 2, 3, 4</td>
+        </tr>
+        <tr>
+          <td>range(a, b, step)</td>
+          <td>a, a+step, a+2·step, … (до b не включно)</td>
+          <td><code>range(0, 10, 2)</code> → 0, 2, 4, 6, 8</td>
+        </tr>
+        <tr>
+          <td>range(a, b, step) від'ємний</td>
+          <td>Можна рахувати назад</td>
+          <td><code>range(10, 0, -2)</code> → 10, 8, 6, 4, 2</td>
+        </tr>
+      </table>
+
+      <p>Приклад: намалювати 5 кіл рівномірно по горизонталі від −200 до 200:</p>
+
+      <pre class="code-block"><span class="ck">import</span> turtle
+t = turtle.<span class="cf">Turtle</span>()
+t.<span class="cf">speed</span>(<span class="cn">0</span>)
+
+<span class="cm"># x = -200, -100, 0, 100, 200</span>
+<span class="ck">for</span> x <span class="ck">in</span> <span class="cf">range</span>(-<span class="cn">200</span>, <span class="cn">201</span>, <span class="cn">100</span>):
+    t.<span class="cf">penup</span>()
+    t.<span class="cf">goto</span>(x, <span class="cn">0</span>)
+    t.<span class="cf">pendown</span>()
+    t.<span class="cf">circle</span>(<span class="cn">30</span>)
+
+turtle.<span class="cf">done</span>()</pre>
+
+      <div class="tip-box">
+        <strong>Чому range(-200, 201, 100), а не range(5)?</strong><br>
+        Обидва варіанти дають однаковий результат. Але <code>range(-200, 201, 100)</code> одразу видно які координати використовуємо. З <code>range(5)</code> + формула треба думати: «0×100−200=−200, 1×100−200=−100…». Якщо мислиш координатами — пиши <code>range(a, b, step)</code>.
+      </div>
+
+      <div class="try-box">
+        <div class="try-label">Спробуй сам!</div>
+        <ul>
+          <li>Запусти код вище — 5 кіл по горизонталі</li>
+          <li>Зміни крок на 50 — скільки кіл стане?</li>
+          <li>Намалюй 4 квадрати 40×40 у рядок, починаючи від x=−100, крок 60</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- КРОК 5 — ЛІЧИЛЬНИК I                                   -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="step">
+  <div class="step-num">05</div>
+  <div class="step-inner">
+    <div class="step-title">Лічильник i всередині циклу</div>
+    <div class="step-sub">i зростає · forward(i * 3) · спіраль</div>
+    <div class="step-body">
+
+      <p>Змінна <code>i</code> — це не просто лічильник. Її можна <strong>використовувати всередині тіла</strong> циклу. На кожній ітерації <code>i</code> зростає, тому й результат змінюється.</p>
+
+      <pre class="code-block"><span class="ck">import</span> turtle
+t = turtle.<span class="cf">Turtle</span>()
+t.<span class="cf">speed</span>(<span class="cn">0</span>)
+
+<span class="cm"># i = 0, 1, 2, … 59</span>
+<span class="cm"># forward(i * 3) = 0, 3, 6, 9, … 177</span>
+<span class="ck">for</span> i <span class="ck">in</span> <span class="cf">range</span>(<span class="cn">60</span>):
+    t.<span class="cf">forward</span>(i * <span class="cn">3</span>)   <span class="cm"># крок зростає з i!</span>
+    t.<span class="cf">left</span>(<span class="cn">89</span>)
+
+turtle.<span class="cf">done</span>()</pre>
+
+      <p>Оскільки крок <code>forward</code> зростає з кожною ітерацією — черепашка малює спіраль. Кут визначає її форму:</p>
+
+      <table class="cmd-table">
+        <tr><th>Кут</th><th>Результат</th></tr>
+        <tr><td>left(90)</td><td>Квадратна спіраль</td></tr>
+        <tr><td>left(89) або left(91)</td><td>Кругла розкручена спіраль</td></tr>
+        <tr><td>left(121)</td><td>Трикутна спіраль</td></tr>
+        <tr><td>left(137)</td><td>Золотий кут — як насіння соняшника</td></tr>
+      </table>
+
+      <div class="tip-box">
+        <strong>Що таке «золотий кут» 137°?</strong><br>
+        Це кут, який природа використовує для розташування насіння у соняшнику, пелюсток у квітах, листків на стеблі. Черепашка з <code>right(137)</code> і <code>range(200)</code> намалює точнісінько такий самий візерунок!
+      </div>
+
+      <div class="try-box">
+        <div class="try-label">Спробуй сам!</div>
+        <ul>
+          <li>Запусти код з <code>right(89)</code> — кругла спіраль</li>
+          <li>Зміни кут на 90, 91, 121, 137 (у <code>left()</code>) — порівняй форми</li>
+          <li>Збільш <code>range</code> до 200 і зміни множник: <code>i * 2</code>, <code>i * 5</code></li>
+          <li>Додай <code>t.pencolor</code> для красивого кольору</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- КРОК 6 — ПРАКТИКА: ПІАНІНО                             -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="step">
+  <div class="step-num">06</div>
+  <div class="step-inner">
+    <div class="step-title">Практика — Піаніно</div>
+    <div class="step-sub">самостійна робота · використай всі інструменти уроку</div>
+    <div class="step-body">
+
+      <p>Це фінальне завдання уроку. Напиши код самостійно — жодного готового прикладу. Використай все, що вивчив сьогодні.</p>
+
+      <p><strong>Завдання:</strong> намалювати клавіатуру піаніно — 8 білих клавіш і 7 чорних клавіш між ними.</p>
+
+      <div class="tip-box">
+        <strong>Підказка — план дій:</strong><br>
+        Розбий задачу на дві частини і вирішуй по черзі. Спочатку намалюй тільки білі клавіші — переконайся, що вони правильно розміщені. Потім додай чорні.
+      </div>
+
+      <p><strong>Білі клавіші — що потрібно знати:</strong></p>
+      <ul style="padding-left:20px; margin:10px 0; font-size:13.5px; line-height:1.75;">
+        <li>8 клавіш однакового розміру: ширина 28, висота 100</li>
+        <li>Відстань між лівими краями сусідніх клавіш — 30 пікселів</li>
+        <li>Використай <code>range(a, b, step)</code> для перебору x-позицій</li>
+        <li>Кожна клавіша — прямокутник: намалюй його циклом через список сторін <code>[28, 100, 28, 100]</code></li>
+        <li>Не забудь <code>penup()</code> → <code>goto()</code> → <code>pendown()</code> перед кожною клавішею</li>
+        <li>Заливка білим: <code>fillcolor("white")</code> + <code>begin_fill()</code> / <code>end_fill()</code></li>
+      </ul>
+
+      <p><strong>Чорні клавіші — що потрібно знати:</strong></p>
+      <ul style="padding-left:20px; margin:10px 0; font-size:13.5px; line-height:1.75;">
+        <li>7 чорних клавіш, розміром 16×60</li>
+        <li>Стартові x-позиції — ті самі, що у білих (але тільки перші 7), зміщені вправо на 20 пікселів</li>
+        <li>По y підніми вгору так, щоб чорна клавіша виступала зверху над білою</li>
+        <li>Заливка чорним: <code>fillcolor("black")</code></li>
+      </ul>
+
+      <div class="try-box">
+        <div class="try-label">Здай роботу</div>
+        <ul>
+          <li>Збережи файл: <strong>Прізвище_Урок2.py</strong></li>
+          <li>Код повинен малювати повну клавіатуру без помилок</li>
+          <li>Бонус: зроби білі клавіші кольоровими або додай рамку навколо всієї клавіатури</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- ШПАРГАЛКА                                              -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="slabel">Шпаргалка уроку 2</div>
+<div class="summary">
+  <div class="summary-head">Всі команди уроку 2</div>
+  <table>
+    <tr>
+      <th>Команда</th>
+      <th>Що робить</th>
+      <th>Приклад</th>
+    </tr>
+    <tr>
+      <td>for i in range(n):</td>
+      <td>Повторює тіло n разів; i = 0, 1, … n-1</td>
+      <td>for i in range(4):</td>
+    </tr>
+    <tr>
+      <td>range(n)</td>
+      <td>Послідовність 0, 1, …, n-1</td>
+      <td>range(4) → 0,1,2,3</td>
+    </tr>
+    <tr>
+      <td>range(a, b)</td>
+      <td>Послідовність a, a+1, …, b-1</td>
+      <td>range(1, 5) → 1,2,3,4</td>
+    </tr>
+    <tr>
+      <td>range(a, b, step)</td>
+      <td>Кожне step-те число від a до b</td>
+      <td>range(0,10,2) → 0,2,4,6,8</td>
+    </tr>
+    <tr>
+      <td>for x in [a, b, c]:</td>
+      <td>Перебирає конкретні значення зі списку</td>
+      <td>for side in [120, 60, 120, 60]:</td>
+    </tr>
+    <tr>
+      <td>i (лічильник)</td>
+      <td>Змінна, яка зростає на кожній ітерації — використовуй всередині тіла</td>
+      <td>t.forward(i * 3)</td>
+    </tr>
+    <tr>
+      <td>360 / n</td>
+      <td>Формула кута для правильного n-кутника</td>
+      <td>t.left(360 / n)</td>
+    </tr>
+    <tr>
+      <td>t.begin_fill() / t.end_fill()</td>
+      <td>Заливає фігуру між begin_fill і end_fill кольором fillcolor</td>
+      <td>t.fillcolor("white"); t.begin_fill(); ...; t.end_fill()</td>
+    </tr>
+  </table>
+</div>
+
+
+<footer>
+  <span>УРОК 2 · PYTHON TURTLE · САМОСТІЙНЕ ВИВЧЕННЯ · 7 КЛАС</span>
+  <span>TRINKET.IO · TURTLE GRAPHICS</span>
+</footer>
+
+</div>
+</body>
+</html>

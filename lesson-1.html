@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Урок 1 · Python Turtle · Самостійне вивчення</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #060a0f;
+  --surface: #0b1018;
+  --card:    #101820;
+  --border:  #182030;
+  --border2: #203040;
+  --text:    #d5e5f5;
+  --muted:   #4a6080;
+
+  --teal:    #00d4aa;
+  --teal-d:  rgba(0,212,170,.12);
+  --teal-b:  rgba(0,212,170,.25);
+  --gold:    #ffc845;
+  --green:   #50e3a4;
+  --coral:   #ff7a6e;
+  --violet:  #c084fc;
+  --blue:    #5b9cf6;
+
+  --cm: #5a9e5a;
+  --ck: #c084fc;
+  --cf: #5b9cf6;
+  --cs: #6adf8a;
+  --cn: #ffc845;
+  --co: #9ab8d0;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+body::before {
+  content:'';
+  position:fixed;inset:0;
+  background-image: radial-gradient(rgba(0,212,170,.05) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events:none;z-index:0;
+}
+
+.wrap {
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── HEADER ── */
+header {
+  padding: 52px 0 40px;
+  border-bottom: 1px solid var(--border2);
+  margin-bottom: 40px;
+}
+
+.eyebrow {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 12px;
+}
+
+h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(36px, 6vw, 64px);
+  line-height: .95;
+  letter-spacing: 2px;
+  color: #fff;
+  margin-bottom: 16px;
+}
+
+h1 .acc { color: var(--teal); }
+
+.header-sub {
+  font-size: 13.5px;
+  color: var(--muted);
+  max-width: 600px;
+  line-height: 1.7;
+}
+
+.header-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.chip {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 10.5px;
+  padding: 4px 12px;
+  border: 1px solid var(--border2);
+  color: var(--text);
+}
+
+.chip.t {
+  background: var(--teal-d);
+  border-color: var(--teal-b);
+  color: var(--teal);
+  font-weight: 600;
+}
+
+/* ── STEP ── */
+.step {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 0 20px;
+  margin-bottom: 48px;
+}
+
+.step-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 44px;
+  line-height: 1;
+  color: var(--teal);
+  letter-spacing: 1px;
+  padding-top: 2px;
+  user-select: none;
+}
+
+.step-inner {}
+
+.step-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px;
+  letter-spacing: 1.5px;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.step-sub {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+
+.step-body {
+  font-size: 13.5px;
+  line-height: 1.75;
+  color: var(--text);
+}
+
+.step-body p { margin-bottom: 12px; }
+.step-body p:last-child { margin-bottom: 0; }
+.step-body strong { color: #fff; }
+.step-body em { color: var(--gold); font-style: normal; }
+
+/* ── SECTION DIVIDER ── */
+.sdiv {
+  height: 1px;
+  background: var(--border);
+  margin: 16px 0 20px;
+}
+
+/* ── INLINE CODE ── */
+code {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 14px;
+  color: var(--gold);
+  background: rgba(255,200,69,.1);
+  padding: 1px 6px;
+  border-radius: 2px;
+}
+
+/* ── CODE BLOCK ── */
+.code-block {
+  background: #030810;
+  border: 1px solid var(--border2);
+  border-left: 3px solid var(--teal);
+  font-family: 'Source Code Pro', monospace;
+  font-size: 14px;
+  line-height: 1.75;
+  padding: 14px 18px;
+  color: var(--co);
+  margin: 14px 0;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.code-block .cm { color: var(--cm); }
+.code-block .ck { color: var(--ck); }
+.code-block .cf { color: var(--cf); }
+.code-block .cs { color: var(--cs); }
+.code-block .cn { color: var(--cn); }
+.code-block .co { color: var(--co); }
+.code-block .hi { background: rgba(0,212,170,.12); }  /* highlighted line */
+
+/* ── TRY BOX ── */
+.try-box {
+  background: rgba(80,227,164,.06);
+  border: 1px solid rgba(80,227,164,.22);
+  border-left: 3px solid var(--green);
+  padding: 14px 18px;
+  margin: 14px 0;
+}
+
+.try-label {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 9.5px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 8px;
+}
+
+.try-box p, .try-box li {
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.65;
+}
+
+.try-box ul { padding-left: 18px; }
+.try-box ul li { margin-bottom: 4px; }
+
+/* ── TIP BOX ── */
+.tip-box {
+  background: rgba(91,156,246,.07);
+  border: 1px solid rgba(91,156,246,.2);
+  border-left: 3px solid var(--blue);
+  padding: 12px 16px;
+  margin: 12px 0;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.tip-box strong { color: var(--blue); }
+
+/* ── WARN BOX ── */
+.warn-box {
+  background: rgba(255,122,110,.06);
+  border: 1px solid rgba(255,122,110,.2);
+  border-left: 3px solid var(--coral);
+  padding: 12px 16px;
+  margin: 12px 0;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.warn-box strong { color: var(--coral); }
+
+/* ── COMMAND TABLE ── */
+.cmd-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 14px 0;
+  font-size: 13px;
+}
+
+.cmd-table th {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 8px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border2);
+  background: var(--card);
+}
+
+.cmd-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  line-height: 1.5;
+}
+
+.cmd-table tr:last-child td { border-bottom: none; }
+.cmd-table tr:hover td { background: rgba(255,255,255,.02); }
+
+.cmd-table td:first-child {
+  font-family: 'Source Code Pro', monospace;
+  color: var(--teal);
+  white-space: nowrap;
+  width: 200px;
+}
+
+/* ── TRINKET DIAGRAM ── */
+.trinket-wrap {
+  border: 1px solid var(--border2);
+  margin: 16px 0;
+  overflow: hidden;
+}
+
+.trinket-wrap svg { width:100%; display:block; }
+
+/* ── RESULT EXAMPLE ── */
+.result-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 14px 0;
+}
+
+@media(max-width:560px){
+  .result-row { grid-template-columns: 1fr; }
+  .step { grid-template-columns: 48px 1fr; gap: 0 12px; }
+  .step-num { font-size: 34px; }
+}
+
+.res-block {
+  border: 1px solid var(--border2);
+  overflow: hidden;
+}
+
+.res-label {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 9.5px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 7px 12px;
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+}
+
+.res-block svg { width:100%; display:block; background:#fff; }
+
+/* ── HEX COLOR ROW ── */
+.hex-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.hex-swatch {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border: 1px solid var(--border2);
+  font-family: 'Source Code Pro', monospace;
+  font-size: 11px;
+  color: var(--text);
+}
+
+.hex-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+/* ── SUMMARY TABLE ── */
+.summary {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  margin-bottom: 32px;
+  overflow: hidden;
+}
+
+.summary-head {
+  padding: 12px 18px;
+  background: var(--card);
+  border-bottom: 1px solid var(--border2);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  letter-spacing: 1.5px;
+  color: var(--teal);
+}
+
+.summary table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+
+.summary table th {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 7px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--border2);
+  background: var(--card);
+}
+
+.summary table td {
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  line-height: 1.5;
+}
+
+.summary table tr:last-child td { border-bottom: none; }
+.summary table td:first-child {
+  font-family: 'Source Code Pro', monospace;
+  color: var(--teal);
+  white-space: nowrap;
+}
+
+/* ── SLABEL ── */
+.slabel {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.slabel::after { content:''; flex:1; height:1px; background:var(--border); }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding-top: 18px;
+  margin-top: 32px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+footer span {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 1px;
+}
+
+/* numbered list */
+ol.steps-list {
+  padding-left: 20px;
+  margin: 10px 0;
+}
+ol.steps-list li {
+  margin-bottom: 6px;
+  font-size: 13.5px;
+  line-height: 1.65;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- HEADER -->
+<header>
+  <div class="eyebrow">Самостійне вивчення · Python Turtle · 7 клас</div>
+  <h1>УРОК <span class="acc">1</span><br>PYTHON TURTLE</h1>
+  <p class="header-sub">
+    Цей матеріал допоможе тобі вивчити урок 1 самостійно. Читай кожен крок по порядку, запускай приклади в Trinket, і виконуй завдання.
+  </p>
+  <div class="header-chips">
+    <span class="chip t">Самостійне вивчення</span>
+    <span class="chip">Python · Turtle</span>
+    <span class="chip">7 клас</span>
+    <span class="chip">~45 хвилин</span>
+  </div>
+</header>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- КРОК 0 — TRINKET                                       -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="step">
+  <div class="step-num">00</div>
+  <div class="step-inner">
+    <div class="step-title">Trinket.io — де писати код</div>
+    <div class="step-sub">Підготовка до роботи</div>
+    <div class="step-body">
+
+      <p>
+        Ми будемо писати код на сайті <strong>Trinket.io</strong> — це онлайн-редактор Python прямо в браузері. Нічого встановлювати не потрібно.
+      </p>
+
+      <ol class="steps-list">
+        <li>Відкрий браузер і перейди на сайт <strong>trinket.io</strong></li>
+        <li>Натисни <strong>«Sign In»</strong> → вибери <strong>«Sign in with Google»</strong> → увійди через свій шкільний акаунт <strong>@ortlyc.kyiv.ua</strong></li>
+        <li>Натисни <strong>«New Trinket»</strong> (або <strong>«+ New»</strong>) у верхньому правому куті</li>
+        <li>Вибери <strong>«Python»</strong> зі списку — відкриється редактор</li>
+        <li>Тепер можна писати код!</li>
+      </ol>
+
+      <!-- Trinket interface diagram -->
+      <div class="trinket-wrap">
+        <svg viewBox="0 0 820 320" xmlns="http://www.w3.org/2000/svg">
+          <!-- Background -->
+          <rect width="820" height="320" fill="#0f1520"/>
+
+          <!-- Browser bar -->
+          <rect width="820" height="36" fill="#182030"/>
+          <circle cx="18" cy="18" r="6" fill="#ff5f57"/>
+          <circle cx="38" cy="18" r="6" fill="#febc2e"/>
+          <circle cx="58" cy="18" r="6" fill="#28c840"/>
+          <rect x="80" y="10" width="480" height="16" rx="8" fill="#101820"/>
+          <text x="100" y="22" fill="#5a7090" font-family="monospace" font-size="10">trinket.io</text>
+
+          <!-- Trinket header bar -->
+          <rect x="0" y="36" width="820" height="38" fill="#1e2d40"/>
+          <!-- Logo area -->
+          <text x="16" y="60" fill="#00d4aa" font-family="monospace" font-size="13" font-weight="bold">trinket</text>
+          <!-- Run button -->
+          <rect x="680" y="46" width="64" height="22" rx="4" fill="#00d4aa"/>
+          <text x="700" y="61" fill="#040e18" font-family="monospace" font-size="11" font-weight="bold">▶ Run</text>
+          <!-- Save button -->
+          <rect x="752" y="46" width="52" height="22" rx="4" fill="#1e2d40" stroke="#2a4060" stroke-width="1"/>
+          <text x="762" y="61" fill="#9ab8d0" font-family="monospace" font-size="10">💾 Save</text>
+
+          <!-- Divider -->
+          <line x1="0" y1="74" x2="820" y2="74" stroke="#182030" stroke-width="1"/>
+
+          <!-- Code editor panel (left) -->
+          <rect x="0" y="74" width="408" height="246" fill="#0a0f18"/>
+          <!-- Code editor label -->
+          <rect x="0" y="74" width="408" height="24" fill="#101820"/>
+          <text x="12" y="90" fill="#4a6080" font-family="monospace" font-size="9" letter-spacing="1">РЕДАКТОР КОДУ</text>
+
+          <!-- Line numbers + code -->
+          <g font-family="monospace" font-size="11" fill="#4a6080">
+            <text x="12" y="118">1</text>
+            <text x="12" y="136">2</text>
+            <text x="12" y="154">3</text>
+            <text x="12" y="172">4</text>
+            <text x="12" y="190">5</text>
+            <text x="12" y="208">6</text>
+          </g>
+          <g font-family="monospace" font-size="11">
+            <text x="30" y="118" fill="#c084fc">import</text><text x="80" y="118" fill="#9ab8d0"> turtle</text>
+            <text x="30" y="136" fill="#9ab8d0"></text>
+            <text x="30" y="154" fill="#9ab8d0">t = turtle.</text><text x="111" y="154" fill="#5b9cf6">Turtle</text><text x="147" y="154" fill="#9ab8d0">()</text>
+            <text x="30" y="172" fill="#9ab8d0">t.</text><text x="44" y="172" fill="#5b9cf6">forward</text><text x="90" y="172" fill="#9ab8d0">(</text><text x="96" y="172" fill="#ffc845">100</text><text x="114" y="172" fill="#9ab8d0">)</text>
+            <text x="30" y="190" fill="#9ab8d0"></text>
+            <text x="30" y="208" fill="#9ab8d0">turtle.</text><text x="74" y="208" fill="#5b9cf6">done</text><text x="107" y="208" fill="#9ab8d0">()</text>
+          </g>
+
+          <!-- Cursor blink -->
+          <rect x="30" y="212" width="6" height="11" fill="#00d4aa" opacity=".7"/>
+
+          <!-- Divider between panels -->
+          <line x1="410" y1="74" x2="410" y2="320" stroke="#182030" stroke-width="2"/>
+
+          <!-- Result panel (right) -->
+          <rect x="410" y="74" width="410" height="246" fill="#f5f5f5"/>
+          <!-- Result label -->
+          <rect x="410" y="74" width="410" height="24" fill="#e8e8e8"/>
+          <text x="422" y="90" fill="#888" font-family="monospace" font-size="9" letter-spacing="1">РЕЗУЛЬТАТ</text>
+
+          <!-- Turtle canvas -->
+          <rect x="410" y="98" width="410" height="222" fill="#ffffff"/>
+          <!-- Turtle trail line -->
+          <line x1="610" y1="209" x2="710" y2="209" stroke="#000" stroke-width="1.5"/>
+          <!-- Turtle icon at end of line -->
+          <text x="706" y="214" font-size="14">🐢</text>
+
+          <!-- Annotation arrows -->
+          <!-- Left: "Тут пишеш код" -->
+          <line x1="200" y1="240" x2="200" y2="270" stroke="#00d4aa" stroke-width="1.5" marker-end="url(#arrow)"/>
+          <text x="140" y="290" fill="#00d4aa" font-family="monospace" font-size="10" letter-spacing="1">ТУТ ПИШЕШ КОД</text>
+
+          <!-- Right: "Тут бачиш результат" -->
+          <line x1="615" y1="240" x2="615" y2="270" stroke="#00d4aa" stroke-width="1.5"/>
+          <text x="530" y="290" fill="#00d4aa" font-family="monospace" font-size="10" letter-spacing="1">ТУТ БАЧИШ РЕЗУЛЬТАТ</text>
+
+          <!-- Run button annotation -->
+          <line x1="712" y1="44" x2="712" y2="24" stroke="#ffc845" stroke-width="1.5"/>
+          <text x="660" y="18" fill="#ffc845" font-family="monospace" font-size="10">▶ ЗАПУСК</text>
+
+          <defs>
+            <marker id="arrow" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L6,3 z" fill="#00d4aa"/>
+            </marker>
+          </defs>
+        </svg>
+      </div>
+
+      <div class="tip-box">
+        <strong>Збереження:</strong> Натисни <strong>Ctrl+S</strong> (або кнопку 💾 Save), щоб зберегти свою роботу. Дай файлу ім'я — наприклад <em>Прізвище_Урок1</em>.
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- КРОК 1 — ПЕРШИЙ ЗАПУСК                                -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="step">
+  <div class="step-num">01</div>
+  <div class="step-inner">
+    <div class="step-title">Привіт, черепашка!</div>
+    <div class="step-sub">Перший запуск</div>
+    <div class="step-body">
+
+      <p>
+        <strong>Python Turtle</strong> — це бібліотека для малювання. Уяви, що на екрані є черепашка з олівцем. Ти даєш їй команди: «іди вперед», «повернись», «намалюй коло» — і вона малює.
+      </p>
+
+      <p>Перша програма — найпростіша можлива:</p>
+
+<div class="code-block"><span class="cm"># Рівень 1: Hello, Turtle!</span>
+<span class="cm"># Перший запуск — черепашка малює лінію</span>
+
+<span class="ck">import</span> turtle
+
+<span class="co">t</span> = turtle.<span class="cf">Turtle</span>()
+<span class="co">t</span>.<span class="cf">forward</span>(<span class="cn">100</span>)
+
+turtle.<span class="cf">done</span>()</div>
+
+      <p>Розберемо кожен рядок:</p>
+
+      <table class="cmd-table">
+        <tr><th>Рядок</th><th>Що означає</th></tr>
+        <tr>
+          <td>import turtle</td>
+          <td>Підключаємо бібліотеку turtle — без цього рядка нічого не працює. Завжди перший рядок.</td>
+        </tr>
+        <tr>
+          <td>t = turtle.Turtle()</td>
+          <td>Створюємо черепашку і даємо їй ім'я <code>t</code>. Тепер усі команди пишемо через <code>t.</code></td>
+        </tr>
+        <tr>
+          <td>t.forward(100)</td>
+          <td>Команда черепашці: «іди вперед на 100 пікселів». Вона малює лінію.</td>
+        </tr>
+        <tr>
+          <td>turtle.done()</td>
+          <td>Завершує програму і залишає вікно відкритим, щоб ти побачив результат. Завжди останній рядок.</td>
+        </tr>
+      </table>
+
+      <div class="tip-box">
+        <strong>Що означають дужки <code>()</code>?</strong> Дужки після назви — це сигнал Python: «виконай цю дію зараз». Без дужок Python просто <em>знає</em> про команду, але нічого не робить.<br><br>
+        Деякі команди очікують <strong>значення</strong> всередині дужок — наприклад, <code>t.forward(100)</code> («на скільки пікселів?») або <code>t.right(90)</code> («на скільки градусів?»). Інші команди нічого не очікують і дужки залишаються порожніми — наприклад, <code>t.penup()</code> або <code>turtle.done()</code>. Але дужки потрібні <em>завжди</em>.
+      </div>
+
+      <div class="warn-box">
+        <strong>Регістр важливий!</strong> Python розрізняє великі і маленькі літери. <code>turtle.Turtle()</code> — тут <code>Turtle</code> обов'язково з великої літери. <code>t.forward()</code> — <code>forward</code> з маленької. Напишеш <code>Forward</code> або <code>FORWARD</code> — отримаєш помилку.
+      </div>
+
+      <div class="try-box">
+        <div class="try-label">⚡ Спробуй сам</div>
+        <ul>
+          <li>Скопіюй код вище в Trinket і натисни <strong>▶ Run</strong></li>
+          <li>Зміни <code>100</code> на <code>200</code> — що змінилось?</li>
+          <li>Зміни <code>100</code> на <code>50</code> — лінія стала коротшою чи довшою?</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- КРОК 2 — КООРДИНАТИ І GOTO                             -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="step">
+  <div class="step-num">02</div>
+  <div class="step-inner">
+    <div class="step-title">Координати і goto()</div>
+    <div class="step-sub">Де черепашка · куди дивиться · система координат</div>
+    <div class="step-body">
+
+      <p>Перш ніж рухати черепашку — дізнаємось, <strong>де вона з'являється</strong> і <strong>куди дивиться</strong>. Черепашка завжди з'являється в <em>центрі екрана</em> — в точці <em>(0, 0)</em>. І завжди дивиться <em>праворуч</em>.</p>
+
+      <p>Вікно черепашки — це система координат. Ось X йде праворуч, ось Y — вгору.</p>
+
+      <!-- Coordinate diagram -->
+      <div style="margin:20px 0;">
+        <svg viewBox="0 0 480 300" xmlns="http://www.w3.org/2000/svg" style="max-width:460px;width:100%;display:block;margin:0 auto;border-radius:8px;">
+          <rect width="480" height="300" fill="#0a0e1a"/>
+          <!-- Faint grid -->
+          <g stroke="#111827" stroke-width="1">
+            <line x1="120" y1="0" x2="120" y2="300"/>
+            <line x1="240" y1="0" x2="240" y2="300"/>
+            <line x1="360" y1="0" x2="360" y2="300"/>
+            <line x1="0" y1="75"  x2="480" y2="75"/>
+            <line x1="0" y1="150" x2="480" y2="150"/>
+            <line x1="0" y1="225" x2="480" y2="225"/>
+          </g>
+          <!-- Axes -->
+          <line x1="20" y1="150" x2="460" y2="150" stroke="#2a3d5a" stroke-width="1.5"/>
+          <line x1="240" y1="20" x2="240" y2="280" stroke="#2a3d5a" stroke-width="1.5"/>
+          <!-- Axis arrows -->
+          <polygon points="460,150 450,145 450,155" fill="#2a3d5a"/>
+          <polygon points="240,20 235,30 245,30" fill="#2a3d5a"/>
+          <!-- Axis labels -->
+          <text x="462" y="154" fill="#445a78" font-family="monospace" font-size="13" font-weight="bold">x</text>
+          <text x="244" y="17"  fill="#445a78" font-family="monospace" font-size="13" font-weight="bold">y</text>
+          <!-- Origin -->
+          <circle cx="240" cy="150" r="3" fill="#00d4aa"/>
+          <text x="246" y="164" fill="#00d4aa" font-family="monospace" font-size="11">(0, 0)</text>
+          <!-- Ticks -->
+          <g stroke="#2a3d5a" stroke-width="1">
+            <line x1="120" y1="147" x2="120" y2="153"/>
+            <line x1="360" y1="147" x2="360" y2="153"/>
+            <line x1="237" y1="75"  x2="243" y2="75"/>
+            <line x1="237" y1="225" x2="243" y2="225"/>
+          </g>
+          <text x="108" y="165" fill="#445a78" font-family="monospace" font-size="10">–150</text>
+          <text x="352" y="165" fill="#445a78" font-family="monospace" font-size="10">+150</text>
+          <text x="246" y="79"  fill="#445a78" font-family="monospace" font-size="10">+75</text>
+          <text x="246" y="230" fill="#445a78" font-family="monospace" font-size="10">–75</text>
+          <!-- Point A -->
+          <circle cx="360" cy="75" r="4" fill="#ffd700"/>
+          <text x="366" y="70" fill="#ffd700" font-family="monospace" font-size="11">(150, 75)</text>
+          <line x1="240" y1="75"  x2="360" y2="75"  stroke="#ffd700" stroke-width="0.7" stroke-dasharray="4,3" opacity=".5"/>
+          <line x1="360" y1="150" x2="360" y2="75"  stroke="#ffd700" stroke-width="0.7" stroke-dasharray="4,3" opacity=".5"/>
+          <!-- Point B -->
+          <circle cx="120" cy="225" r="4" fill="#ff6b6b"/>
+          <text x="42" y="240" fill="#ff6b6b" font-family="monospace" font-size="11">(–150, –75)</text>
+          <line x1="240" y1="225" x2="120" y2="225" stroke="#ff6b6b" stroke-width="0.7" stroke-dasharray="4,3" opacity=".5"/>
+          <line x1="120" y1="150" x2="120" y2="225" stroke="#ff6b6b" stroke-width="0.7" stroke-dasharray="4,3" opacity=".5"/>
+          <!-- Quadrant labels -->
+          <text x="320" y="120" fill="#1e2d42" font-family="monospace" font-size="11" font-weight="bold">+x, +y</text>
+          <text x="64"  y="120" fill="#1e2d42" font-family="monospace" font-size="11" font-weight="bold">–x, +y</text>
+          <text x="320" y="215" fill="#1e2d42" font-family="monospace" font-size="11" font-weight="bold">+x, –y</text>
+          <text x="64"  y="215" fill="#1e2d42" font-family="monospace" font-size="11" font-weight="bold">–x, –y</text>
+          <!-- Turtle -->
+          <text x="228" y="147" font-size="14">🐢</text>
+        </svg>
+      </div>
+
+      <p><strong>Правило:</strong> перше число — відстань праворуч/ліворуч від центру, друге — вгору/вниз від центру.</p>
+
+      <table class="cmd-table">
+        <tr><th>Команда</th><th>Що робить</th></tr>
+        <tr>
+          <td><code>t.goto(x, y)</code></td>
+          <td>Переміщує черепашку в точку з координатами (x, y) — малює лінію по дорозі</td>
+        </tr>
+        <tr>
+          <td><code>t.penup()</code></td>
+          <td>Підіймає «ручку» — черепашка рухається <em>без</em> малювання</td>
+        </tr>
+        <tr>
+          <td><code>t.pendown()</code></td>
+          <td>Опускає «ручку» — черепашка знову малює</td>
+        </tr>
+      </table>
+
+      <p style="margin-top:14px">Щоб перемістити черепашку без лінії, треба спочатку підняти ручку:</p>
+
+      <pre class="code-block"><span class="ck">import</span> turtle
+t = turtle.<span class="cf">Turtle</span>()
+
+<span class="cm"># Переміщуємося без малювання</span>
+t.<span class="cf">penup</span>()
+t.<span class="cf">goto</span>(<span class="cn">100</span>, <span class="cn">50</span>)
+t.<span class="cf">pendown</span>()
+
+<span class="cm"># Тепер малюємо з нової точки</span>
+t.<span class="cf">forward</span>(<span class="cn">80</span>)
+
+turtle.<span class="cf">done</span>()</pre>
+
+      <div class="tip-box">
+        <strong>Запам'ятай:</strong> goto(0, 0) — центр екрана. goto(150, 0) — праворуч. goto(0, 100) — вгорі. goto(–150, –100) — лівий нижній кут.
+      </div>
+
+      <div class="try-box">
+        <div class="try-label">⚡ Спробуй сам</div>
+        <ul>
+          <li>Напиши <code>t.goto(100, 100)</code> і запусти — куди потрапить черепашка?</li>
+          <li>Додай <code>t.penup()</code> перед goto — що змінилось?</li>
+          <li>Намалюй горизонтальну лінію від (–100, 0) до (100, 0) за допомогою goto</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- КРОК 3 — РУХ                                          -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="step">
+  <div class="step-num">03</div>
+  <div class="step-inner">
+    <div class="step-title">Рух черепашки</div>
+    <div class="step-sub">forward · backward · right · left</div>
+    <div class="step-body">
+
+      <p>
+        Тепер навчимось рухати черепашку. Є чотири основні команди руху:
+      </p>
+
+      <table class="cmd-table">
+        <tr><th>Команда</th><th>Що робить</th><th>Приклад</th></tr>
+        <tr>
+          <td>t.forward(n)</td>
+          <td>Іде <strong>вперед</strong> на n пікселів у поточному напрямку</td>
+          <td><code>t.forward(100)</code></td>
+        </tr>
+        <tr>
+          <td>t.backward(n)</td>
+          <td>Іде <strong>назад</strong> на n пікселів (протилежний напрямок)</td>
+          <td><code>t.backward(60)</code></td>
+        </tr>
+        <tr>
+          <td>t.right(кут)</td>
+          <td>Повертається <strong>праворуч</strong> (за годинниковою стрілкою) на кут°</td>
+          <td><code>t.right(90)</code></td>
+        </tr>
+        <tr>
+          <td>t.left(кут)</td>
+          <td>Повертається <strong>ліворуч</strong> (проти годинникової стрілки) на кут°</td>
+          <td><code>t.left(90)</code></td>
+        </tr>
+      </table>
+
+      <p>Ось як рухається черепашка — вона починає дивитись праворуч (0°):</p>
+
+<div class="code-block"><span class="ck">import</span> turtle
+
+<span class="co">t</span> = turtle.<span class="cf">Turtle</span>()
+
+<span class="co">t</span>.<span class="cf">forward</span>(<span class="cn">100</span>)    <span class="cm"># іде праворуч 100 пікселів</span>
+<span class="co">t</span>.<span class="cf">right</span>(<span class="cn">90</span>)      <span class="cm"># повертається вниз</span>
+<span class="co">t</span>.<span class="cf">forward</span>(<span class="cn">60</span>)     <span class="cm"># іде вниз 60 пікселів</span>
+<span class="co">t</span>.<span class="cf">left</span>(<span class="cn">90</span>)       <span class="cm"># повертається праворуч</span>
+<span class="co">t</span>.<span class="cf">forward</span>(<span class="cn">40</span>)     <span class="cm"># ще трохи праворуч</span>
+
+turtle.<span class="cf">done</span>()</div>
+
+      <div class="tip-box">
+        <strong>Сума поворотів:</strong> щоб намалювати замкнуту фігуру і повернутись у початкову точку, сума всіх поворотів завжди дорівнює 360°. Квадрат: 4 × 90° = 360°. Трикутник: 3 × 120° = 360°.
+      </div>
+
+      <div class="try-box">
+        <div class="try-label">⚡ Спробуй сам</div>
+        <ul>
+          <li>Запусти код вище і подивись, яка фігура вийшла</li>
+          <li>Добав ще кілька команд <code>forward</code> та <code>right</code></li>
+          <li>Спробуй намалювати букву «L» (лінія вниз → поворот → лінія праворуч)</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- КРОК 4 — КВАДРАТ                                      -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="step">
+  <div class="step-num">04</div>
+  <div class="step-inner">
+    <div class="step-title">Квадрат — два способи</div>
+    <div class="step-sub">goto() та forward() + right()</div>
+    <div class="step-body">
+
+      <p>Намалювати квадрат можна двома способами.</p>
+
+      <p><strong>Спосіб 1 — через координати:</strong> вказуємо точні точки кутів через <code>goto(x, y)</code>. Центр екрана — точка (0, 0). X зростає праворуч, Y зростає вгору.</p>
+
+<div class="code-block"><span class="cm"># Спосіб 1: квадрат через координати goto()</span>
+<span class="ck">import</span> turtle
+
+<span class="co">t</span> = turtle.<span class="cf">Turtle</span>()
+<span class="co">t</span>.<span class="cf">goto</span>(<span class="cn">100</span>, <span class="cn">0</span>)     <span class="cm"># нижній правий кут</span>
+<span class="co">t</span>.<span class="cf">goto</span>(<span class="cn">100</span>, <span class="cn">100</span>)   <span class="cm"># верхній правий кут</span>
+<span class="co">t</span>.<span class="cf">goto</span>(<span class="cn">0</span>, <span class="cn">100</span>)     <span class="cm"># верхній лівий кут</span>
+<span class="co">t</span>.<span class="cf">goto</span>(<span class="cn">0</span>, <span class="cn">0</span>)       <span class="cm"># повернулись до початку</span>
+
+turtle.<span class="cf">done</span>()</div>
+
+      <p><strong>Спосіб 2 — через рух і повороти:</strong> повторюємо «крок вперед + поворот» чотири рази. Цей спосіб коротший і гнучкіший.</p>
+
+<div class="code-block"><span class="cm"># Спосіб 2: квадрат — 4 кроки, 4 повороти</span>
+<span class="ck">import</span> turtle
+
+<span class="co">t</span> = turtle.<span class="cf">Turtle</span>()
+
+<span class="co">t</span>.<span class="cf">forward</span>(<span class="cn">100</span>)
+<span class="co">t</span>.<span class="cf">left</span>(<span class="cn">90</span>)
+<span class="co">t</span>.<span class="cf">forward</span>(<span class="cn">100</span>)
+<span class="co">t</span>.<span class="cf">left</span>(<span class="cn">90</span>)
+<span class="co">t</span>.<span class="cf">forward</span>(<span class="cn">100</span>)
+<span class="co">t</span>.<span class="cf">left</span>(<span class="cn">90</span>)
+<span class="co">t</span>.<span class="cf">forward</span>(<span class="cn">100</span>)
+<span class="co">t</span>.<span class="cf">left</span>(<span class="cn">90</span>)
+
+turtle.<span class="cf">done</span>()</div>
+
+      <div class="tip-box">
+        <strong>goto(x, y)</strong> — переміщує черепашку в точку (x, y). Якщо перо опущене (за замовчуванням), вона малює лінію. Нуль — це центр екрана.
+      </div>
+
+      <div class="try-box">
+        <div class="try-label">⚡ Спробуй сам</div>
+        <ul>
+          <li>Запусти обидва способи і порівняй результат — вони однакові!</li>
+          <li>Зміни розмір квадрата зі 100 на 150</li>
+          <li>Спробуй намалювати <strong>прямокутник</strong> (дві сторони 100, дві сторони 60)</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- КРОК 5 — СТИЛЬ                                        -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="step">
+  <div class="step-num">05</div>
+  <div class="step-inner">
+    <div class="step-title">Стиль — колір, товщина, швидкість, форма</div>
+    <div class="step-sub">pencolor · color · pensize · speed · shape</div>
+    <div class="step-body">
+
+      <p>Лінії можуть бути різного кольору і товщини. Ці налаштування задаються <em>до</em> малювання.</p>
+
+      <table class="cmd-table">
+        <tr><th>Команда</th><th>Що робить</th></tr>
+        <tr>
+          <td>t.pencolor("red")</td>
+          <td>Колір лінії — англійська назва або HEX-код</td>
+        </tr>
+        <tr>
+          <td>t.color("red")</td>
+          <td>Встановлює колір лінії <em>і</em> заливки одночасно — коротша заміна двох окремих команд</td>
+        </tr>
+        <tr>
+          <td>t.pensize(4)</td>
+          <td>Товщина лінії в пікселях (за замовчуванням — 1)</td>
+        </tr>
+        <tr>
+          <td>t.speed(3)</td>
+          <td>Швидкість малювання: 1 (найповільніше) → 10 → 0 (найшвидше)</td>
+        </tr>
+        <tr>
+          <td>t.shape("turtle")</td>
+          <td>Змінює форму значка черепашки. Варіанти: <code>"arrow"</code>, <code>"turtle"</code>, <code>"circle"</code>, <code>"square"</code>, <code>"triangle"</code>, <code>"classic"</code></td>
+        </tr>
+        <tr>
+          <td>t.hideturtle()</td>
+          <td>Ховає значок черепашки — малюнок виглядає охайніше</td>
+        </tr>
+      </table>
+
+      <p><strong>HEX-кольори</strong> — шестизначний код, який починається з <code>#</code>. Знайти HEX-код будь-якого кольору можна на сайті <em>colorpicker.me</em> або в Google (напиши «color picker»).</p>
+
+      <div class="hex-row">
+        <div class="hex-swatch"><div class="hex-dot" style="background:#005BBB"></div>#005BBB — синій</div>
+        <div class="hex-swatch"><div class="hex-dot" style="background:#FFD500"></div>#FFD500 — жовтий</div>
+        <div class="hex-swatch"><div class="hex-dot" style="background:#C0392B"></div>#C0392B — червоний</div>
+        <div class="hex-swatch"><div class="hex-dot" style="background:#5D8233"></div>#5D8233 — зелений</div>
+        <div class="hex-swatch"><div class="hex-dot" style="background:#F5E6C8"></div>#F5E6C8 — бежевий</div>
+        <div class="hex-swatch"><div class="hex-dot" style="background:#8B7355"></div>#8B7355 — коричневий</div>
+      </div>
+
+<div class="code-block"><span class="cm"># Рівень 3: Стиль — колір, товщина, швидкість, форма</span>
+<span class="ck">import</span> turtle
+
+<span class="co">t</span> = turtle.<span class="cf">Turtle</span>()
+<span class="co">t</span>.<span class="cf">shape</span>(<span class="cs">"turtle"</span>)     <span class="cm"># змінюємо вигляд на справжню черепашку</span>
+<span class="co">t</span>.<span class="cf">speed</span>(<span class="cn">3</span>)
+
+<span class="co">t</span>.<span class="cf">color</span>(<span class="cs">"#005BBB"</span>)     <span class="cm"># синій — і лінія, і заливка</span>
+<span class="co">t</span>.<span class="cf">pensize</span>(<span class="cn">4</span>)
+<span class="co">t</span>.<span class="cf">forward</span>(<span class="cn">100</span>)
+<span class="co">t</span>.<span class="cf">left</span>(<span class="cn">90</span>)
+
+<span class="co">t</span>.<span class="cf">color</span>(<span class="cs">"#FFD500"</span>)     <span class="cm"># жовтий</span>
+<span class="co">t</span>.<span class="cf">forward</span>(<span class="cn">100</span>)
+<span class="co">t</span>.<span class="cf">left</span>(<span class="cn">90</span>)
+
+<span class="co">t</span>.<span class="cf">color</span>(<span class="cs">"#005BBB"</span>)
+<span class="co">t</span>.<span class="cf">forward</span>(<span class="cn">100</span>)
+<span class="co">t</span>.<span class="cf">left</span>(<span class="cn">90</span>)
+
+<span class="co">t</span>.<span class="cf">color</span>(<span class="cs">"#FFD500"</span>)
+<span class="co">t</span>.<span class="cf">forward</span>(<span class="cn">100</span>)
+<span class="co">t</span>.<span class="cf">left</span>(<span class="cn">90</span>)
+
+turtle.<span class="cf">done</span>()</div>
+
+      <div class="try-box">
+        <div class="try-label">⚡ Спробуй сам</div>
+        <ul>
+          <li>Змін кольори на свої улюблені</li>
+          <li>Спробуй усі форми: <code>"arrow"</code>, <code>"turtle"</code>, <code>"circle"</code>, <code>"square"</code>, <code>"triangle"</code>, <code>"classic"</code></li>
+          <li>Спробуй <code>t.speed(1)</code> — черепашка сповільнилась</li>
+          <li>Спробуй <code>t.speed(0)</code> — найшвидше!</li>
+          <li>Зміни <code>pensize</code> на 8 — що сталося з лінією?</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- КРОК 6 — ЗАЛИВКА                                      -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="step">
+  <div class="step-num">06</div>
+  <div class="step-inner">
+    <div class="step-title">Заливка — залити фігуру кольором</div>
+    <div class="step-sub">fillcolor · begin_fill · end_fill</div>
+    <div class="step-body">
+
+      <p>
+        Щоб фігура була не просто контуром, а <strong>залитою кольором</strong>, потрібні три команди.
+        Вони «обгортають» малювання фігури:
+      </p>
+
+      <table class="cmd-table">
+        <tr><th>Команда</th><th>Що робить</th></tr>
+        <tr>
+          <td>t.fillcolor("#КОЛІР")</td>
+          <td>Встановлює колір заливки (HEX або назва)</td>
+        </tr>
+        <tr>
+          <td>t.begin_fill()</td>
+          <td>Позначає <strong>початок</strong> фігури — «зараз починаємо заливати»</td>
+        </tr>
+        <tr>
+          <td>t.end_fill()</td>
+          <td>Позначає <strong>кінець</strong> фігури — «ось тут заливаємо всередину»</td>
+        </tr>
+      </table>
+
+      <p>Шаблон завжди однаковий:</p>
+
+<div class="code-block"><span class="cm"># Шаблон заливки — вчи напам'ять!</span>
+<span class="co">t</span>.<span class="cf">fillcolor</span>(<span class="cs">"#КОЛІР_ЗАЛИВКИ"</span>)
+<span class="co">t</span>.<span class="cf">pencolor</span>(<span class="cs">"#КОЛІР_КОНТУРУ"</span>)
+<span class="co">t</span>.<span class="cf">begin_fill</span>()          <span class="cm"># ← тут починаємо</span>
+<span class="cm"># ......  малюємо фігуру  ......</span>
+<span class="co">t</span>.<span class="cf">end_fill</span>()            <span class="cm"># ← тут заливаємо</span></div>
+
+      <p>Повний приклад — залитий квадрат:</p>
+
+<div class="code-block"><span class="cm"># Рівень 4: Будиночок із заливкою — спочатку квадрат</span>
+<span class="ck">import</span> turtle
+
+<span class="co">t</span> = turtle.<span class="cf">Turtle</span>()
+<span class="co">t</span>.<span class="cf">speed</span>(<span class="cn">3</span>)
+
+<span class="co">t</span>.<span class="cf">fillcolor</span>(<span class="cs">"#E63946"</span>)   <span class="cm"># червона заливка</span>
+<span class="co">t</span>.<span class="cf">pencolor</span>(<span class="cs">"#9b1c24"</span>)    <span class="cm"># темніший контур</span>
+<span class="co">t</span>.<span class="cf">begin_fill</span>()
+<span class="co">t</span>.<span class="cf">forward</span>(<span class="cn">100</span>); <span class="co">t</span>.<span class="cf">left</span>(<span class="cn">90</span>)
+<span class="co">t</span>.<span class="cf">forward</span>(<span class="cn">100</span>); <span class="co">t</span>.<span class="cf">left</span>(<span class="cn">90</span>)
+<span class="co">t</span>.<span class="cf">forward</span>(<span class="cn">100</span>); <span class="co">t</span>.<span class="cf">left</span>(<span class="cn">90</span>)
+<span class="co">t</span>.<span class="cf">forward</span>(<span class="cn">100</span>); <span class="co">t</span>.<span class="cf">left</span>(<span class="cn">90</span>)
+<span class="co">t</span>.<span class="cf">end_fill</span>()
+
+turtle.<span class="cf">done</span>()</div>
+
+      <div class="warn-box">
+        <strong>Важливо:</strong> <code>begin_fill()</code> і <code>end_fill()</code> завжди йдуть <em>парою</em>. Якщо забудеш один з них — заливки не буде або буде неправильно.
+      </div>
+
+      <div class="try-box">
+        <div class="try-label">⚡ Спробуй сам</div>
+        <ul>
+          <li>Запусти код — квадрат заповнився червоним?</li>
+          <li>Зміни колір заливки на синій <code>"#457B9D"</code></li>
+          <li>Спробуй жовту заливку з темно-жовтим контуром</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- КРОК 7 — ПОСЛІДОВНІСТЬ МАЛЮВАННЯ                       -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="step">
+  <div class="step-num">07</div>
+  <div class="step-inner">
+    <div class="step-title">Послідовність малювання</div>
+    <div class="step-sub">up · goto · down · fillcolor · begin_fill · end_fill</div>
+    <div class="step-body">
+
+      <p>
+        У кожній програмі є <strong>три фази</strong>: <em>позиціювання</em> (куди поставити черепашку), <em>налаштування стилю</em> (який колір) і <em>малювання</em> (сама фігура). Ось шаблон, який використовується у кожній програмі:
+      </p>
+
+<div class="code-block"><span class="ck">import</span> turtle
+
+<span class="co">t</span> = turtle.<span class="cf">Turtle</span>()   <span class="cm"># об'єкт черепахи</span>
+<span class="co">t</span>.<span class="cf">speed</span>(<span class="cn">0</span>)            <span class="cm"># Швидкість черепахи максимальна</span>
+
+<span class="co">t</span>.<span class="cf">up</span>()               <span class="cm"># t.penup() — підняти перо: рух без малювання</span>
+<span class="co">t</span>.<span class="cf">goto</span>(<span class="cn">0</span>, <span class="cn">0</span>)         <span class="cm"># перейти до початкової точки</span>
+<span class="co">t</span>.<span class="cf">down</span>()             <span class="cm"># t.pendown() — опустити перо: починаємо малювати</span>
+
+<span class="co">t</span>.<span class="cf">fillcolor</span>(<span class="cs">"#5D8233"</span>)
+<span class="co">t</span>.<span class="cf">begin_fill</span>()
+<span class="cm"># Малюю фігуру</span>
+<span class="co">t</span>.<span class="cf">end_fill</span>()</div>
+
+      <p>Кожна команда має своє місце:</p>
+
+      <table class="cmd-table">
+        <tr><th>Команда</th><th>Що робить</th><th>Коли викликати</th></tr>
+        <tr>
+          <td>t.up() / t.penup()</td>
+          <td>Піднімає перо — черепашка рухається <em>без</em> малювання лінії</td>
+          <td>Перед <code>goto()</code>, щоб не тягнути зайву лінію</td>
+        </tr>
+        <tr>
+          <td>t.goto(x, y)</td>
+          <td>Переміщує черепашку в точку (x, y)</td>
+          <td>Після <code>up()</code>, щоб поставити в потрібне місце</td>
+        </tr>
+        <tr>
+          <td>t.down() / t.pendown()</td>
+          <td>Опускає перо — черепашка знову малює лінії при русі</td>
+          <td>Після <code>goto()</code>, перед початком фігури</td>
+        </tr>
+        <tr>
+          <td>t.fillcolor("…")</td>
+          <td>Встановлює колір заливки</td>
+          <td><strong>До</strong> <code>begin_fill()</code> — обов'язково!</td>
+        </tr>
+        <tr>
+          <td>t.begin_fill()</td>
+          <td>Позначає початок фігури, яка буде залита</td>
+          <td>Безпосередньо перед малюванням фігури</td>
+        </tr>
+        <tr>
+          <td>t.end_fill()</td>
+          <td>Завершує фігуру і заливає її кольором</td>
+          <td>Одразу після того, як фігура замкнена</td>
+        </tr>
+      </table>
+
+      <div class="tip-box">
+        <strong>Запам'ятай порядок:</strong> <code>up()</code> → <code>goto()</code> → <code>down()</code> → <code>fillcolor()</code> → <code>begin_fill()</code> → [малюю] → <code>end_fill()</code>. Якщо переплутати <code>up</code> / <code>down</code> — з'являться зайві лінії. Якщо <code>fillcolor</code> після <code>begin_fill</code> — заливки не буде.
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- КРОК 8 — ТРИКУТНИК                                    -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="step">
+  <div class="step-num">08</div>
+  <div class="step-inner">
+    <div class="step-title">Трикутник</div>
+    <div class="step-sub">3 сторони · кут 120°</div>
+    <div class="step-body">
+
+      <p>
+        Трикутник малюється так само, як квадрат, але з іншим кутом повороту і трьома сторонами.
+        Формула зовнішнього кута: <em>360° ÷ кількість сторін</em>.
+      </p>
+
+      <table class="cmd-table">
+        <tr><th>Фігура</th><th>Сторін</th><th>Кут повороту</th><th>Розрахунок</th></tr>
+        <tr><td>Квадрат</td><td>4</td><td>90°</td><td>360 ÷ 4 = 90</td></tr>
+        <tr><td>Трикутник</td><td>3</td><td>120°</td><td>360 ÷ 3 = 120</td></tr>
+        <tr><td>П'ятикутник</td><td>5</td><td>72°</td><td>360 ÷ 5 = 72</td></tr>
+        <tr><td>Шестикутник</td><td>6</td><td>60°</td><td>360 ÷ 6 = 60</td></tr>
+      </table>
+
+<div class="code-block"><span class="cm"># Рівень 4: Трикутник</span>
+<span class="cm"># Сума зовнішніх кутів = 360, тому 360 / 3 = 120</span>
+<span class="ck">import</span> turtle
+
+<span class="co">t</span> = turtle.<span class="cf">Turtle</span>()
+<span class="co">t</span>.<span class="cf">pencolor</span>(<span class="cs">"green"</span>)
+<span class="co">t</span>.<span class="cf">pensize</span>(<span class="cn">3</span>)
+
+<span class="co">t</span>.<span class="cf">forward</span>(<span class="cn">120</span>)
+<span class="co">t</span>.<span class="cf">left</span>(<span class="cn">120</span>)
+<span class="co">t</span>.<span class="cf">forward</span>(<span class="cn">120</span>)
+<span class="co">t</span>.<span class="cf">left</span>(<span class="cn">120</span>)
+<span class="co">t</span>.<span class="cf">forward</span>(<span class="cn">120</span>)
+<span class="co">t</span>.<span class="cf">left</span>(<span class="cn">120</span>)
+
+turtle.<span class="cf">done</span>()</div>
+
+      <div class="try-box">
+        <div class="try-label">⚡ Спробуй сам</div>
+        <ul>
+          <li>Запусти — вийшов рівносторонній трикутник?</li>
+          <li>Добав заливку: <code>fillcolor</code> + <code>begin_fill</code> / <code>end_fill</code></li>
+          <li>Намалюй шестикутник: 6 сторін, кут = 60°</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- КРОК 9 — БУДИНОЧОК                                    -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="step">
+  <div class="step-num">09</div>
+  <div class="step-inner">
+    <div class="step-title">Будиночок</div>
+    <div class="step-sub">Квадрат + трикутник = дім</div>
+    <div class="step-body">
+
+      <p>
+        Тепер об'єднаємо все разом. Будиночок = <strong>залитий квадрат</strong> (стіни) + <strong>залитий трикутник</strong> (дах іншого кольору).
+      </p>
+
+      <p>
+        Зверни увагу: квадрат малюється проти годинникової стрілки і закінчується у <em>лівому нижньому куті</em>. Щоб дах сів на верхівку стін, спочатку переміщаємо черепашку у верхній лівий кут через <code>up() → goto(0, 100) → down()</code>.
+      </p>
+
+<div class="code-block"><span class="cm"># Рівень 4: Будиночок = квадрат + трикутник</span>
+<span class="ck">import</span> turtle
+
+<span class="co">t</span> = turtle.<span class="cf">Turtle</span>()
+<span class="co">t</span>.<span class="cf">pensize</span>(<span class="cn">3</span>)
+<span class="co">t</span>.<span class="cf">speed</span>(<span class="cn">3</span>)
+
+<span class="cm"># ── Стіни (залитий квадрат) ──</span>
+<span class="co">t</span>.<span class="cf">fillcolor</span>(<span class="cs">"#F5E6C8"</span>)
+<span class="co">t</span>.<span class="cf">pencolor</span>(<span class="cs">"brown"</span>)
+<span class="co">t</span>.<span class="cf">begin_fill</span>()
+<span class="co">t</span>.<span class="cf">forward</span>(<span class="cn">100</span>); <span class="co">t</span>.<span class="cf">left</span>(<span class="cn">90</span>)
+<span class="co">t</span>.<span class="cf">forward</span>(<span class="cn">100</span>); <span class="co">t</span>.<span class="cf">left</span>(<span class="cn">90</span>)
+<span class="co">t</span>.<span class="cf">forward</span>(<span class="cn">100</span>); <span class="co">t</span>.<span class="cf">left</span>(<span class="cn">90</span>)
+<span class="co">t</span>.<span class="cf">forward</span>(<span class="cn">100</span>); <span class="co">t</span>.<span class="cf">left</span>(<span class="cn">90</span>)
+<span class="co">t</span>.<span class="cf">end_fill</span>()
+
+<span class="cm"># ── Переходимо у верхній лівий кут для даху ──</span>
+<span class="co">t</span>.<span class="cf">up</span>()
+<span class="co">t</span>.<span class="cf">goto</span>(<span class="cn">0</span>, <span class="cn">100</span>)
+<span class="co">t</span>.<span class="cf">down</span>()
+
+<span class="cm"># ── Дах (залитий трикутник) ──</span>
+<span class="co">t</span>.<span class="cf">fillcolor</span>(<span class="cs">"#C0392B"</span>)
+<span class="co">t</span>.<span class="cf">pencolor</span>(<span class="cs">"#922B21"</span>)
+<span class="co">t</span>.<span class="cf">begin_fill</span>()
+<span class="co">t</span>.<span class="cf">forward</span>(<span class="cn">100</span>); <span class="co">t</span>.<span class="cf">left</span>(<span class="cn">120</span>)
+<span class="co">t</span>.<span class="cf">forward</span>(<span class="cn">100</span>); <span class="co">t</span>.<span class="cf">left</span>(<span class="cn">120</span>)
+<span class="co">t</span>.<span class="cf">forward</span>(<span class="cn">100</span>); <span class="co">t</span>.<span class="cf">left</span>(<span class="cn">120</span>)
+<span class="co">t</span>.<span class="cf">end_fill</span>()
+
+turtle.<span class="cf">done</span>()</div>
+
+      <div class="tip-box">
+        <strong>Чому left(120) для даху?</strong> Черепашка стоїть у верхньому лівому куті квадрата і дивиться праворуч. Щоб дах виріс угору від квадрата — повертаємо ліворуч (120°). Три сторони по 120° = трикутник над стінами.
+      </div>
+
+      <div class="try-box">
+        <div class="try-label">⚡ Спробуй сам</div>
+        <ul>
+          <li>Запусти код — є будиночок?</li>
+          <li>Зміни кольори стін і даху на власні</li>
+          <li>Зроби будиночок більшим або меншим (зміни 100 на інше число)</li>
+          <li><strong>Виклик:</strong> намалюй свої ініціали — перші букви імені та прізвища — лініями</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- SUMMARY                                               -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="slabel">Підсумок уроку 1 — всі команди</div>
+<div class="summary">
+  <div class="summary-head">Шпаргалка</div>
+  <table>
+    <thead>
+      <tr>
+        <th>Команда</th>
+        <th>Опис</th>
+        <th>Приклад</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>import turtle</td>
+        <td>Підключає бібліотеку. Завжди першим рядком.</td>
+        <td><code>import turtle</code></td>
+      </tr>
+      <tr>
+        <td>turtle.Turtle()</td>
+        <td>Створює черепашку.</td>
+        <td><code>t = turtle.Turtle()</code></td>
+      </tr>
+      <tr>
+        <td>t.forward(n)</td>
+        <td>Рух вперед на n пікселів.</td>
+        <td><code>t.forward(100)</code></td>
+      </tr>
+      <tr>
+        <td>t.backward(n)</td>
+        <td>Рух назад на n пікселів.</td>
+        <td><code>t.backward(50)</code></td>
+      </tr>
+      <tr>
+        <td>t.right(кут)</td>
+        <td>Поворот праворуч (за годинниковою стрілкою).</td>
+        <td><code>t.right(90)</code></td>
+      </tr>
+      <tr>
+        <td>t.left(кут)</td>
+        <td>Поворот ліворуч (проти годинникової стрілки).</td>
+        <td><code>t.left(120)</code></td>
+      </tr>
+      <tr>
+        <td>t.goto(x, y)</td>
+        <td>Переміщує в точку (x, y). Центр екрана — (0, 0).</td>
+        <td><code>t.goto(100, 50)</code></td>
+      </tr>
+      <tr>
+        <td>t.pencolor()</td>
+        <td>Колір лінії (назва або HEX-код).</td>
+        <td><code>t.pencolor("#005BBB")</code></td>
+      </tr>
+      <tr>
+        <td>t.color()</td>
+        <td>Колір лінії і заливки одночасно.</td>
+        <td><code>t.color("#005BBB")</code></td>
+      </tr>
+      <tr>
+        <td>t.shape()</td>
+        <td>Форма значка черепашки: "arrow", "turtle", "circle", "square", "triangle", "classic".</td>
+        <td><code>t.shape("turtle")</code></td>
+      </tr>
+      <tr>
+        <td>t.fillcolor()</td>
+        <td>Колір заливки фігури.</td>
+        <td><code>t.fillcolor("#FFD700")</code></td>
+      </tr>
+      <tr>
+        <td>t.pensize(n)</td>
+        <td>Товщина лінії в пікселях.</td>
+        <td><code>t.pensize(3)</code></td>
+      </tr>
+      <tr>
+        <td>t.speed(n)</td>
+        <td>Швидкість: 1–10 або 0 (найшвидше).</td>
+        <td><code>t.speed(0)</code></td>
+      </tr>
+      <tr>
+        <td>t.begin_fill()</td>
+        <td>Початок залитої фігури. Парна з end_fill().</td>
+        <td><code>t.begin_fill()</code></td>
+      </tr>
+      <tr>
+        <td>t.end_fill()</td>
+        <td>Кінець залитої фігури — застосовує fillcolor().</td>
+        <td><code>t.end_fill()</code></td>
+      </tr>
+      <tr>
+        <td>t.hideturtle()</td>
+        <td>Ховає значок черепашки на екрані.</td>
+        <td><code>t.hideturtle()</code></td>
+      </tr>
+      <tr>
+        <td>turtle.done()</td>
+        <td>Завершує програму. Завжди останній рядок.</td>
+        <td><code>turtle.done()</code></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<footer>
+  <span>УРОК 1 · PYTHON TURTLE · САМОСТІЙНЕ ВИВЧЕННЯ · 7 КЛАС</span>
+  <span>TRINKET.IO · TURTLE GRAPHICS</span>
+</footer>
+
+</div>
+</body>
+</html>

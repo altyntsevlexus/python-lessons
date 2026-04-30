@@ -865,10 +865,73 @@ turtle.<span class="cf">done</span>()</pre>
 
 
 <!-- ══════════════════════════════════════════════════════ -->
-<!-- КРОК 5 — ЛІЧИЛЬНИК I                                   -->
+<!-- КРОК 5 — range(5) vs range(a,b,step)                  -->
 <!-- ══════════════════════════════════════════════════════ -->
 <div class="step">
   <div class="step-num">05</div>
+  <div class="step-inner">
+    <div class="step-title">range(5) або range(-200, 201, 100)?</div>
+    <div class="step-sub">два записи — один результат · коли що обирати</div>
+    <div class="step-body">
+
+      <p>На попередньому кроці ти малював 5 кіл через <code>range(-200, 201, 100)</code>. Той самий результат можна отримати через <code>range(5)</code> — обчислюючи координату всередині циклу за формулою.</p>
+
+      <div class="compare">
+        <div class="compare-block">
+          <div class="compare-label">range(-200, 201, 100) — координати явно</div>
+          <div class="compare-code"><span class="ck">for</span> x <span class="ck">in</span> <span class="cf">range</span>(-<span class="cn">200</span>, <span class="cn">201</span>, <span class="cn">100</span>):
+    t.<span class="cf">penup</span>()
+    t.<span class="cf">goto</span>(x, <span class="cn">0</span>)  <span class="cm"># x вже є координатою</span>
+    t.<span class="cf">pendown</span>()
+    t.<span class="cf">circle</span>(<span class="cn">30</span>)</div>
+        </div>
+        <div class="compare-block">
+          <div class="compare-label">range(5) — обчислюємо x самі</div>
+          <div class="compare-code"><span class="ck">for</span> i <span class="ck">in</span> <span class="cf">range</span>(<span class="cn">5</span>):
+    x = i * <span class="cn">100</span> - <span class="cn">200</span>  <span class="cm"># формула → координата</span>
+    t.<span class="cf">penup</span>()
+    t.<span class="cf">goto</span>(x, <span class="cn">0</span>)
+    t.<span class="cf">pendown</span>()
+    t.<span class="cf">circle</span>(<span class="cn">30</span>)</div>
+        </div>
+      </div>
+
+      <p>Що формула <em>i × 100 − 200</em> дає на кожній ітерації:</p>
+
+      <table class="cmd-table">
+        <tr><th>i</th><th>i × 100 − 200</th><th>x</th></tr>
+        <tr><td>0</td><td>0 × 100 − 200</td><td>−200</td></tr>
+        <tr><td>1</td><td>1 × 100 − 200</td><td>−100</td></tr>
+        <tr><td>2</td><td>2 × 100 − 200</td><td>0</td></tr>
+        <tr><td>3</td><td>3 × 100 − 200</td><td>100</td></tr>
+        <tr><td>4</td><td>4 × 100 − 200</td><td>200</td></tr>
+      </table>
+
+      <div class="tip-box">
+        <strong>Коли що обирати?</strong><br>
+        <code>range(a, b, step)</code> — якщо ти мислиш координатами: «хочу від −200 до 200 з кроком 100» — числа видно одразу, читати легко.<br>
+        <code>range(n)</code> — якщо важливіша <em>кількість</em> повторень, а не конкретні значення. Або коли ти вже використовуєш <code>i</code> у формулі для чогось іншого.
+      </div>
+
+      <div class="try-box">
+        <div class="try-label">Спробуй сам!</div>
+        <ul>
+          <li>Запусти обидва варіанти — переконайся, що результат однаковий</li>
+          <li>Намалюй 4 кола через <code>range(4)</code> — яка формула для x?</li>
+          <li>Намалюй ті самі 4 кола через <code>range(-150, 151, 100)</code></li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- КРОК 6 — ЛІЧИЛЬНИК I                                   -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="step">
+  <div class="step-num">06</div>
   <div class="step-inner">
     <div class="step-title">Лічильник i всередині циклу</div>
     <div class="step-sub">i зростає · forward(i * 3) · спіраль</div>
@@ -919,10 +982,10 @@ turtle.<span class="cf">done</span>()</pre>
 
 
 <!-- ══════════════════════════════════════════════════════ -->
-<!-- КРОК 6 — ПРАКТИКА: ПІАНІНО                             -->
+<!-- КРОК 7 — ПРАКТИКА: ПІАНІНО                             -->
 <!-- ══════════════════════════════════════════════════════ -->
 <div class="step">
-  <div class="step-num">06</div>
+  <div class="step-num">07</div>
   <div class="step-inner">
     <div class="step-title">Практика — Піаніно</div>
     <div class="step-sub">самостійна робота · використай всі інструменти уроку</div>

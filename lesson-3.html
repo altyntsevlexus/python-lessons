@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Урок 3 · Будинок з парканом · Python Turtle</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #080604;
+        --surface: #131008;
+        --card: #1c180d;
+        --border: #2e2814;
+        --border2: #42381e;
+        --text: #ede4d0;
+        --muted: #7a6840;
+
+        --sun: #ffd700;
+        --roof: #e74c3c;
+        --wall: #f0c87a;
+        --grass: #5d9e2e;
+        --sky: #4a9fd4;
+        --door: #c8a45a;
+
+        --p-col: #ff5c5c;
+        --s-col: #ffaa30;
+        --d-col: #4db8ff;
+        --v-col: #50e3a4;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Montserrat", sans-serif;
+        font-weight: 400;
+        min-height: 100vh;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(1px 1px at 15% 10%, rgba(255, 215, 0, 0.25) 0%, transparent 100%),
+          radial-gradient(1px 1px at 72% 8%, rgba(255, 215, 0, 0.18) 0%, transparent 100%),
+          radial-gradient(1px 1px at 40% 25%, rgba(255, 200, 100, 0.15) 0%, transparent 100%),
+          radial-gradient(1px 1px at 88% 20%, rgba(255, 255, 255, 0.12) 0%, transparent 100%),
+          radial-gradient(1px 1px at 58% 6%, rgba(255, 215, 0, 0.2) 0%, transparent 100%),
+          radial-gradient(1px 1px at 92% 55%, rgba(255, 255, 255, 0.08) 0%, transparent 100%);
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .wrap {
+        max-width: 1060px;
+        margin: 0 auto;
+        padding: 0 24px 72px;
+        position: relative;
+        z-index: 1;
+      }
+
+      /* ── HEADER ── */
+      header {
+        padding: 52px 0 36px;
+        border-bottom: 1px solid var(--border2);
+        margin-bottom: 32px;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: end;
+        gap: 20px;
+      }
+
+      .eyebrow {
+        font-family: "Source Code Pro", monospace;
+        font-size: 10px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 14px;
+      }
+
+      h1 {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: clamp(44px, 8vw, 80px);
+        line-height: 0.95;
+        letter-spacing: 2px;
+        color: #fff;
+      }
+
+      h1 .accent {
+        color: var(--sun);
+      }
+
+      .hdr-chips {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+        align-items: flex-end;
+      }
+
+      .chip {
+        font-family: "Source Code Pro", monospace;
+        font-size: 11px;
+        padding: 5px 13px;
+        border: 1px solid var(--border2);
+        color: var(--text);
+        white-space: nowrap;
+      }
+
+      .chip.hi {
+        background: rgba(255, 215, 0, 0.1);
+        border-color: rgba(255, 215, 0, 0.35);
+        color: var(--sun);
+        font-weight: 600;
+      }
+
+      /* house SVG */
+      .house-svg {
+        width: 100%;
+        display: block;
+        margin-top: 24px;
+        opacity: 0.82;
+      }
+
+      /* ── SECTION LABEL ── */
+      .slabel {
+        font-family: "Source Code Pro", monospace;
+        font-size: 10px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .slabel::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: var(--border);
+      }
+
+      /* ── TASK BOX ── */
+      .task-box {
+        background: var(--surface);
+        border: 1px solid var(--border2);
+        border-left: 4px solid var(--sun);
+        padding: 24px 26px;
+        margin-bottom: 28px;
+      }
+
+      .task-box h2 {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 24px;
+        letter-spacing: 1.5px;
+        color: var(--sun);
+        margin-bottom: 12px;
+      }
+
+      .task-box p {
+        font-size: 14px;
+        line-height: 1.75;
+        color: var(--text);
+      }
+
+      .task-box p strong {
+        color: #fff;
+      }
+
+      /* ── KNOWLEDGE PILLS ── */
+      .know-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 32px;
+      }
+
+      .know-pill {
+        font-family: "Source Code Pro", monospace;
+        font-size: 11px;
+        padding: 5px 13px;
+        border: 1px solid var(--border2);
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        gap: 7px;
+      }
+
+      .know-pill .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--grass);
+        flex-shrink: 0;
+      }
+
+      /* ── ELEMENTS TABLE ── */
+      .elements {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        margin-bottom: 32px;
+        overflow: hidden;
+      }
+
+      .el-header {
+        display: grid;
+        grid-template-columns: 36px 1fr 1fr;
+        background: var(--card);
+        border-bottom: 1px solid var(--border2);
+      }
+
+      .el-cell {
+        padding: 10px 14px;
+        font-family: "Source Code Pro", monospace;
+        font-size: 9.5px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted);
+        border-right: 1px solid var(--border);
+      }
+      .el-cell:last-child {
+        border-right: none;
+      }
+
+      .el-row {
+        display: grid;
+        grid-template-columns: 36px 1fr 1fr;
+        border-bottom: 1px solid var(--border);
+        transition: background 0.15s;
+      }
+      .el-row:last-child {
+        border-bottom: none;
+      }
+      .el-row:hover {
+        background: rgba(255, 255, 255, 0.02);
+      }
+
+      .el-row .el-cell {
+        font-family: "Montserrat", sans-serif;
+        font-size: 13px;
+        letter-spacing: 0;
+        text-transform: none;
+        color: var(--text);
+        vertical-align: middle;
+        padding: 12px 14px;
+      }
+
+      .el-row .el-cell:first-child {
+        font-size: 18px;
+        text-align: center;
+        padding: 12px 6px;
+      }
+
+      .el-row .el-cell .cmd {
+        font-family: "Source Code Pro", monospace;
+        font-size: 11px;
+        color: var(--sun);
+        display: block;
+        margin-top: 3px;
+        line-height: 1.7;
+      }
+
+      /* ── SCORING ── */
+      .score-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+        margin-bottom: 32px;
+      }
+
+      @media (max-width: 560px) {
+        .score-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        header {
+          grid-template-columns: 1fr;
+        }
+        .hdr-chips {
+          align-items: flex-start;
+        }
+        .el-header,
+        .el-row {
+          grid-template-columns: 28px 1fr;
+        }
+        .el-header .el-cell:nth-child(3),
+        .el-row .el-cell:nth-child(3) {
+          display: none;
+        }
+      }
+
+      .sc {
+        background: var(--card);
+        border: 1px solid var(--border);
+        padding: 18px 16px 20px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .sc::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+      }
+
+      .sc.p::after { background: var(--p-col); }
+      .sc.s::after { background: var(--s-col); }
+      .sc.d::after { background: var(--d-col); }
+      .sc.v::after { background: var(--v-col); }
+
+      .sc-name {
+        font-family: "Montserrat", sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 6px;
+      }
+
+      .sc.p .sc-name { color: var(--p-col); }
+      .sc.s .sc-name { color: var(--s-col); }
+      .sc.d .sc-name { color: var(--d-col); }
+      .sc.v .sc-name { color: var(--v-col); }
+
+      .sc-range {
+        font-family: "Source Code Pro", monospace;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        padding: 2px 9px;
+        margin-bottom: 14px;
+        display: inline-block;
+        border: 1px solid;
+      }
+
+      .sc.p .sc-range { color: var(--p-col); border-color: rgba(255,92,92,.3); background: rgba(255,92,92,.08); }
+      .sc.s .sc-range { color: var(--s-col); border-color: rgba(255,170,48,.3); background: rgba(255,170,48,.08); }
+      .sc.d .sc-range { color: var(--d-col); border-color: rgba(77,184,255,.3); background: rgba(77,184,255,.08); }
+      .sc.v .sc-range { color: var(--v-col); border-color: rgba(80,227,164,.3); background: rgba(80,227,164,.08); }
+
+      .sc-divider {
+        height: 1px;
+        background: var(--border2);
+        margin-bottom: 14px;
+      }
+
+      .sc ul {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .sc ul li {
+        font-size: 12.5px;
+        color: var(--text);
+        padding-left: 15px;
+        position: relative;
+        line-height: 1.45;
+      }
+
+      .sc ul li::before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        font-size: 10px;
+        font-weight: 700;
+        top: 1px;
+      }
+
+      .sc.p ul li::before { color: var(--p-col); }
+      .sc.s ul li::before { color: var(--s-col); }
+      .sc.d ul li::before { color: var(--d-col); }
+      .sc.v ul li::before { color: var(--v-col); }
+
+      .sc ul li.no {
+        color: var(--muted);
+        text-decoration: line-through;
+      }
+
+      /* ── PALETTE ── */
+      .palette-wrap {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        margin-bottom: 32px;
+      }
+
+      @media (max-width: 560px) {
+        .palette-wrap { grid-template-columns: 1fr 1fr; }
+      }
+
+      .pal-group {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        padding: 14px 14px 12px;
+      }
+
+      .pal-label {
+        font-family: "Source Code Pro", monospace;
+        font-size: 10px;
+        letter-spacing: 1px;
+        color: var(--muted);
+        margin-bottom: 10px;
+        text-transform: uppercase;
+      }
+
+      .pal-swatches {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+
+      .sw {
+        height: 34px;
+        display: flex;
+        align-items: center;
+        padding: 0 10px;
+      }
+
+      .sw-hex {
+        font-family: "Source Code Pro", monospace;
+        font-size: 11px;
+        color: rgba(255,255,255,.7);
+        letter-spacing: .5px;
+      }
+      .sw-hex.sw-dark { color: rgba(0,0,0,.6); }
+
+      /* ── RESULT SVG ── */
+      .result-svg-wrap {
+        background: #fff;
+        border: 1px solid var(--border2);
+        overflow: hidden;
+        max-width: 420px;
+        margin: 0 auto 28px;
+      }
+      .result-svg-label {
+        font-family: "Source Code Pro", monospace;
+        font-size: 9.5px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted);
+        padding: 8px 12px;
+        background: var(--card);
+        border-bottom: 1px solid var(--border2);
+        text-align: center;
+      }
+      .result-svg-wrap svg { width: 100%; display: block; }
+
+      /* ── SAVE ── */
+      .save-box {
+        background: rgba(80,227,164,.05);
+        border: 1px solid rgba(80,227,164,.2);
+        padding: 16px 22px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .save-box .icon { font-size: 26px; flex-shrink: 0; }
+
+      .save-box p {
+        font-size: 13px;
+        color: var(--text);
+        line-height: 1.65;
+      }
+
+      .save-box strong {
+        font-family: "Source Code Pro", monospace;
+        color: var(--v-col);
+      }
+
+      /* ── FOOTER ── */
+      footer {
+        border-top: 1px solid var(--border);
+        padding-top: 20px;
+        margin-top: 32px;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      footer span {
+        font-family: "Source Code Pro", monospace;
+        font-size: 10px;
+        color: var(--muted);
+        letter-spacing: 1px;
+      }
+
+      /* ── DRAWING FLOW REMINDER ── */
+      .flow-reminder {
+        background: var(--surface);
+        border: 1px solid var(--border2);
+        margin-bottom: 32px;
+        overflow: hidden;
+      }
+
+      .flow-steps {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        border-bottom: 1px solid var(--border2);
+      }
+
+      @media (max-width: 680px) {
+        .flow-steps { grid-template-columns: repeat(4, 1fr); }
+      }
+
+      .flow-step {
+        padding: 14px 10px 12px;
+        border-right: 1px solid var(--border);
+        text-align: center;
+      }
+      .flow-step:last-child { border-right: none; }
+
+      .flow-step-n {
+        font-family: "Source Code Pro", monospace;
+        font-size: 9px;
+        letter-spacing: 2px;
+        color: var(--muted);
+        margin-bottom: 6px;
+        text-transform: uppercase;
+      }
+
+      .flow-step-cmd {
+        font-family: "Source Code Pro", monospace;
+        font-size: 11.5px;
+        color: var(--sky);
+        margin-bottom: 5px;
+        line-height: 1.3;
+      }
+
+      .flow-step-desc {
+        font-size: 10.5px;
+        color: var(--muted);
+        line-height: 1.4;
+      }
+
+      .flow-step.phase-move .flow-step-cmd  { color: #50e3a4; }
+      .flow-step.phase-fill .flow-step-cmd  { color: var(--sun); }
+      .flow-step.phase-draw .flow-step-cmd  { color: #c084fc; font-style: italic; }
+
+      .flow-code {
+        font-family: "Source Code Pro", monospace;
+        font-size: 13.5px;
+        line-height: 1.9;
+        padding: 20px 24px;
+        background: #030810;
+        color: #9ab8d0;
+        white-space: pre;
+        overflow-x: auto;
+      }
+
+      .flow-code .cm { color: #5a9e5a; }
+      .flow-code .ck { color: #c084fc; }
+      .flow-code .cf { color: #5b9cf6; }
+      .flow-code .cs { color: #6adf8a; }
+      .flow-code .co { color: #9ab8d0; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <!-- HEADER -->
+      <header>
+        <div>
+          <div class="eyebrow">Практична робота · Урок 3 · 90 хвилин</div>
+          <h1>БУДИНОК<br /><span class="accent">З ПАРКАНОМ</span></h1>
+        </div>
+        <div class="hdr-chips">
+          <span class="chip hi">⏱ 90 хвилин</span>
+          <span class="chip">Python · Turtle</span>
+          <span class="chip">7 клас</span>
+        </div>
+      </header>
+
+      <!-- RESULT SVG -->
+      <div class="slabel">Зразок результату</div>
+
+      <div class="result-svg-wrap">
+        <div class="result-svg-label">Результат програми</div>
+        <svg viewBox="-300 -300 600 600" xmlns="http://www.w3.org/2000/svg">
+          <rect x="-300" y="-300" width="600" height="600" fill="#ffffff" />
+          <g transform="scale(1,-1)">
+            <rect x="-300" y="-300" width="600" height="240" fill="#5D8233" />
+            <line x1="-300" y1="-35" x2="300" y2="-35" stroke="#8B6914" stroke-width="4" />
+            <g fill="#C8A45A" stroke="#8B6914" stroke-width="0.5">
+              <rect x="-300" y="-60" width="20" height="40" />
+              <rect x="-275" y="-60" width="20" height="40" />
+              <rect x="-250" y="-60" width="20" height="40" />
+              <rect x="-225" y="-60" width="20" height="40" />
+              <rect x="-200" y="-60" width="20" height="40" />
+              <rect x="-175" y="-60" width="20" height="40" />
+              <rect x="-150" y="-60" width="20" height="40" />
+              <rect x="-125" y="-60" width="20" height="40" />
+              <rect x="-100" y="-60" width="20" height="40" />
+              <rect x="-75" y="-60" width="20" height="40" />
+              <rect x="-50" y="-60" width="20" height="40" />
+              <rect x="-25" y="-60" width="20" height="40" />
+              <rect x="0" y="-60" width="20" height="40" />
+              <rect x="25" y="-60" width="20" height="40" />
+              <rect x="50" y="-60" width="20" height="40" />
+              <rect x="75" y="-60" width="20" height="40" />
+              <rect x="100" y="-60" width="20" height="40" />
+              <rect x="125" y="-60" width="20" height="40" />
+              <rect x="150" y="-60" width="20" height="40" />
+              <rect x="175" y="-60" width="20" height="40" />
+              <rect x="200" y="-60" width="20" height="40" />
+              <rect x="225" y="-60" width="20" height="40" />
+              <rect x="250" y="-60" width="20" height="40" />
+              <rect x="275" y="-60" width="20" height="40" />
+            </g>
+            <rect x="-60" y="-60" width="120" height="120" fill="#F5E6C8" stroke="#8B7355" stroke-width="2" />
+            <polygon points="-60,60 60,60 0,163.92" fill="#C0392B" stroke="#922B21" stroke-width="2" />
+            <rect x="-40" y="-60" width="40" height="60" fill="#7D4E2D" stroke="#5D3517" stroke-width="1.5" />
+            <rect x="10" y="0" width="30" height="30" fill="#AED6F1" stroke="#5D8AA8" stroke-width="1.5" />
+            <g stroke="#F0A500" stroke-width="2">
+              <line x1="150" y1="150" x2="190" y2="150" />
+              <line x1="150" y1="150" x2="178.28" y2="121.72" />
+              <line x1="150" y1="150" x2="150" y2="110" />
+              <line x1="150" y1="150" x2="121.72" y2="121.72" />
+              <line x1="150" y1="150" x2="110" y2="150" />
+              <line x1="150" y1="150" x2="121.72" y2="178.28" />
+              <line x1="150" y1="150" x2="150" y2="190" />
+              <line x1="150" y1="150" x2="178.28" y2="178.28" />
+            </g>
+            <circle cx="150" cy="150" r="20" fill="#FFD700" stroke="#F0A500" stroke-width="1.5" />
+          </g>
+        </svg>
+      </div>
+
+      <!-- ЗНАННЯ -->
+      <div style="margin: 28px 0 28px">
+        <div class="slabel">Що ти вже вмієш (після уроків 1–2)</div>
+        <div class="know-row">
+          <span class="know-pill"><span class="dot"></span>Рух черепашки — forward(), backward()</span>
+          <span class="know-pill"><span class="dot"></span>Повороти — right(), left()</span>
+          <span class="know-pill"><span class="dot"></span>Стиль — pencolor(), pensize(), speed()</span>
+          <span class="know-pill"><span class="dot"></span>Переміщення — penup(), pendown(), goto()</span>
+          <span class="know-pill"><span class="dot"></span>Заливка — fillcolor(), begin_fill(), end_fill()</span>
+          <span class="know-pill"><span class="dot"></span>Цикл for + range(n)</span>
+          <span class="know-pill"><span class="dot"></span>Цикл зі списком — for side in [...]</span>
+          <span class="know-pill"><span class="dot"></span>range(start, stop, step)</span>
+          <span class="know-pill"><span class="dot"></span>Коло — circle(r)</span>
+        </div>
+      </div>
+
+      <!-- ЗАВДАННЯ -->
+      <div class="slabel">Завдання</div>
+      <div class="task-box">
+        <h2>🏠 Намалюй будинок з навколишнім пейзажем</h2>
+        <p>
+          Напиши програму на Python Turtle, яка малює <strong>будинок з парканом</strong>. Програма повинна запускатись
+          без помилок і показувати результат на екрані.<br /><br />
+          Сцена має містити: <strong>зелену землю</strong>, <strong>стіни будинку</strong>, <strong>дах</strong>,
+          <strong>двері</strong>, <strong>вікно</strong> та <strong>паркан</strong>. Для паркану обов'язково використай
+          <strong>цикл for</strong>. Усі фігури мають бути <strong>залиті кольором</strong>.
+        </p>
+      </div>
+
+      <!-- НАГАДУВАННЯ — ПОСЛІДОВНІСТЬ МАЛЮВАННЯ -->
+      <div class="slabel">Нагадування — Послідовність малювання</div>
+      <div class="flow-reminder">
+
+        <!-- Step strip -->
+        <div class="flow-steps">
+          <div class="flow-step phase-move">
+            <div class="flow-step-n">01</div>
+            <div class="flow-step-cmd">t.up()</div>
+            <div class="flow-step-desc">підняти перо — рух без лінії</div>
+          </div>
+          <div class="flow-step phase-move">
+            <div class="flow-step-n">02</div>
+            <div class="flow-step-cmd">t.goto(x, y)</div>
+            <div class="flow-step-desc">перейти до початкової точки</div>
+          </div>
+          <div class="flow-step phase-move">
+            <div class="flow-step-n">03</div>
+            <div class="flow-step-cmd">t.down()</div>
+            <div class="flow-step-desc">опустити перо — малюємо</div>
+          </div>
+          <div class="flow-step phase-fill">
+            <div class="flow-step-n">04</div>
+            <div class="flow-step-cmd">t.fillcolor()</div>
+            <div class="flow-step-desc">задати колір заливки</div>
+          </div>
+          <div class="flow-step phase-fill">
+            <div class="flow-step-n">05</div>
+            <div class="flow-step-cmd">t.begin_fill()</div>
+            <div class="flow-step-desc">почати залиту фігуру</div>
+          </div>
+          <div class="flow-step phase-draw">
+            <div class="flow-step-n">06</div>
+            <div class="flow-step-cmd">малюю фігуру</div>
+            <div class="flow-step-desc">forward, left, circle…</div>
+          </div>
+          <div class="flow-step phase-fill">
+            <div class="flow-step-n">07</div>
+            <div class="flow-step-cmd">t.end_fill()</div>
+            <div class="flow-step-desc">залити і завершити</div>
+          </div>
+        </div>
+
+        <!-- Code block -->
+        <div class="flow-code"><span class="co">t</span>.<span class="cf">up</span>()                       <span class="cm"># підняти перо — переміщення без лінії</span>
+<span class="co">t</span>.<span class="cf">goto</span>(<span class="cs">x</span>, <span class="cs">y</span>)                 <span class="cm"># перейти до початкової точки фігури</span>
+<span class="co">t</span>.<span class="cf">down</span>()                     <span class="cm"># опустити перо — починаємо малювати</span>
+
+<span class="co">t</span>.<span class="cf">fillcolor</span>(<span class="cs">"#КОЛІР"</span>)        <span class="cm"># колір заливки — до begin_fill!</span>
+<span class="co">t</span>.<span class="cf">begin_fill</span>()               <span class="cm"># ← старт фігури</span>
+<span class="cm"># ... малюю фігуру ...</span>
+<span class="co">t</span>.<span class="cf">end_fill</span>()                 <span class="cm"># ← заливаємо і завершуємо</span></div>
+
+      </div>
+
+      <!-- КОЛЬОРОВА ГАМА -->
+      <div class="slabel">Кольорова гама</div>
+      <div class="palette-wrap">
+        <div class="pal-group">
+          <div class="pal-label">🌿 Природа</div>
+          <div class="pal-swatches">
+            <div class="sw" style="background: #5d8233"><span class="sw-hex">#5D8233</span></div>
+            <div class="sw" style="background: #3a6e1a"><span class="sw-hex">#3a6e1a</span></div>
+            <div class="sw" style="background: #4a9fd4"><span class="sw-hex">#4a9fd4</span></div>
+            <div class="sw" style="background: #aed6f1"><span class="sw-hex sw-dark">#AED6F1</span></div>
+          </div>
+        </div>
+
+        <div class="pal-group">
+          <div class="pal-label">🏠 Будинок</div>
+          <div class="pal-swatches">
+            <div class="sw" style="background: #f5e6c8"><span class="sw-hex sw-dark">#F5E6C8</span></div>
+            <div class="sw" style="background: #c0392b"><span class="sw-hex">#C0392B</span></div>
+            <div class="sw" style="background: #922b21"><span class="sw-hex">#922B21</span></div>
+            <div class="sw" style="background: #8b7355"><span class="sw-hex">#8B7355</span></div>
+          </div>
+        </div>
+
+        <div class="pal-group">
+          <div class="pal-label">🚪 Двері та паркан</div>
+          <div class="pal-swatches">
+            <div class="sw" style="background: #7d4e2d"><span class="sw-hex">#7D4E2D</span></div>
+            <div class="sw" style="background: #5d3517"><span class="sw-hex">#5D3517</span></div>
+            <div class="sw" style="background: #c8a45a"><span class="sw-hex sw-dark">#C8A45A</span></div>
+            <div class="sw" style="background: #8b6914"><span class="sw-hex">#8B6914</span></div>
+          </div>
+        </div>
+
+        <div class="pal-group">
+          <div class="pal-label">☀️ Сонце</div>
+          <div class="pal-swatches">
+            <div class="sw" style="background: #ffd700"><span class="sw-hex sw-dark">#FFD700</span></div>
+            <div class="sw" style="background: #f0a500"><span class="sw-hex sw-dark">#F0A500</span></div>
+            <div class="sw" style="background: #ffeead"><span class="sw-hex sw-dark">#ffeead</span></div>
+            <div class="sw" style="background: #ff9900"><span class="sw-hex">#ff9900</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ОЦІНЮВАННЯ -->
+      <div class="slabel">Критерії оцінювання</div>
+      <div class="score-grid">
+        <div class="sc p">
+          <div class="sc-name">Початковий</div>
+          <div class="sc-range">6 – 7</div>
+          <div class="sc-divider"></div>
+          <ul>
+            <li>Програма запускається</li>
+            <li>Є стіни (квадрат)</li>
+            <li>Є дах (трикутник)</li>
+            <li>Будинок залитий кольором</li>
+            <li class="no">Двері та вікно</li>
+            <li class="no">Паркан</li>
+          </ul>
+        </div>
+
+        <div class="sc s">
+          <div class="sc-name">Середній</div>
+          <div class="sc-range">8 – 9</div>
+          <div class="sc-divider"></div>
+          <ul>
+            <li>Усе з рівня Початковий</li>
+            <li>Двері та вікно</li>
+            <li>Використано goto()</li>
+            <li class="no">Земля і паркан</li>
+            <li class="no">Паркан через цикл</li>
+          </ul>
+        </div>
+
+        <div class="sc d">
+          <div class="sc-name">Достатній</div>
+          <div class="sc-range">10 – 11</div>
+          <div class="sc-divider"></div>
+          <ul>
+            <li>Усе з рівня Середній</li>
+            <li>Земля</li>
+            <li>Паркан через цикл for</li>
+            <li>Код без помилок</li>
+          </ul>
+        </div>
+
+        <div class="sc v">
+          <div class="sc-name">Високий</div>
+          <div class="sc-range">12</div>
+          <div class="sc-divider"></div>
+          <ul>
+            <li>Усе з рівня Достатній</li>
+            <li>Сонце: промінці + circle()</li>
+            <li>Код охайний</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- ЗБЕРЕГТИ -->
+      <div class="save-box">
+        <div class="icon">💾</div>
+        <p>Збережи файл із назвою <strong>Прізвище_Будинок_7клас.py</strong> і здай через Google Classroom.</p>
+      </div>
+
+      <footer>
+        <span>ПРАКТИЧНА РОБОТА · УРОК 3 · PYTHON TURTLE · 7 КЛАС</span>
+        <span>90 ХВИЛИН · БУДИНОК З ПАРКАНОМ</span>
+      </footer>
+    </div>
+  </body>
+</html>

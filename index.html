@@ -191,6 +191,34 @@
     color: var(--muted);
   }
 
+  /* ── Practical work card (gold accent) ── */
+  .card.practical:hover {
+    border-color: var(--gold);
+    box-shadow: 0 8px 32px rgba(255, 215, 0, 0.15);
+  }
+
+  .card.practical::before {
+    background: linear-gradient(90deg, var(--gold), #e6a800);
+  }
+
+  .card.practical .card-num { color: var(--gold); }
+  .card.practical .card-status { color: var(--gold); }
+
+  .card.practical .tag {
+    background: rgba(255, 215, 0, 0.1);
+    color: var(--gold);
+    border-color: rgba(255, 215, 0, 0.25);
+  }
+
+  .card-type {
+    font-family: 'Source Code Pro', monospace;
+    font-size: 9.5px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-top: -4px;
+  }
+
   /* ── Footer ── */
   footer {
     padding: 20px 24px;
@@ -252,10 +280,11 @@
       <div class="card-status">→ ВІДКРИТИ</div>
     </a>
 
-    <!-- LESSON 3 — available -->
-    <a class="card available" href="lesson-3.html">
+    <!-- LESSON 3 — available (practical) -->
+    <a class="card available practical" href="lesson-3.html">
       <div class="card-num">УРОК 03</div>
       <div class="card-title">Будинок з парканом</div>
+      <div class="card-type">Практична робота</div>
       <div class="card-desc">Комплексна сцена: земля, паркан, стіни, дах, вікно, двері, сонце</div>
       <div class="card-tags">
         <span class="tag">range</span>

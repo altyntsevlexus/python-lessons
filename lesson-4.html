@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Урок 4 · If / Elif + Random · Python Turtle</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #060710;
+  --surface: #0b0d1a;
+  --card:    #101320;
+  --border:  #181c32;
+  --border2: #202540;
+  --text:    #d5d8f5;
+  --muted:   #4a5080;
+
+  --acc:     #c084fc;
+  --acc-d:   rgba(192,132,252,.12);
+  --acc-b:   rgba(192,132,252,.30);
+  --teal:    #00d4aa;
+  --teal-d:  rgba(0,212,170,.12);
+  --gold:    #ffc845;
+  --green:   #50e3a4;
+  --coral:   #ff7a6e;
+  --violet:  #c084fc;
+  --blue:    #5b9cf6;
+
+  --cm: #5a9e5a;
+  --ck: #c084fc;
+  --cf: #5b9cf6;
+  --cs: #6adf8a;
+  --cn: #ffc845;
+  --co: #9ab8d0;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+body::before {
+  content:'';
+  position:fixed;inset:0;
+  background-image: radial-gradient(rgba(192,132,252,.04) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events:none;z-index:0;
+}
+
+.wrap {
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── HEADER ── */
+header {
+  padding: 52px 0 40px;
+  border-bottom: 1px solid var(--border2);
+  margin-bottom: 40px;
+}
+
+.eyebrow {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--acc);
+  margin-bottom: 12px;
+}
+
+h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(36px, 6vw, 64px);
+  line-height: .95;
+  letter-spacing: 2px;
+  color: #fff;
+  margin-bottom: 16px;
+}
+
+h1 .acc { color: var(--acc); }
+
+.header-sub {
+  font-size: 16px;
+  color: var(--muted);
+  max-width: 600px;
+  line-height: 1.7;
+}
+
+.header-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.chip {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 12px;
+  padding: 4px 12px;
+  border: 1px solid var(--border2);
+  color: var(--text);
+}
+
+.chip.t {
+  background: var(--acc-d);
+  border-color: var(--acc-b);
+  color: var(--acc);
+  font-weight: 600;
+}
+
+/* ── STEP ── */
+.step {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 0 20px;
+  margin-bottom: 48px;
+}
+
+.step-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 44px;
+  line-height: 1;
+  color: var(--acc);
+  letter-spacing: 1px;
+  padding-top: 2px;
+  user-select: none;
+}
+
+.step-inner {}
+
+.step-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px;
+  letter-spacing: 1.5px;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.step-sub {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+
+.step-body {
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--text);
+}
+
+.step-body p { margin-bottom: 12px; }
+.step-body p:last-child { margin-bottom: 0; }
+.step-body strong { color: #fff; }
+.step-body em { color: var(--acc); font-style: normal; }
+
+/* ── DIVIDER ── */
+.sdiv {
+  height: 1px;
+  background: var(--border);
+  margin: 16px 0 20px;
+}
+
+/* ── INLINE CODE ── */
+code {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 14px;
+  color: var(--acc);
+  background: var(--acc-d);
+  padding: 1px 6px;
+  border-radius: 2px;
+}
+
+/* ── CODE BLOCK ── */
+.code-block {
+  background: #030810;
+  border: 1px solid var(--border2);
+  border-left: 3px solid var(--acc);
+  font-family: 'Source Code Pro', monospace;
+  font-size: 14px;
+  line-height: 1.75;
+  padding: 14px 18px;
+  color: var(--co);
+  margin: 14px 0;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.code-block .cm { color: var(--cm); }
+.code-block .ck { color: var(--ck); }
+.code-block .cf { color: var(--cf); }
+.code-block .cs { color: var(--cs); }
+.code-block .cn { color: var(--cn); }
+.code-block .co { color: var(--co); }
+
+/* ── TRY BOX ── */
+.try-box {
+  background: rgba(80,227,164,.06);
+  border: 1px solid rgba(80,227,164,.22);
+  border-left: 3px solid var(--green);
+  padding: 14px 18px;
+  margin: 14px 0;
+}
+
+.try-label {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 8px;
+}
+
+.try-box p, .try-box li {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.65;
+}
+
+.try-box ul { padding-left: 18px; }
+.try-box ul li { margin-bottom: 4px; }
+
+/* ── TIP BOX ── */
+.tip-box {
+  background: rgba(91,156,246,.07);
+  border: 1px solid rgba(91,156,246,.2);
+  border-left: 3px solid var(--blue);
+  padding: 12px 16px;
+  margin: 12px 0;
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.tip-box strong { color: var(--blue); }
+
+/* ── WARN BOX ── */
+.warn-box {
+  background: rgba(255,122,110,.06);
+  border: 1px solid rgba(255,122,110,.2);
+  border-left: 3px solid var(--coral);
+  padding: 12px 16px;
+  margin: 12px 0;
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.warn-box strong { color: var(--coral); }
+.warn-box ul { padding-left: 18px; margin-top: 6px; }
+.warn-box li { margin-bottom: 4px; }
+
+/* ── COMMAND TABLE ── */
+.cmd-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 14px 0;
+  font-size: 14px;
+}
+
+.cmd-table th {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 8px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border2);
+  background: var(--card);
+}
+
+.cmd-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  line-height: 1.5;
+}
+
+.cmd-table tr:last-child td { border-bottom: none; }
+.cmd-table tr:hover td { background: rgba(255,255,255,.02); }
+
+.cmd-table td:first-child {
+  font-family: 'Source Code Pro', monospace;
+  color: var(--acc);
+  white-space: nowrap;
+  width: 210px;
+}
+
+/* ── COMPARE ── */
+.compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 14px 0;
+}
+
+@media(max-width:580px) { .compare { grid-template-columns: 1fr; } }
+
+.compare-block {
+  background: #030810;
+  border: 1px solid var(--border2);
+  overflow: hidden;
+}
+
+.compare-label {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 7px 12px;
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+}
+
+.compare-label.bad  { color: var(--coral); }
+.compare-label.good { color: var(--green); }
+
+.compare-code {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 14px;
+  line-height: 1.75;
+  padding: 12px 14px;
+  color: var(--co);
+  white-space: pre;
+  overflow-x: auto;
+}
+
+.compare-code .cm { color: var(--cm); }
+.compare-code .ck { color: var(--ck); }
+.compare-code .cf { color: var(--cf); }
+.compare-code .cn { color: var(--cn); }
+.compare-code .cs { color: var(--cs); }
+
+/* ── SUMMARY ── */
+.summary {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  margin-bottom: 32px;
+  overflow: hidden;
+}
+
+.summary-head {
+  padding: 12px 18px;
+  background: var(--card);
+  border-bottom: 1px solid var(--border2);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  letter-spacing: 1.5px;
+  color: var(--acc);
+}
+
+.summary table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.summary table th {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 7px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--border2);
+  background: var(--card);
+}
+
+.summary table td {
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  line-height: 1.5;
+}
+
+.summary table tr:last-child td { border-bottom: none; }
+.summary table td:first-child {
+  font-family: 'Source Code Pro', monospace;
+  color: var(--acc);
+  white-space: nowrap;
+}
+
+/* ── SLABEL ── */
+.slabel {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.slabel::after { content:''; flex:1; height:1px; background:var(--border); }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding-top: 18px;
+  margin-top: 32px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+footer span {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 1px;
+}
+
+@media(max-width:560px){
+  .step { grid-template-columns: 48px 1fr; gap: 0 12px; }
+  .step-num { font-size: 34px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- BACK -->
+<div style="padding-top: 28px;">
+  <a href="index.html" style="font-family:'Source Code Pro',monospace; font-size:12px; letter-spacing:2px; text-transform:uppercase; color:var(--muted); text-decoration:none; display:inline-flex; align-items:center; gap:8px;">
+    <span style="font-size:16px; line-height:1;">←</span> Назад до уроків
+  </a>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="eyebrow">Самостійне вивчення · Python Turtle · 7 клас</div>
+  <h1>УРОК <span class="acc">4</span><br>IF / ELIF + RANDOM</h1>
+  <p class="header-sub">
+    Сьогодні програма навчиться <em>думати</em>: <code>if/elif/else</code> дозволяють їй робити вибір залежно від умов, а <code>random</code> додає справжній елемент сюрпризу. Кожен запуск — новий результат.
+  </p>
+  <div class="header-chips">
+    <span class="chip t">Самостійне вивчення</span>
+    <span class="chip">Python · Turtle</span>
+    <span class="chip">7 клас</span>
+    <span class="chip">~45 хвилин</span>
+  </div>
+</header>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- КРОК 0 — ПРОБЛЕМА                                      -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="step">
+  <div class="step-num">00</div>
+  <div class="step-inner">
+    <div class="step-title">Проблема — програма завжди робить одне й те саме</div>
+    <div class="step-sub">Зв'язок з уроком 2 · навіщо потрібне розгалуження</div>
+    <div class="step-body">
+
+      <p>На уроці 2 ти навчився малювати фігури через <code>for</code>. Але при кожному запуску результат однаковий — програма «сліпа». Що якби вона могла <em>дивитись на дані і вирішувати</em> що малювати?</p>
+
+      <div class="compare">
+        <div class="compare-block">
+          <div class="compare-label bad">Без if — завжди однаково</div>
+          <div class="compare-code"><span class="cm"># Завжди малює коло одним кольором</span>
+t.<span class="cf">pencolor</span>(<span class="cs">"gold"</span>)
+t.<span class="cf">circle</span>(<span class="cn">20</span>)
+<span class="cm"># Не важливо, який розмір —</span>
+<span class="cm"># колір завжди золотий</span></div>
+        </div>
+        <div class="compare-block">
+          <div class="compare-label good">З if — вибір залежно від умови</div>
+          <div class="compare-code"><span class="cm"># Колір залежить від розміру!</span>
+r = <span class="cn">20</span>
+<span class="ck">if</span> r > <span class="cn">15</span>:
+    t.<span class="cf">pencolor</span>(<span class="cs">"gold"</span>)   <span class="cm"># велике → золоте</span>
+<span class="ck">else</span>:
+    t.<span class="cf">pencolor</span>(<span class="cs">"white"</span>)  <span class="cm"># мале → біле</span>
+t.<span class="cf">circle</span>(r)</div>
+        </div>
+      </div>
+
+      <p>Саме це робить програму <strong>«розумною»</strong>. Вона дивиться на дані і сама приймає рішення.</p>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- КРОК 1 — IF / ELSE                                     -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="step">
+  <div class="step-num">01</div>
+  <div class="step-inner">
+    <div class="step-title">if / else — як записати</div>
+    <div class="step-sub">синтаксис · двокрапка · відступ · ті самі правила що й у for</div>
+    <div class="step-body">
+
+      <p>Конструкція <code>if/else</code> має дві гілки: <em>якщо умова виконується</em> — перша, <em>інакше</em> — друга:</p>
+
+      <pre class="code-block"><span class="ck">if</span> умова:            <span class="cm"># ← двокрапка обов'язкова!</span>
+    <span class="cm"># тіло — виконується якщо ПРАВДА</span>
+    t.<span class="cf">pencolor</span>(<span class="cs">"red"</span>)
+<span class="ck">else</span>:                <span class="cm"># ← теж двокрапка</span>
+    <span class="cm"># тіло — виконується якщо НЕПРАВДА</span>
+    t.<span class="cf">pencolor</span>(<span class="cs">"blue"</span>)</pre>
+
+      <table class="cmd-table">
+        <tr><th>Частина</th><th>Що означає</th></tr>
+        <tr>
+          <td>if умова:</td>
+          <td>Перевіряє умову. Якщо вона <strong>True</strong> — виконується тіло if</td>
+        </tr>
+        <tr>
+          <td>else:</td>
+          <td>Виконується, якщо умова <strong>False</strong>. Не обов'язкова — можна мати тільки <code>if</code></td>
+        </tr>
+        <tr>
+          <td>Двокрапка :</td>
+          <td>Обов'язкова після <code>if умова</code> і після <code>else</code> — без неї <code>SyntaxError</code></td>
+        </tr>
+        <tr>
+          <td>Відступ (Tab)</td>
+          <td>Тіло кожної гілки <strong>повинно мати відступ</strong> — ті самі правила, що й у <code>for</code></td>
+        </tr>
+      </table>
+
+      <pre class="code-block"><span class="ck">import</span> turtle
+t = turtle.<span class="cf">Turtle</span>()
+t.<span class="cf">speed</span>(<span class="cn">0</span>)
+
+r = <span class="cn">25</span>   <span class="cm"># ← спробуй змінити на 5 або на 30</span>
+
+<span class="ck">if</span> r > <span class="cn">15</span>:
+    t.<span class="cf">pencolor</span>(<span class="cs">"gold"</span>)
+    t.<span class="cf">pensize</span>(<span class="cn">3</span>)
+<span class="ck">else</span>:
+    t.<span class="cf">pencolor</span>(<span class="cs">"white"</span>)
+    t.<span class="cf">pensize</span>(<span class="cn">1</span>)
+
+t.<span class="cf">circle</span>(r)
+turtle.<span class="cf">done</span>()</pre>
+
+      <div class="warn-box">
+        <strong>Типові помилки — прочитай до практики!</strong>
+        <ul>
+          <li>Забута <strong>двокрапка</strong> після <code>if умова</code> або після <code>else</code> → <code>SyntaxError</code></li>
+          <li>Немає <strong>відступу</strong> в тілі → <code>IndentationError</code> (ті самі правила, що й у <code>for</code>!)</li>
+          <li><code>else</code> не буває без <code>if</code> — тільки після нього</li>
+          <li>Після <code>else</code> — тільки двокрапка, ніякої умови!</li>
+        </ul>
+      </div>
+
+      <div class="try-box">
+        <div class="try-label">Спробуй сам!</div>
+        <ul>
+          <li>Запусти з r = 25 — яке коло? Зміни на r = 5 — що змінилось?</li>
+          <li>Навмисне видали двокрапку після <code>else</code> → прочитай повідомлення про помилку</li>
+          <li>Навмисне видали відступ у тілі → прочитай повідомлення</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- КРОК 2 — IF / ELIF / ELSE                              -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="step">
+  <div class="step-num">02</div>
+  <div class="step-inner">
+    <div class="step-title">if / elif / else — ланцюжок умов</div>
+    <div class="step-sub">elif · кілька гілок · спрацьовує перша підходяща</div>
+    <div class="step-body">
+
+      <p>Між <code>if</code> і <code>else</code> можна додати скільки завгодно <em>elif</em> («else if» — «інакше якщо»):</p>
+
+      <pre class="code-block"><span class="ck">if</span> r > <span class="cn">20</span>:                    <span class="cm"># якщо r більше 20</span>
+    t.<span class="cf">fillcolor</span>(<span class="cs">"gold"</span>)      <span class="cm"># → золотий</span>
+<span class="ck">elif</span> r > <span class="cn">10</span>:                 <span class="cm"># якщо 1-а не спрацювала, але r > 10</span>
+    t.<span class="cf">fillcolor</span>(<span class="cs">"#5b9cf6"</span>)  <span class="cm"># → синій</span>
+<span class="ck">else</span>:                         <span class="cm"># якщо жодна умова не підійшла</span>
+    t.<span class="cf">fillcolor</span>(<span class="cs">"white"</span>)    <span class="cm"># → білий</span></pre>
+
+      <div class="tip-box">
+        <strong>Ключове правило:</strong> Python перевіряє умови <em>зверху вниз</em> і виконує <em>тільки першу гілку, яка підійшла</em>. Решта — ігноруються. Якщо r = 25, спрацює gold і більше нічого не перевіряється.
+      </div>
+
+      <table class="cmd-table">
+        <tr><th>r</th><th>Яка умова спрацьовує?</th><th>Колір</th></tr>
+        <tr><td>r = 25</td><td>r &gt; 20 → True → зупиняємось</td><td>gold</td></tr>
+        <tr><td>r = 15</td><td>r &gt; 20 → False; r &gt; 10 → True → зупиняємось</td><td>#5b9cf6</td></tr>
+        <tr><td>r = 5</td><td>r &gt; 20 → False; r &gt; 10 → False → else</td><td>white</td></tr>
+      </table>
+
+      <div class="try-box">
+        <div class="try-label">Спробуй сам!</div>
+        <ul>
+          <li>Додай ще один <code>elif</code> — наприклад <code>elif r > 5:</code> → зелений</li>
+          <li>Скільки <code>elif</code> можна написати? (без обмежень!)</li>
+          <li>Перевір: чи може одночасно виконатись і if, і elif? (відповідь: ні)</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- КРОК 3 — ОПЕРАТОРИ ПОРІВНЯННЯ                         -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="step">
+  <div class="step-num">03</div>
+  <div class="step-inner">
+    <div class="step-title">Оператори порівняння</div>
+    <div class="step-sub">==, !=, &gt;, &lt;, &gt;=, &lt;= · True і False · = не == !</div>
+    <div class="step-body">
+
+      <p>Умова в <code>if</code> завжди дає або <em>True</em> (правда), або <em>False</em> (неправда). Для запису умов — шість операторів:</p>
+
+      <table class="cmd-table">
+        <tr><th>Оператор</th><th>Означення</th><th>Приклад</th><th>Результат</th></tr>
+        <tr><td>==</td><td>Рівно (порівняння)</td><td><code>5 == 5</code></td><td>True</td></tr>
+        <tr><td>!=</td><td>Не рівно</td><td><code>5 != 3</code></td><td>True</td></tr>
+        <tr><td>&gt;</td><td>Більше</td><td><code>10 &gt; 5</code></td><td>True</td></tr>
+        <tr><td>&lt;</td><td>Менше</td><td><code>3 &lt; 7</code></td><td>True</td></tr>
+        <tr><td>&gt;=</td><td>Більше або рівно</td><td><code>5 &gt;= 5</code></td><td>True</td></tr>
+        <tr><td>&lt;=</td><td>Менше або рівно</td><td><code>3 &lt;= 3</code></td><td>True</td></tr>
+      </table>
+
+      <div class="warn-box">
+        <strong>Найчастіша помилка — = замість == !</strong><br><br>
+        <code>=</code> — це <strong>присвоєння</strong> (дати змінній значення): <code>r = 10</code><br>
+        <code>==</code> — це <strong>порівняння</strong> (перевірити рівність): <code>if r == 10:</code><br><br>
+        Якщо написати <code>if r = 10:</code> → <code>SyntaxError</code>. Python суворо розрізняє ці операції.
+      </div>
+
+      <div class="try-box">
+        <div class="try-label">Спробуй сам!</div>
+        <ul>
+          <li>Напиши <code>if i == 0:</code> в циклі — що друкується тільки на першій ітерації?</li>
+          <li>Як перевірити, чи число <em>не дорівнює</em> нулю? (підказка: <code>!=</code>)</li>
+          <li>Навмисне напиши <code>if r = 10:</code> → прочитай помилку</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- КРОК 4 — IMPORT RANDOM                                 -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="step">
+  <div class="step-num">04</div>
+  <div class="step-inner">
+    <div class="step-title">import random — генератор випадкових чисел</div>
+    <div class="step-sub">randint() · choice() · кожен запуск — новий результат</div>
+    <div class="step-body">
+
+      <p>Модуль <code>random</code> — як кубик всередині Python. Він дає різні числа при кожному запуску, тому програма щоразу малює щось нове.</p>
+
+      <pre class="code-block"><span class="ck">import</span> random          <span class="cm"># ← підключити на початку файлу</span>
+
+x = random.<span class="cf">randint</span>(-<span class="cn">200</span>, <span class="cn">200</span>)  <span class="cm"># ціле число від -200 до 200 включно</span>
+y = random.<span class="cf">randint</span>(-<span class="cn">150</span>, <span class="cn">150</span>)  <span class="cm"># кожен запуск → інший результат</span>
+r = random.<span class="cf">randint</span>(<span class="cn">5</span>, <span class="cn">30</span>)      <span class="cm"># радіус від 5 до 30</span>
+
+color = random.<span class="cf">choice</span>([<span class="cs">"red"</span>, <span class="cs">"blue"</span>, <span class="cs">"gold"</span>])  <span class="cm"># випадковий зі списку</span></pre>
+
+      <table class="cmd-table">
+        <tr><th>Команда</th><th>Що робить</th></tr>
+        <tr>
+          <td>random.randint(a, b)</td>
+          <td>Повертає <strong>випадкове ціле число</strong> від a до b <em>включно</em>. Обидва кінці — можливі!</td>
+        </tr>
+        <tr>
+          <td>random.choice([...])</td>
+          <td>Повертає <strong>випадковий елемент</strong> зі списку</td>
+        </tr>
+      </table>
+
+      <div class="tip-box">
+        <strong>Увага: randint(a, b) — обидва кінці включно!</strong><br>
+        <code>range(1, 6)</code> дає 1, 2, 3, 4, 5 — <em>без 6</em>. А <code>random.randint(1, 6)</code> може дати 1, 2, 3, 4, 5 або <em>6 теж</em>. Це класичне місце плутанини між двома функціями.
+      </div>
+
+      <pre class="code-block"><span class="cm"># Черепашка йде у випадкову точку</span>
+<span class="ck">import</span> turtle
+<span class="ck">import</span> random
+
+t = turtle.<span class="cf">Turtle</span>()
+t.<span class="cf">speed</span>(<span class="cn">0</span>)
+
+x = random.<span class="cf">randint</span>(-<span class="cn">250</span>, <span class="cn">250</span>)
+y = random.<span class="cf">randint</span>(-<span class="cn">180</span>, <span class="cn">180</span>)
+
+t.<span class="cf">penup</span>()
+t.<span class="cf">goto</span>(x, y)
+t.<span class="cf">pendown</span>()
+t.<span class="cf">circle</span>(<span class="cn">30</span>)
+
+turtle.<span class="cf">done</span>()</pre>
+
+      <div class="try-box">
+        <div class="try-label">Спробуй сам!</div>
+        <ul>
+          <li>Запусти код кілька разів — коло щоразу в іншому місці?</li>
+          <li>Зроби радіус теж випадковим: <code>r = random.randint(10, 50)</code> і малюй <code>circle(r)</code></li>
+          <li>Використай <code>random.choice()</code>, щоб вибрати колір: <code>pencolor(random.choice(["red","blue","gold"]))</code></li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- КРОК 5 — FOR + IF                                      -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="step">
+  <div class="step-num">05</div>
+  <div class="step-inner">
+    <div class="step-title">for + if — цикл і умова разом</div>
+    <div class="step-sub">парні і непарні · i % 2 · різні кольори через умову</div>
+    <div class="step-body">
+
+      <p>Справжня сила — коли <code>for</code> і <code>if</code> поєднуються. На кожній ітерації циклу перевіряємо умову і діємо по-різному:</p>
+
+      <pre class="code-block"><span class="ck">import</span> turtle
+t = turtle.<span class="cf">Turtle</span>()
+t.<span class="cf">speed</span>(<span class="cn">0</span>)
+
+<span class="ck">for</span> i <span class="ck">in</span> <span class="cf">range</span>(<span class="cn">10</span>):
+    <span class="ck">if</span> i % <span class="cn">2</span> == <span class="cn">0</span>:         <span class="cm"># i = 0, 2, 4, 6, 8 — парні</span>
+        t.<span class="cf">pencolor</span>(<span class="cs">"gold"</span>)
+    <span class="ck">else</span>:                   <span class="cm"># i = 1, 3, 5, 7, 9 — непарні</span>
+        t.<span class="cf">pencolor</span>(<span class="cs">"#5b9cf6"</span>)
+    t.<span class="cf">circle</span>(<span class="cn">20</span>)
+    t.<span class="cf">penup</span>()
+    t.<span class="cf">forward</span>(<span class="cn">50</span>)
+    t.<span class="cf">pendown</span>()
+
+turtle.<span class="cf">done</span>()</pre>
+
+      <div class="tip-box">
+        <strong>Що таке % (модуло)?</strong><br>
+        <code>i % 2</code> — остача від ділення i на 2. Парні числа: остача 0 → <code>4 % 2 == 0</code>. Непарні: остача 1 → <code>5 % 2 == 1</code>. Саме тому <code>i % 2 == 0</code> означає «i парне».
+      </div>
+
+      <div class="compare">
+        <div class="compare-block">
+          <div class="compare-label">for + if (умова від i)</div>
+          <div class="compare-code"><span class="ck">for</span> i <span class="ck">in</span> <span class="cf">range</span>(<span class="cn">6</span>):
+    <span class="ck">if</span> i % <span class="cn">2</span> == <span class="cn">0</span>:
+        t.<span class="cf">pencolor</span>(<span class="cs">"gold"</span>)
+    <span class="ck">else</span>:
+        t.<span class="cf">pencolor</span>(<span class="cs">"blue"</span>)
+    t.<span class="cf">circle</span>(<span class="cn">20</span>)
+    t.<span class="cf">forward</span>(<span class="cn">45</span>)</div>
+        </div>
+        <div class="compare-block">
+          <div class="compare-label">for + if (умова від random)</div>
+          <div class="compare-code"><span class="ck">for</span> i <span class="ck">in</span> <span class="cf">range</span>(<span class="cn">6</span>):
+    r = random.<span class="cf">randint</span>(<span class="cn">5</span>, <span class="cn">30</span>)
+    <span class="ck">if</span> r > <span class="cn">15</span>:
+        t.<span class="cf">pencolor</span>(<span class="cs">"gold"</span>)
+    <span class="ck">else</span>:
+        t.<span class="cf">pencolor</span>(<span class="cs">"blue"</span>)
+    t.<span class="cf">circle</span>(r)
+    t.<span class="cf">forward</span>(<span class="cn">60</span>)</div>
+        </div>
+      </div>
+
+      <div class="try-box">
+        <div class="try-label">Спробуй сам!</div>
+        <ul>
+          <li>Запусти перший варіант — парне золоте, непарне блакитне?</li>
+          <li>Зміни умову на <code>i % 3 == 0</code> — що змінилось?</li>
+          <li>У другому варіанті зміни межу: <code>r > 15</code> → <code>r > 20</code> — більше або менше золотих?</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- КРОК 6 — ВСЕ РАЗОМ                                     -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="step">
+  <div class="step-num">06</div>
+  <div class="step-inner">
+    <div class="step-title">Все разом — 20 бульбашок</div>
+    <div class="step-sub">for + random + if/elif/else · повний приклад · hideturtle</div>
+    <div class="step-body">
+
+      <p>Поєднаємо все, що вивчили сьогодні. Програма малює 20 бульбашок у випадкових місцях, де колір залежить від розміру:</p>
+
+      <pre class="code-block"><span class="ck">import</span> turtle
+<span class="ck">import</span> random
+
+t = turtle.<span class="cf">Turtle</span>()
+t.<span class="cf">speed</span>(<span class="cn">0</span>)
+t.<span class="cf">hideturtle</span>()         <span class="cm"># прибрати черепашку — малюнок охайніший</span>
+
+<span class="ck">for</span> i <span class="ck">in</span> <span class="cf">range</span>(<span class="cn">20</span>):
+    x = random.<span class="cf">randint</span>(-<span class="cn">250</span>, <span class="cn">250</span>)
+    y = random.<span class="cf">randint</span>(-<span class="cn">180</span>, <span class="cn">180</span>)
+    r = random.<span class="cf">randint</span>(<span class="cn">5</span>, <span class="cn">35</span>)
+
+    <span class="ck">if</span> r > <span class="cn">25</span>:
+        t.<span class="cf">pencolor</span>(<span class="cs">"gold"</span>)     <span class="cm"># великі → золоті</span>
+    <span class="ck">elif</span> r > <span class="cn">15</span>:
+        t.<span class="cf">pencolor</span>(<span class="cs">"#5b9cf6"</span>) <span class="cm"># середні → сині</span>
+    <span class="ck">else</span>:
+        t.<span class="cf">pencolor</span>(<span class="cs">"white"</span>)   <span class="cm"># малі → білі</span>
+
+    t.<span class="cf">penup</span>()
+    t.<span class="cf">goto</span>(x, y)
+    t.<span class="cf">pendown</span>()
+    t.<span class="cf">circle</span>(r)
+
+turtle.<span class="cf">done</span>()</pre>
+
+      <div class="tip-box">
+        <strong>Нова команда: <code>t.hideturtle()</code></strong><br>
+        Ховає значок черепашки (трикутник) з екрана. Малюнок виглядає охайніше. Повернути: <code>t.showturtle()</code>.
+      </div>
+
+      <div class="try-box">
+        <div class="try-label">Спробуй сам!</div>
+        <ul>
+          <li>Запусти і натисни ▶ ще раз — кожен запуск інший результат!</li>
+          <li>Збільш <code>range(20)</code> до <code>range(60)</code> — що змінилось?</li>
+          <li>Додай <code>t.fillcolor()</code> + <code>begin_fill() / end_fill()</code>, щоб кола були залиті кольором</li>
+          <li>Зміни межі умов — зроби більше золотих або більше синіх</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- КРОК 7 — ПРАКТИКА: ФЕЄРВЕРК                            -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="step">
+  <div class="step-num">07</div>
+  <div class="step-inner">
+    <div class="step-title">Мала практика — Феєрверк</div>
+    <div class="step-sub">for · random · if/elif/else · setheading</div>
+    <div class="step-body">
+
+      <p>Намалюй <strong>6 вибухів феєрверку</strong> на чорному фоні. Кожен вибух — це промені, що розходяться від випадкової точки в усі сторони. Колір кожного променя залежить від його довжини.</p>
+
+      <p><strong>Що має бути в коді:</strong></p>
+      <ul style="padding-left:20px; margin:10px 0; font-size:13.5px; line-height:1.85;">
+        <li>Чорний фон: <code>screen.bgcolor("black")</code></li>
+        <li>Зовнішній цикл — 6 вибухів, кожен у випадковій точці (x, y)</li>
+        <li>Внутрішній цикл — 24 промені: <code>forward(length)</code> → <code>backward(length)</code> → <code>left(15)</code></li>
+        <li>Для кожного променя — випадкова довжина від 20 до 80</li>
+        <li><code>if/elif/else</code>: довгі промені → <code>"gold"</code>, середні → <code>"red"</code>, короткі → <code>"blue"</code></li>
+      </ul>
+
+      <!-- preview canvas -->
+      <canvas id="fw" width="480" height="260" style="display:block; background:#000; border:1px solid #202540; border-radius:8px; margin:16px 0;"></canvas>
+      <script>
+      (function(){
+        var c = document.getElementById('fw');
+        var ctx = c.getContext('2d');
+        var explosions = [
+          {x:80,  y:70},
+          {x:220, y:130},
+          {x:370, y:55},
+          {x:140, y:200},
+          {x:310, y:195},
+          {x:430, y:145},
+        ];
+        var seed = 42;
+        function rand(min, max) {
+          seed = (seed * 1664525 + 1013904223) & 0xffffffff;
+          return min + Math.abs(seed % (max - min + 1));
+        }
+        explosions.forEach(function(e) {
+          for (var a = 0; a < 360; a += 15) {
+            var len = rand(20, 80);
+            if (len > 60)      ctx.strokeStyle = 'gold';
+            else if (len > 40) ctx.strokeStyle = 'red';
+            else               ctx.strokeStyle = 'blue';
+            ctx.lineWidth = 1.5;
+            var rad = a * Math.PI / 180;
+            ctx.beginPath();
+            ctx.moveTo(e.x, e.y);
+            ctx.lineTo(e.x + Math.cos(rad) * len, e.y - Math.sin(rad) * len);
+            ctx.stroke();
+          }
+        });
+      })();
+      </script>
+
+      <div class="try-box">
+        <div class="try-label">Здай роботу</div>
+        <ul>
+          <li>Збережи файл: <strong>Прізвище_Урок4.py</strong></li>
+          <li>Феєрверк повинен малюватись без помилок при кожному запуску</li>
+          <li>Бонус: зроби крок <code>range(0, 360, 10)</code> — густіший вибух</li>
+          <li>Бонус 2: додай маленьке коло в центрі кожного вибуху</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ══ ШПАРГАЛКА ══ -->
+<div class="slabel">Шпаргалка уроку 4</div>
+<div class="summary">
+  <div class="summary-head">Всі команди уроку 4</div>
+  <table>
+    <tr>
+      <th>Команда</th>
+      <th>Що робить</th>
+      <th>Приклад</th>
+    </tr>
+    <tr>
+      <td>if умова:</td>
+      <td>Виконує тіло, якщо умова True. Двокрапка і відступ обов'язкові</td>
+      <td>if r &gt; 20:</td>
+    </tr>
+    <tr>
+      <td>elif умова:</td>
+      <td>Перевіряє наступну умову — між if і else. Скільки завгодно</td>
+      <td>elif r &gt; 10:</td>
+    </tr>
+    <tr>
+      <td>else:</td>
+      <td>Виконується якщо жодна попередня умова не спрацювала</td>
+      <td>else:</td>
+    </tr>
+    <tr>
+      <td>==, !=, &gt;, &lt;, &gt;=, &lt;=</td>
+      <td>Оператори порівняння — результат True або False</td>
+      <td>if i == 0:</td>
+    </tr>
+    <tr>
+      <td>import random</td>
+      <td>Підключає модуль генерації випадкових чисел</td>
+      <td>import random</td>
+    </tr>
+    <tr>
+      <td>random.randint(a, b)</td>
+      <td>Випадкове ціле число від a до b включно (обидва кінці!)</td>
+      <td>random.randint(-200, 200)</td>
+    </tr>
+    <tr>
+      <td>random.choice([...])</td>
+      <td>Випадковий елемент зі списку</td>
+      <td>random.choice(["red", "blue"])</td>
+    </tr>
+    <tr>
+      <td>t.hideturtle()</td>
+      <td>Ховає значок черепашки — малюнок виглядає охайніше</td>
+      <td>t.hideturtle()</td>
+    </tr>
+    <tr>
+      <td>screen.bgcolor()</td>
+      <td>Встановлює колір фону. Спочатку: <code>screen = turtle.Screen()</code>, потім <code>screen.bgcolor("black")</code></td>
+      <td>screen.bgcolor("black")</td>
+    </tr>
+    <tr>
+      <td>i % 2 == 0</td>
+      <td>True якщо i парне (остача від ділення на 2 рівна 0)</td>
+      <td>if i % 2 == 0:</td>
+    </tr>
+  </table>
+</div>
+
+
+<footer>
+  <span>УРОК 4 · PYTHON TURTLE · САМОСТІЙНЕ ВИВЧЕННЯ · 7 КЛАС</span>
+  <span>TRINKET.IO · TURTLE GRAPHICS</span>
+</footer>
+
+</div>
+</body>
+</html>

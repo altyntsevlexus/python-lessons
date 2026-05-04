@@ -889,7 +889,7 @@ turtle.<span class="cf">done</span>()</pre>
 
       <p><strong>Що має бути в коді:</strong></p>
       <ul style="padding-left:20px; margin:10px 0; font-size:13.5px; line-height:1.85;">
-        <li>Чорний фон: <code>screen.bgcolor("black")</code></li>
+        <li>Чорний фон: спочатку <code>screen = turtle.Screen()</code>, потім <code>screen.bgcolor("black")</code></li>
         <li>Зовнішній цикл — 6 вибухів, кожен у випадковій точці (x, y)</li>
         <li>Внутрішній цикл — 24 промені: <code>forward(length)</code> → <code>backward(length)</code> → <code>left(15)</code></li>
         <li>Для кожного променя — випадкова довжина від 20 до 80</li>

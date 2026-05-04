@@ -707,7 +707,7 @@ color = random.<span class="cf">choice</span>([<span class="cs">"red"</span>, <s
         <code>range(1, 6)</code> дає 1, 2, 3, 4, 5 — <em>без 6</em>. А <code>random.randint(1, 6)</code> може дати 1, 2, 3, 4, 5 або <em>6 теж</em>. Це класичне місце плутанини між двома функціями.
       </div>
 
-      <pre class="code-block"><span class="cm"># Коло у випадковому місці, випадкового розміру</span>
+      <pre class="code-block"><span class="cm"># Коло у випадковому місці, випадкового розміру — колір залежить від радіуса</span>
 <span class="ck">import</span> turtle
 <span class="ck">import</span> random
 
@@ -717,6 +717,13 @@ t.<span class="cf">speed</span>(<span class="cn">0</span>)
 x = random.<span class="cf">randint</span>(-<span class="cn">250</span>, <span class="cn">250</span>)   <span class="cm"># випадкова позиція X</span>
 y = random.<span class="cf">randint</span>(-<span class="cn">180</span>, <span class="cn">180</span>)   <span class="cm"># випадкова позиція Y</span>
 r = random.<span class="cf">randint</span>(<span class="cn">10</span>, <span class="cn">50</span>)      <span class="cm"># випадковий радіус</span>
+
+<span class="ck">if</span> r > <span class="cn">35</span>:                        <span class="cm"># велике коло</span>
+    t.<span class="cf">pencolor</span>(<span class="cs">"gold"</span>)
+<span class="ck">elif</span> r > <span class="cn">20</span>:                      <span class="cm"># середнє коло</span>
+    t.<span class="cf">pencolor</span>(<span class="cs">"red"</span>)
+<span class="ck">else</span>:                              <span class="cm"># маленьке коло</span>
+    t.<span class="cf">pencolor</span>(<span class="cs">"blue"</span>)
 
 t.<span class="cf">penup</span>()
 t.<span class="cf">goto</span>(x, y)

@@ -584,21 +584,30 @@ turtle.<span class="cf">done</span>()</pre>
     <div class="step-sub">elif · кілька гілок · спрацьовує перша підходяща</div>
     <div class="step-body">
 
-      <p>Між <code>if</code> і <code>else</code> можна додати скільки завгодно <em>elif</em> («else if» — «інакше якщо»):</p>
+      <p>Між <code>if</code> і <code>else</code> можна додати скільки завгодно <em>elif</em> («else if» — «інакше якщо»). Намалюємо коло — колір залежить від розміру, три варіанти:</p>
 
-      <pre class="code-block"><span class="ck">if</span> r > <span class="cn">20</span>:                    <span class="cm"># якщо r більше 20</span>
-    t.<span class="cf">fillcolor</span>(<span class="cs">"gold"</span>)      <span class="cm"># → золотий</span>
-<span class="ck">elif</span> r > <span class="cn">10</span>:                 <span class="cm"># якщо 1-а не спрацювала, але r > 10</span>
-    t.<span class="cf">fillcolor</span>(<span class="cs">"#5b9cf6"</span>)  <span class="cm"># → синій</span>
-<span class="ck">else</span>:                         <span class="cm"># якщо жодна умова не підійшла</span>
-    t.<span class="cf">fillcolor</span>(<span class="cs">"white"</span>)    <span class="cm"># → білий</span></pre>
+      <pre class="code-block"><span class="ck">import</span> turtle
+t = turtle.<span class="cf">Turtle</span>()
+t.<span class="cf">speed</span>(<span class="cn">0</span>)
+
+r = <span class="cn">15</span>   <span class="cm"># ← спробуй: 5, 15, 25</span>
+
+<span class="ck">if</span> r > <span class="cn">20</span>:                     <span class="cm"># якщо r більше 20</span>
+    t.<span class="cf">pencolor</span>(<span class="cs">"gold"</span>)       <span class="cm"># → золотий</span>
+<span class="ck">elif</span> r > <span class="cn">10</span>:                  <span class="cm"># якщо 1-а не спрацювала, але r > 10</span>
+    t.<span class="cf">pencolor</span>(<span class="cs">"#5b9cf6"</span>)   <span class="cm"># → синій</span>
+<span class="ck">else</span>:                          <span class="cm"># якщо жодна умова не підійшла</span>
+    t.<span class="cf">pencolor</span>(<span class="cs">"white"</span>)     <span class="cm"># → білий</span>
+
+t.<span class="cf">circle</span>(r)
+turtle.<span class="cf">done</span>()</pre>
 
       <div class="tip-box">
         <strong>Ключове правило:</strong> Python перевіряє умови <em>зверху вниз</em> і виконує <em>тільки першу гілку, яка підійшла</em>. Решта — ігноруються. Якщо r = 25, спрацює gold і більше нічого не перевіряється.
       </div>
 
       <table class="cmd-table">
-        <tr><th>r</th><th>Яка умова спрацьовує?</th><th>Колір</th></tr>
+        <tr><th>r</th><th>Яка умова спрацьовує?</th><th>Колір кола</th></tr>
         <tr><td>r = 25</td><td>r &gt; 20 → True → зупиняємось</td><td>gold</td></tr>
         <tr><td>r = 15</td><td>r &gt; 20 → False; r &gt; 10 → True → зупиняємось</td><td>#5b9cf6</td></tr>
         <tr><td>r = 5</td><td>r &gt; 20 → False; r &gt; 10 → False → else</td><td>white</td></tr>
@@ -607,8 +616,8 @@ turtle.<span class="cf">done</span>()</pre>
       <div class="try-box">
         <div class="try-label">Спробуй сам!</div>
         <ul>
+          <li>Запусти з <code>r = 5</code>, <code>r = 15</code>, <code>r = 25</code> — чи бачиш усі три кольори?</li>
           <li>Додай ще один <code>elif</code> — наприклад <code>elif r > 5:</code> → зелений</li>
-          <li>Скільки <code>elif</code> можна написати? (без обмежень!)</li>
           <li>Перевір: чи може одночасно виконатись і if, і elif? (відповідь: ні)</li>
         </ul>
       </div>
@@ -698,28 +707,29 @@ color = random.<span class="cf">choice</span>([<span class="cs">"red"</span>, <s
         <code>range(1, 6)</code> дає 1, 2, 3, 4, 5 — <em>без 6</em>. А <code>random.randint(1, 6)</code> може дати 1, 2, 3, 4, 5 або <em>6 теж</em>. Це класичне місце плутанини між двома функціями.
       </div>
 
-      <pre class="code-block"><span class="cm"># Черепашка йде у випадкову точку</span>
+      <pre class="code-block"><span class="cm"># Коло у випадковому місці, випадкового розміру</span>
 <span class="ck">import</span> turtle
 <span class="ck">import</span> random
 
 t = turtle.<span class="cf">Turtle</span>()
 t.<span class="cf">speed</span>(<span class="cn">0</span>)
 
-x = random.<span class="cf">randint</span>(-<span class="cn">250</span>, <span class="cn">250</span>)
-y = random.<span class="cf">randint</span>(-<span class="cn">180</span>, <span class="cn">180</span>)
+x = random.<span class="cf">randint</span>(-<span class="cn">250</span>, <span class="cn">250</span>)   <span class="cm"># випадкова позиція X</span>
+y = random.<span class="cf">randint</span>(-<span class="cn">180</span>, <span class="cn">180</span>)   <span class="cm"># випадкова позиція Y</span>
+r = random.<span class="cf">randint</span>(<span class="cn">10</span>, <span class="cn">50</span>)      <span class="cm"># випадковий радіус</span>
 
 t.<span class="cf">penup</span>()
 t.<span class="cf">goto</span>(x, y)
 t.<span class="cf">pendown</span>()
-t.<span class="cf">circle</span>(<span class="cn">30</span>)
+t.<span class="cf">circle</span>(r)
 
 turtle.<span class="cf">done</span>()</pre>
 
       <div class="try-box">
         <div class="try-label">Спробуй сам!</div>
         <ul>
-          <li>Запусти код кілька разів — коло щоразу в іншому місці?</li>
-          <li>Зроби радіус теж випадковим: <code>r = random.randint(10, 50)</code> і малюй <code>circle(r)</code></li>
+          <li>Запусти кілька разів — коло щоразу в іншому місці і іншого розміру?</li>
+          <li>Зміни межі: <code>randint(5, 100)</code> — яке коло може вийти?</li>
           <li>Використай <code>random.choice()</code>, щоб вибрати колір: <code>pencolor(random.choice(["red","blue","gold"]))</code></li>
         </ul>
       </div>

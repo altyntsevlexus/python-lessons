@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Урок 5 · Функції def · Python Turtle</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #060710;
+  --surface: #0b0d1a;
+  --card:    #101320;
+  --border:  #181c32;
+  --border2: #202540;
+  --text:    #d5d8f5;
+  --muted:   #4a5080;
+
+  --acc:     #ff7a6e;
+  --acc-d:   rgba(255,122,110,.12);
+  --acc-b:   rgba(255,122,110,.30);
+  --teal:    #00d4aa;
+  --teal-d:  rgba(0,212,170,.12);
+  --gold:    #ffc845;
+  --green:   #50e3a4;
+  --coral:   #ff7a6e;
+  --violet:  #c084fc;
+  --blue:    #5b9cf6;
+
+  --cm: #5a9e5a;
+  --ck: #ff7a6e;
+  --cf: #5b9cf6;
+  --cs: #6adf8a;
+  --cn: #ffc845;
+  --co: #9ab8d0;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+body::before {
+  content:'';
+  position:fixed;inset:0;
+  background-image: radial-gradient(rgba(255,122,110,.04) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events:none;z-index:0;
+}
+
+.wrap {
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── HEADER ── */
+header {
+  padding: 52px 0 40px;
+  border-bottom: 1px solid var(--border2);
+  margin-bottom: 40px;
+}
+
+.eyebrow {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--acc);
+  margin-bottom: 12px;
+}
+
+h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(36px, 6vw, 64px);
+  line-height: .95;
+  letter-spacing: 2px;
+  color: #fff;
+  margin-bottom: 16px;
+}
+
+h1 .acc { color: var(--acc); }
+
+.header-sub {
+  font-size: 16px;
+  color: var(--muted);
+  max-width: 600px;
+  line-height: 1.7;
+}
+
+.header-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.chip {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 12px;
+  padding: 4px 12px;
+  border: 1px solid var(--border2);
+  color: var(--text);
+}
+
+.chip.t {
+  background: var(--acc-d);
+  border-color: var(--acc-b);
+  color: var(--acc);
+  font-weight: 600;
+}
+
+/* ── STEP ── */
+.step {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  gap: 0 20px;
+  margin-bottom: 48px;
+}
+
+.step-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 44px;
+  line-height: 1;
+  color: var(--acc);
+  letter-spacing: 1px;
+  padding-top: 2px;
+  user-select: none;
+}
+
+.step-inner {}
+
+.step-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px;
+  letter-spacing: 1.5px;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.step-sub {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+
+.step-body {
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--text);
+}
+
+.step-body p { margin-bottom: 12px; }
+.step-body p:last-child { margin-bottom: 0; }
+.step-body strong { color: #fff; }
+.step-body em { color: var(--acc); font-style: normal; }
+
+/* ── DIVIDER ── */
+.sdiv {
+  height: 1px;
+  background: var(--border);
+  margin: 16px 0 20px;
+}
+
+/* ── INLINE CODE ── */
+code {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 14px;
+  color: var(--acc);
+  background: var(--acc-d);
+  padding: 1px 6px;
+  border-radius: 2px;
+}
+
+/* ── CODE BLOCK ── */
+.code-block {
+  background: #030810;
+  border: 1px solid var(--border2);
+  border-left: 3px solid var(--acc);
+  font-family: 'Source Code Pro', monospace;
+  font-size: 14px;
+  line-height: 1.75;
+  padding: 14px 18px;
+  color: var(--co);
+  margin: 14px 0;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.code-block .cm { color: var(--cm); }
+.code-block .ck { color: var(--ck); }
+.code-block .cf { color: var(--cf); }
+.code-block .cs { color: var(--cs); }
+.code-block .cn { color: var(--cn); }
+.code-block .co { color: var(--co); }
+
+/* ── TRY BOX ── */
+.try-box {
+  background: rgba(80,227,164,.06);
+  border: 1px solid rgba(80,227,164,.22);
+  border-left: 3px solid var(--green);
+  padding: 14px 18px;
+  margin: 14px 0;
+}
+
+.try-label {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 8px;
+}
+
+.try-box p, .try-box li {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.65;
+}
+
+.try-box ul { padding-left: 18px; }
+.try-box ul li { margin-bottom: 4px; }
+
+/* ── TIP BOX ── */
+.tip-box {
+  background: rgba(91,156,246,.07);
+  border: 1px solid rgba(91,156,246,.2);
+  border-left: 3px solid var(--blue);
+  padding: 12px 16px;
+  margin: 12px 0;
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.tip-box strong { color: var(--blue); }
+
+/* ── WARN BOX ── */
+.warn-box {
+  background: rgba(255,122,110,.06);
+  border: 1px solid rgba(255,122,110,.2);
+  border-left: 3px solid var(--coral);
+  padding: 12px 16px;
+  margin: 12px 0;
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.warn-box strong { color: var(--coral); }
+.warn-box ul { padding-left: 18px; margin-top: 6px; }
+.warn-box li { margin-bottom: 4px; }
+
+/* ── COMMAND TABLE ── */
+.cmd-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 14px 0;
+  font-size: 14px;
+}
+
+.cmd-table th {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 8px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border2);
+  background: var(--card);
+}
+
+.cmd-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  line-height: 1.5;
+}
+
+.cmd-table tr:last-child td { border-bottom: none; }
+.cmd-table tr:hover td { background: rgba(255,255,255,.02); }
+
+.cmd-table td:first-child {
+  font-family: 'Source Code Pro', monospace;
+  color: var(--acc);
+  white-space: nowrap;
+  width: 240px;
+}
+
+/* ── COMPARE ── */
+.compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 14px 0;
+}
+
+@media(max-width:580px) { .compare { grid-template-columns: 1fr; } }
+
+.compare-block {
+  background: #030810;
+  border: 1px solid var(--border2);
+  overflow: hidden;
+}
+
+.compare-label {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 7px 12px;
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+}
+
+.compare-label.bad  { color: var(--coral); }
+.compare-label.good { color: var(--green); }
+
+.compare-code {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 13px;
+  line-height: 1.75;
+  padding: 12px 14px;
+  color: var(--co);
+  white-space: pre;
+  overflow-x: auto;
+}
+
+.compare-code .cm { color: var(--cm); }
+.compare-code .ck { color: var(--ck); }
+.compare-code .cf { color: var(--cf); }
+.compare-code .cn { color: var(--cn); }
+.compare-code .cs { color: var(--cs); }
+
+/* ── SUMMARY ── */
+.summary {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  margin-bottom: 32px;
+  overflow: hidden;
+}
+
+.summary-head {
+  padding: 12px 18px;
+  background: var(--card);
+  border-bottom: 1px solid var(--border2);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  letter-spacing: 1.5px;
+  color: var(--acc);
+}
+
+.summary table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.summary table th {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 7px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--border2);
+  background: var(--card);
+}
+
+.summary table td {
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  line-height: 1.5;
+}
+
+.summary table tr:last-child td { border-bottom: none; }
+.summary table td:first-child {
+  font-family: 'Source Code Pro', monospace;
+  color: var(--acc);
+  white-space: nowrap;
+}
+
+/* ── SLABEL ── */
+.slabel {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.slabel::after { content:''; flex:1; height:1px; background:var(--border); }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding-top: 18px;
+  margin-top: 32px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+footer span {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 1px;
+}
+
+@media(max-width:560px){
+  .step { grid-template-columns: 48px 1fr; gap: 0 12px; }
+  .step-num { font-size: 34px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- BACK -->
+<div style="padding-top: 28px;">
+  <a href="index.html" style="font-family:'Source Code Pro',monospace; font-size:12px; letter-spacing:2px; text-transform:uppercase; color:var(--muted); text-decoration:none; display:inline-flex; align-items:center; gap:8px;">
+    <span style="font-size:16px; line-height:1;">←</span> Назад до уроків
+  </a>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="eyebrow">Самостійне вивчення · Python Turtle · 7 клас</div>
+  <h1>УРОК <span class="acc">5</span><br>ФУНКЦІЇ <span class="acc">DEF</span></h1>
+  <p class="header-sub">
+    Замість копіювати код — описуємо дію <em>один раз</em> і викликаємо скільки завгодно. <code>def</code> дозволяє створювати власні «команди-цеглинки» і будувати складні малюнки із простих блоків.
+  </p>
+  <div class="header-chips">
+    <span class="chip t">Самостійне вивчення</span>
+    <span class="chip">Python · Turtle</span>
+    <span class="chip">7 клас</span>
+    <span class="chip">~45 хвилин</span>
+  </div>
+</header>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- КРОК 0 — МОТИВАЦІЯ: ЗНАЙОМІ ФОРМИ                      -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="step">
+  <div class="step-num">00</div>
+  <div class="step-inner">
+    <div class="step-title">Ми вже знаємо ці форми — зробимо їх функціями</div>
+    <div class="step-sub">урок 3 → функції · квадрат · прямокутник · правильний многокутник · DRY</div>
+    <div class="step-body">
+
+      <p>На уроці 3 ти малював будинок з парканом. Поглянь на те, що ти вже знаєш, під новим кутом — кожна частина сцени складається з кількох простих форм:</p>
+
+      <table class="cmd-table">
+        <tr><th>Частина сцени</th><th>Форма</th><th>Скільки разів в одній сцені</th></tr>
+        <tr><td>Стіна будинку</td><td>Прямокутник (або квадрат)</td><td>1</td></tr>
+        <tr><td>Вікно</td><td>Квадрат або 6-кутник</td><td>1–2</td></tr>
+        <tr><td>Двері</td><td>Прямокутник (вужчий і вищий)</td><td>1</td></tr>
+        <tr><td>Дах</td><td>Трикутник</td><td>1</td></tr>
+        <tr><td>Стовпчик паркана</td><td>Вузький прямокутник</td><td>6–10</td></tr>
+        <tr><td>Квітка / декор</td><td>Правильний многокутник (5–8 сторін)</td><td>багато</td></tr>
+      </table>
+
+      <p>Стовпчик паркана — це вузький прямокутник. Ти малював його в циклі, щоразу змінюючи x вручну. Якщо загорнути його в <em>функцію</em> — виклик замість 5 рядків стане <em>одним рядком</em>.</p>
+
+      <div class="compare">
+        <div class="compare-block">
+          <div class="compare-label bad">Урок 3 — код стовпчика 5 разів</div>
+          <div class="compare-code"><span class="cm"># стовпчик 1</span>
+t.<span class="cf">penup</span>(); t.<span class="cf">goto</span>(-<span class="cn">100</span>, -<span class="cn">80</span>); t.<span class="cf">pendown</span>()
+t.<span class="cf">fillcolor</span>(<span class="cs">"#8B4513"</span>); t.<span class="cf">begin_fill</span>()
+<span class="ck">for</span> s <span class="ck">in</span> [<span class="cn">10</span>,<span class="cn">35</span>,<span class="cn">10</span>,<span class="cn">35</span>]: t.<span class="cf">forward</span>(s); t.<span class="cf">right</span>(<span class="cn">90</span>)
+t.<span class="cf">end_fill</span>()
+<span class="cm"># стовпчик 2 — той самий блок</span>
+t.<span class="cf">penup</span>(); t.<span class="cf">goto</span>(-<span class="cn">75</span>, -<span class="cn">80</span>); t.<span class="cf">pendown</span>()
+<span class="cm"># ... і так 5+ разів</span></div>
+        </div>
+        <div class="compare-block">
+          <div class="compare-label good">Урок 5 — draw_rect один раз → виклик</div>
+          <div class="compare-code"><span class="ck">def</span> <span class="cf">draw_rect</span>(x, y, w, h, color):
+    t.<span class="cf">penup</span>(); t.<span class="cf">goto</span>(x, y); t.<span class="cf">setheading</span>(<span class="cn">0</span>)
+    t.<span class="cf">fillcolor</span>(color); t.<span class="cf">begin_fill</span>()
+    <span class="ck">for</span> s <span class="ck">in</span> [w, h, w, h]: t.<span class="cf">forward</span>(s); t.<span class="cf">right</span>(<span class="cn">90</span>)
+    t.<span class="cf">end_fill</span>()
+
+<span class="cm"># 5 стовпчиків — 5 рядків</span>
+<span class="ck">for</span> i <span class="ck">in</span> <span class="cf">range</span>(<span class="cn">5</span>):
+    <span class="cf">draw_rect</span>(-<span class="cn">100</span> + i*<span class="cn">25</span>, -<span class="cn">80</span>, <span class="cn">10</span>, <span class="cn">35</span>, <span class="cs">"#8B4513"</span>)</div>
+        </div>
+      </div>
+
+      <p>На цьому уроці ми побудуємо три універсальні функції-цеглинки і складемо з них повну сцену — будинок з парканом, та феєрверк. Ось що будуємо:</p>
+
+      <table class="cmd-table">
+        <tr><th>Функція</th><th>Для чого</th><th>Параметри</th></tr>
+        <tr>
+          <td>draw_rect(x, y, w, h, color)</td>
+          <td>Будь-який прямокутник: стіна, двері, паркан, трава</td>
+          <td>позиція, розмір, колір</td>
+        </tr>
+        <tr>
+          <td>draw_triangle(x, y, size, color)</td>
+          <td>Трикутний дах або будь-який трикутник</td>
+          <td>позиція, розмір сторони, колір</td>
+        </tr>
+        <tr>
+          <td>draw_regular_polygon(x, y, n, size, color)</td>
+          <td>Правильний многокутник з n сторін: вікно, квітка, зірка</td>
+          <td>позиція, кількість сторін, розмір, колір</td>
+        </tr>
+      </table>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- КРОК 1 — DEF: СИНТАКСИС                                -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="step">
+  <div class="step-num">01</div>
+  <div class="step-inner">
+    <div class="step-title">def — як записати функцію</div>
+    <div class="step-sub">синтаксис · двокрапка · відступ · спочатку визначити потім викликати</div>
+    <div class="step-body">
+
+      <p>Функція записується з ключовим словом <code>def</code>, потім ім'я, дужки, двокрапка — і тіло з відступом. Ті самі правила, що в <code>for</code> і <code>if</code>:</p>
+
+      <pre class="code-block"><span class="ck">def</span> <span class="cf">назва_функції</span>():   <span class="cm"># ← def, ім'я, дужки, двокрапка</span>
+    <span class="cm"># тіло — виконується при кожному виклику</span>
+    t.<span class="cf">forward</span>(<span class="cn">100</span>)
+    t.<span class="cf">right</span>(<span class="cn">90</span>)
+
+<span class="cm"># Виклик — просто ім'я і дужки:</span>
+<span class="cf">назва_функції</span>()</pre>
+
+      <table class="cmd-table">
+        <tr><th>Частина</th><th>Що означає</th></tr>
+        <tr>
+          <td>def</td>
+          <td>Ключове слово — оголошує функцію. Від слова <strong>define</strong> (визначити)</td>
+        </tr>
+        <tr>
+          <td>ім'я_функції</td>
+          <td>Придумуєш сам. Ті самі правила, що для змінних: латиниця, без пробілів, <code>_</code> замість пробілу</td>
+        </tr>
+        <tr>
+          <td>():</td>
+          <td>Дужки для параметрів (поки порожні) + <strong>обов'язкова двокрапка</strong></td>
+        </tr>
+        <tr>
+          <td>Відступ у тілі</td>
+          <td>Ті самі правила, що в <code>for</code> і <code>if</code>. Без відступу — <code>IndentationError</code></td>
+        </tr>
+        <tr>
+          <td>виклик()</td>
+          <td>Щоб функція виконалась — її треба <strong>викликати</strong>. Просто написати ім'я і дужки</td>
+        </tr>
+      </table>
+
+      <pre class="code-block"><span class="ck">import</span> turtle
+t = turtle.<span class="cf">Turtle</span>()
+t.<span class="cf">speed</span>(<span class="cn">0</span>)
+
+<span class="ck">def</span> <span class="cf">draw_square</span>():        <span class="cm"># ВИЗНАЧЕННЯ функції</span>
+    <span class="ck">for</span> _ <span class="ck">in</span> <span class="cf">range</span>(<span class="cn">4</span>):
+        t.<span class="cf">forward</span>(<span class="cn">80</span>)
+        t.<span class="cf">right</span>(<span class="cn">90</span>)
+
+<span class="cf">draw_square</span>()             <span class="cm"># ВИКЛИК — перший квадрат</span>
+t.<span class="cf">penup</span>(); t.<span class="cf">forward</span>(<span class="cn">100</span>); t.<span class="cf">pendown</span>()
+<span class="cf">draw_square</span>()             <span class="cm"># ВИКЛИК — другий квадрат</span>
+
+turtle.<span class="cf">done</span>()</pre>
+
+      <div class="warn-box">
+        <strong>Порядок має значення!</strong>
+        <ul>
+          <li>Спочатку <strong>визначити</strong> функцію (<code>def</code>), потім <strong>викликати</strong></li>
+          <li>Якщо викликати до визначення → <code>NameError: name 'draw_square' is not defined</code></li>
+          <li>Сама функція <strong>не виконується</strong> при визначенні — тільки при виклику</li>
+        </ul>
+      </div>
+
+      <div class="try-box">
+        <div class="try-label">Спробуй сам!</div>
+        <ul>
+          <li>Запусти — два квадрати поруч?</li>
+          <li>Виклич <code>draw_square()</code> ще 3 рази — що виходить?</li>
+          <li>Навмисне перемісти виклик <em>до</em> визначення → прочитай помилку</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- КРОК 2 — ПАРАМЕТРИ                                     -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="step">
+  <div class="step-num">02</div>
+  <div class="step-inner">
+    <div class="step-title">Параметри — гнучкі функції</div>
+    <div class="step-sub">параметр · аргумент · змінна всередині функції</div>
+    <div class="step-body">
+
+      <p>Функція без параметрів завжди робить одне й те саме. <em>Параметр</em> — це змінна всередині функції, значення якої ми передаємо при виклику:</p>
+
+      <pre class="code-block"><span class="ck">def</span> <span class="cf">draw_square</span>(size):        <span class="cm"># size — параметр, жива змінна всередині функції</span>
+    <span class="ck">for</span> _ <span class="ck">in</span> <span class="cf">range</span>(<span class="cn">4</span>):
+        t.<span class="cf">forward</span>(size)         <span class="cm"># використовуємо size тут</span>
+        t.<span class="cf">right</span>(<span class="cn">90</span>)
+
+<span class="cf">draw_square</span>(<span class="cn">50</span>)              <span class="cm"># size = 50 → квадрат 50px</span>
+t.<span class="cf">penup</span>(); t.<span class="cf">forward</span>(<span class="cn">70</span>); t.<span class="cf">pendown</span>()
+<span class="cf">draw_square</span>(<span class="cn">120</span>)             <span class="cm"># size = 120 → квадрат 120px</span></pre>
+
+      <div class="tip-box">
+        <strong>Параметр vs Аргумент:</strong><br>
+        <code>def draw_square(size)</code> — тут <code>size</code> це <strong>параметр</strong> (ім'я в дужках при визначенні).<br>
+        <code>draw_square(50)</code> — тут <code>50</code> це <strong>аргумент</strong> (значення при виклику).<br>
+        На практиці ці слова часто вживають як синоніми — це нормально.
+      </div>
+
+      <p>Можна мати кілька параметрів через кому:</p>
+
+      <pre class="code-block"><span class="ck">def</span> <span class="cf">draw_rect</span>(x, y, w, h, color):    <span class="cm"># 5 параметрів!</span>
+    t.<span class="cf">penup</span>()
+    t.<span class="cf">goto</span>(x, y)
+    t.<span class="cf">pendown</span>()
+    t.<span class="cf">setheading</span>(<span class="cn">0</span>)              <span class="cm"># ← про це — у наступному кроці</span>
+    t.<span class="cf">fillcolor</span>(color)
+    t.<span class="cf">begin_fill</span>()
+    <span class="ck">for</span> side <span class="ck">in</span> [w, h, w, h]:
+        t.<span class="cf">forward</span>(side)
+        t.<span class="cf">right</span>(<span class="cn">90</span>)
+    t.<span class="cf">end_fill</span>()
+
+<span class="cf">draw_rect</span>(-<span class="cn">150</span>, <span class="cn">50</span>, <span class="cn">300</span>, <span class="cn">50</span>, <span class="cs">"#005BBB"</span>)   <span class="cm"># синій прямокутник</span>
+<span class="cf">draw_rect</span>(-<span class="cn">150</span>,   <span class="cn">0</span>, <span class="cn">300</span>, <span class="cn">50</span>, <span class="cs">"#FFD500"</span>)   <span class="cm"># жовтий прямокутник</span></pre>
+
+      <div class="warn-box">
+        <strong>Кількість аргументів повинна збігатись з кількістю параметрів!</strong><br>
+        Якщо функція має 5 параметрів — треба передати рівно 5 аргументів. Більше або менше → <code>TypeError</code>.
+      </div>
+
+      <div class="try-box">
+        <div class="try-label">Спробуй сам!</div>
+        <ul>
+          <li>Запусти <code>draw_rect</code> — два прямокутники один під одним (прапор України!)</li>
+          <li>Зміни параметри: намалюй 3 кольорові смуги одна над одною</li>
+          <li>Навмисне передай 4 аргументи замість 5 → прочитай помилку</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- КРОК 3 — SETHEADING                                    -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="step">
+  <div class="step-num">03</div>
+  <div class="step-inner">
+    <div class="step-title">setheading() — скидаємо напрям</div>
+    <div class="step-sub">абсолютний кут · 0° вправо · 90° вгору · перший рядок у кожній функції</div>
+    <div class="step-body">
+
+      <p>Черепашка пам'ятає куди вона дивиться після попередніх команд. Якщо функція залишила черепашку повернутою під кутом — наступний виклик тієї ж функції дасть інший результат. <code>setheading()</code> виправляє це:</p>
+
+      <table class="cmd-table">
+        <tr><th>Команда</th><th>Напрям</th></tr>
+        <tr><td>t.setheading(0)</td><td>Вправо (→) — стандартний початок</td></tr>
+        <tr><td>t.setheading(90)</td><td>Вгору (↑)</td></tr>
+        <tr><td>t.setheading(180)</td><td>Вліво (←)</td></tr>
+        <tr><td>t.setheading(270)</td><td>Вниз (↓)</td></tr>
+      </table>
+
+      <div class="compare">
+        <div class="compare-block">
+          <div class="compare-label bad">Без setheading — другий квадрат кривий</div>
+          <div class="compare-code"><span class="ck">def</span> <span class="cf">draw_square</span>(x, y, size):
+    t.<span class="cf">penup</span>(); t.<span class="cf">goto</span>(x, y); t.<span class="cf">pendown</span>()
+    <span class="cm"># Не скидаємо напрям!</span>
+    <span class="ck">for</span> _ <span class="ck">in</span> <span class="cf">range</span>(<span class="cn">4</span>):
+        t.<span class="cf">forward</span>(size); t.<span class="cf">right</span>(<span class="cn">90</span>)
+
+<span class="cm"># Перший — нормальний</span>
+<span class="cf">draw_square</span>(-<span class="cn">100</span>, <span class="cn">0</span>, <span class="cn">80</span>)
+t.<span class="cf">right</span>(<span class="cn">45</span>)  <span class="cm"># черепашка повернута!</span>
+<span class="cm"># Другий — повернений під кутом 45°</span>
+<span class="cf">draw_square</span>(<span class="cn">50</span>, <span class="cn">0</span>, <span class="cn">80</span>)</div>
+        </div>
+        <div class="compare-block">
+          <div class="compare-label good">З setheading — завжди рівний квадрат</div>
+          <div class="compare-code"><span class="ck">def</span> <span class="cf">draw_square</span>(x, y, size):
+    t.<span class="cf">penup</span>(); t.<span class="cf">goto</span>(x, y); t.<span class="cf">pendown</span>()
+    t.<span class="cf">setheading</span>(<span class="cn">0</span>)  <span class="cm"># ← завжди скидаємо!</span>
+    <span class="ck">for</span> _ <span class="ck">in</span> <span class="cf">range</span>(<span class="cn">4</span>):
+        t.<span class="cf">forward</span>(size); t.<span class="cf">right</span>(<span class="cn">90</span>)
+
+<span class="cm"># Перший — нормальний</span>
+<span class="cf">draw_square</span>(-<span class="cn">100</span>, <span class="cn">0</span>, <span class="cn">80</span>)
+t.<span class="cf">right</span>(<span class="cn">45</span>)  <span class="cm"># черепашка повернута</span>
+<span class="cm"># Другий — теж рівний! setheading() виправив</span>
+<span class="cf">draw_square</span>(<span class="cn">50</span>, <span class="cn">0</span>, <span class="cn">80</span>)</div>
+        </div>
+      </div>
+
+      <div class="tip-box">
+        <strong>Правило: перший рядок у кожній функції-малювальнику — <code>setheading(0)</code></strong><br>
+        Це робить функцію <em>передбачуваною</em> — незалежно від того, де і як її викликають, вона завжди малює однаково. Це важлива частина написання «чистих» функцій.
+      </div>
+
+      <div class="try-box">
+        <div class="try-label">Спробуй сам!</div>
+        <ul>
+          <li>Запусти обидва варіанти — бачиш різницю?</li>
+          <li>Спробуй <code>setheading(45)</code> — під яким кутом малюється квадрат?</li>
+          <li>Що дає <code>setheading(90)</code> + прямокутник — вертикальна смуга?</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- КРОК 4 — ТРИ ФУНКЦІЇ + БУДИНОК З ПАРКАНОМ              -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="step">
+  <div class="step-num">04</div>
+  <div class="step-inner">
+    <div class="step-title">Три функції-цеглинки → будинок з парканом</div>
+    <div class="step-sub">draw_rect · draw_triangle · draw_regular_polygon · for у функції · зв'язок з уроком 3</div>
+    <div class="step-body">
+
+      <p>Побудуємо три базові функції. Кожна з них корисна сама по собі, але разом вони дозволяють описати будь-яку сцену кількома рядками.</p>
+
+      <pre class="code-block"><span class="ck">import</span> turtle
+t = turtle.<span class="cf">Turtle</span>()
+t.<span class="cf">speed</span>(<span class="cn">0</span>); t.<span class="cf">hideturtle</span>()
+
+<span class="ck">def</span> <span class="cf">draw_rect</span>(x, y, w, h, color):
+    <span class="cm"># прямокутник — стіна, двері, паркан, будь-що</span>
+    t.<span class="cf">penup</span>(); t.<span class="cf">goto</span>(x, y); t.<span class="cf">pendown</span>()
+    t.<span class="cf">setheading</span>(<span class="cn">0</span>)
+    t.<span class="cf">fillcolor</span>(color); t.<span class="cf">begin_fill</span>()
+    <span class="ck">for</span> side <span class="ck">in</span> [w, h, w, h]: t.<span class="cf">forward</span>(side); t.<span class="cf">right</span>(<span class="cn">90</span>)
+    t.<span class="cf">end_fill</span>()
+
+<span class="ck">def</span> <span class="cf">draw_triangle</span>(x, y, size, color):
+    <span class="cm"># рівносторонній трикутник — дах</span>
+    t.<span class="cf">penup</span>(); t.<span class="cf">goto</span>(x, y); t.<span class="cf">pendown</span>()
+    t.<span class="cf">setheading</span>(<span class="cn">0</span>)
+    t.<span class="cf">fillcolor</span>(color); t.<span class="cf">begin_fill</span>()
+    <span class="ck">for</span> _ <span class="ck">in</span> <span class="cf">range</span>(<span class="cn">3</span>): t.<span class="cf">forward</span>(size); t.<span class="cf">left</span>(<span class="cn">120</span>)
+    t.<span class="cf">end_fill</span>()
+
+<span class="ck">def</span> <span class="cf">draw_regular_polygon</span>(x, y, n, size, color):
+    <span class="cm"># правильний многокутник з n сторін — вікно, квітка, зірка</span>
+    t.<span class="cf">penup</span>(); t.<span class="cf">goto</span>(x, y); t.<span class="cf">pendown</span>()
+    t.<span class="cf">setheading</span>(<span class="cn">0</span>)
+    t.<span class="cf">fillcolor</span>(color); t.<span class="cf">begin_fill</span>()
+    <span class="ck">for</span> _ <span class="ck">in</span> <span class="cf">range</span>(n): t.<span class="cf">forward</span>(size); t.<span class="cf">left</span>(<span class="cn">360</span> / n)
+    t.<span class="cf">end_fill</span>()</pre>
+
+      <div class="tip-box">
+        <strong>draw_regular_polygon — одна функція, нескінченно форм:</strong><br>
+        n=3 → трикутник · n=4 → квадрат · n=5 → п'ятикутник · n=6 → шестикутник · n=12 → майже коло.<br>
+        <code>360 / n</code> — кут повороту: чим більше сторін, тим менший поворот після кожної.
+      </div>
+
+      <p>Тепер збираємо будинок. <code>draw_house</code> викликає інші функції — <em>одна функція всередині іншої</em>. Паркан малюється через <code>for</code> всередині <code>draw_fence</code>:</p>
+
+      <pre class="code-block"><span class="ck">def</span> <span class="cf">draw_house</span>(x, y, size, wall_color, roof_color):
+    wall_h = size                                          <span class="cm"># висота стіни = size</span>
+    <span class="cf">draw_rect</span>(x, y, size, wall_h, wall_color)              <span class="cm"># стіна</span>
+    win = size // <span class="cn">4</span>                                        <span class="cm"># розмір вікна — похідний від size</span>
+    <span class="cf">draw_regular_polygon</span>(x + size//<span class="cn">4</span>, y + size//<span class="cn">2</span>, <span class="cn">4</span>, win, <span class="cs">"#87CEEB"</span>)  <span class="cm"># вікно-квадрат</span>
+    door_w = size // <span class="cn">3</span>
+    <span class="cf">draw_rect</span>(x + size//<span class="cn">3</span>, y, door_w, size//<span class="cn">2</span>, <span class="cs">"#8B4513"</span>)  <span class="cm"># двері</span>
+    <span class="cf">draw_triangle</span>(x, y + wall_h, size, roof_color)         <span class="cm"># дах зверху</span>
+
+<span class="ck">def</span> <span class="cf">draw_fence</span>(x, y, width, color):
+    post_w = <span class="cn">8</span>
+    step   = <span class="cn">20</span>                                            <span class="cm"># крок між стовпчиками</span>
+    <span class="ck">for</span> i <span class="ck">in</span> <span class="cf">range</span>(width // step):                         <span class="cm"># скільки стовпчиків влізе</span>
+        <span class="cf">draw_rect</span>(x + i * step, y, post_w, <span class="cn">28</span>, color)
+    <span class="cf">draw_rect</span>(x, y + <span class="cn">18</span>, width, <span class="cn">6</span>, color)                  <span class="cm"># горизонтальна планка</span>
+
+<span class="cm"># ── Будуємо сцену ──</span>
+<span class="cm"># Трава</span>
+<span class="cf">draw_rect</span>(-<span class="cn">280</span>, -<span class="cn">120</span>, <span class="cn">560</span>, <span class="cn">60</span>, <span class="cs">"#4a7c2f"</span>)
+
+<span class="cm"># Два будинки з парканами</span>
+<span class="cf">draw_house</span>(-<span class="cn">220</span>, -<span class="cn">60</span>, <span class="cn">90</span>, <span class="cs">"#f0c87a"</span>, <span class="cs">"#c0392b"</span>)
+<span class="cf">draw_fence</span>(-<span class="cn">240</span>, -<span class="cn">120</span>, <span class="cn">130</span>, <span class="cs">"#8B4513"</span>)
+
+<span class="cf">draw_house</span>(  <span class="cn">30</span>, -<span class="cn">60</span>, <span class="cn">90</span>, <span class="cs">"#a8d8ea"</span>, <span class="cs">"#6c3483"</span>)
+<span class="cf">draw_fence</span>(  <span class="cn">10</span>, -<span class="cn">120</span>, <span class="cn">130</span>, <span class="cs">"#5d4037"</span>)
+
+turtle.<span class="cf">done</span>()</pre>
+
+      <div class="tip-box">
+        <strong>Змінні всередині функції:</strong> <code>win = size // 4</code>, <code>door_w = size // 3</code> — ці значення автоматично масштабуються разом із <code>size</code>. Зміниш один параметр — весь будинок перемасштабується пропорційно.
+      </div>
+
+      <div class="try-box">
+        <div class="try-label">Спробуй сам!</div>
+        <ul>
+          <li>Запусти — два будинки, трава, два паркани?</li>
+          <li>Зміни <code>size=90</code> на <code>size=60</code> у першому будинку — всі частини стали меншими?</li>
+          <li>Заміни <code>n=4</code> у вікні на <code>n=6</code> — шестикутне вікно замість квадратного</li>
+          <li>Додай третій будинок з <code>x=200</code> і парканом поруч</li>
+          <li>Бонус: зроби <code>for i in range(3):</code> для вулиці з трьох будинків через списки кольорів</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- КРОК 5 — ФЕЄРВЕРК ЧЕРЕЗ ФУНКЦІЇ                        -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="step">
+  <div class="step-num">05</div>
+  <div class="step-inner">
+    <div class="step-title">Рефакторинг — Феєрверк через функції</div>
+    <div class="step-sub">зв'язок з уроком 4 · draw_explosion() · той самий результат — чистіший код</div>
+    <div class="step-body">
+
+      <p>На уроці 4 ти малював феєрверк. Погляньмо на той код і переробимо його через <code>def</code> — без зміни результату, але з набагато зрозумілішою структурою.</p>
+
+      <div class="compare">
+        <div class="compare-block">
+          <div class="compare-label bad">Урок 4 — без функцій</div>
+          <div class="compare-code"><span class="ck">for</span> i <span class="ck">in</span> <span class="cf">range</span>(<span class="cn">6</span>):
+    x = random.<span class="cf">randint</span>(-<span class="cn">220</span>, <span class="cn">220</span>)
+    y = random.<span class="cf">randint</span>(-<span class="cn">150</span>, <span class="cn">150</span>)
+    t.<span class="cf">penup</span>(); t.<span class="cf">goto</span>(x, y)
+    t.<span class="cf">setheading</span>(<span class="cn">0</span>)
+
+    <span class="ck">for</span> angle <span class="ck">in</span> <span class="cf">range</span>(<span class="cn">0</span>, <span class="cn">360</span>, <span class="cn">15</span>):
+        length = random.<span class="cf">randint</span>(<span class="cn">20</span>, <span class="cn">80</span>)
+        <span class="ck">if</span> length > <span class="cn">60</span>:
+            t.<span class="cf">pencolor</span>(<span class="cs">"gold"</span>)
+        <span class="ck">elif</span> length > <span class="cn">40</span>:
+            t.<span class="cf">pencolor</span>(<span class="cs">"red"</span>)
+        <span class="ck">else</span>:
+            t.<span class="cf">pencolor</span>(<span class="cs">"blue"</span>)
+        t.<span class="cf">pendown</span>()
+        t.<span class="cf">forward</span>(length)
+        t.<span class="cf">backward</span>(length)
+        t.<span class="cf">left</span>(<span class="cn">15</span>)</div>
+        </div>
+        <div class="compare-block">
+          <div class="compare-label good">Урок 5 — з функцією</div>
+          <div class="compare-code"><span class="ck">def</span> <span class="cf">draw_explosion</span>(x, y):
+    t.<span class="cf">penup</span>(); t.<span class="cf">goto</span>(x, y)
+    t.<span class="cf">setheading</span>(<span class="cn">0</span>)
+
+    <span class="ck">for</span> angle <span class="ck">in</span> <span class="cf">range</span>(<span class="cn">0</span>, <span class="cn">360</span>, <span class="cn">15</span>):
+        length = random.<span class="cf">randint</span>(<span class="cn">20</span>, <span class="cn">80</span>)
+        <span class="ck">if</span> length > <span class="cn">60</span>:
+            t.<span class="cf">pencolor</span>(<span class="cs">"gold"</span>)
+        <span class="ck">elif</span> length > <span class="cn">40</span>:
+            t.<span class="cf">pencolor</span>(<span class="cs">"red"</span>)
+        <span class="ck">else</span>:
+            t.<span class="cf">pencolor</span>(<span class="cs">"blue"</span>)
+        t.<span class="cf">pendown</span>()
+        t.<span class="cf">forward</span>(length)
+        t.<span class="cf">backward</span>(length)
+        t.<span class="cf">left</span>(<span class="cn">15</span>)
+
+<span class="ck">for</span> i <span class="ck">in</span> <span class="cf">range</span>(<span class="cn">6</span>):
+    x = random.<span class="cf">randint</span>(-<span class="cn">220</span>, <span class="cn">220</span>)
+    y = random.<span class="cf">randint</span>(-<span class="cn">150</span>, <span class="cn">150</span>)
+    <span class="cf">draw_explosion</span>(x, y)</div>
+        </div>
+      </div>
+
+      <p>Результат на екрані — <strong>абсолютно однаковий</strong>. Але тепер зовнішній цикл читається як текст: «6 разів — намалюй вибух у випадковому місці». Логіка вибуху прихована всередині функції і не засмічує основний код.</p>
+
+      <div class="tip-box">
+        <strong>Що змінилось і чому це краще:</strong><br>
+        Хочеш намалювати 12 вибухів? Міняєш тільки <code>range(6)</code> → <code>range(12)</code>.<br>
+        Хочеш густіший вибух? Міняєш тільки крок у <code>range(0, 360, 15)</code> — всередині функції.<br>
+        Хочеш ще одну позицію вибуху? <code>draw_explosion(0, 0)</code> — один рядок.
+      </div>
+
+      <p>Ось повний код для запуску:</p>
+
+      <pre class="code-block"><span class="ck">import</span> turtle
+<span class="ck">import</span> random
+
+screen = turtle.<span class="cf">Screen</span>()
+screen.<span class="cf">bgcolor</span>(<span class="cs">"black"</span>)
+
+t = turtle.<span class="cf">Turtle</span>()
+t.<span class="cf">speed</span>(<span class="cn">0</span>)
+t.<span class="cf">hideturtle</span>()
+
+<span class="ck">def</span> <span class="cf">draw_explosion</span>(x, y):
+    t.<span class="cf">penup</span>()
+    t.<span class="cf">goto</span>(x, y)
+    t.<span class="cf">setheading</span>(<span class="cn">0</span>)
+
+    <span class="ck">for</span> angle <span class="ck">in</span> <span class="cf">range</span>(<span class="cn">0</span>, <span class="cn">360</span>, <span class="cn">15</span>):
+        length = random.<span class="cf">randint</span>(<span class="cn">20</span>, <span class="cn">80</span>)
+        <span class="ck">if</span> length > <span class="cn">60</span>:
+            t.<span class="cf">pencolor</span>(<span class="cs">"gold"</span>)
+        <span class="ck">elif</span> length > <span class="cn">40</span>:
+            t.<span class="cf">pencolor</span>(<span class="cs">"red"</span>)
+        <span class="ck">else</span>:
+            t.<span class="cf">pencolor</span>(<span class="cs">"blue"</span>)
+        t.<span class="cf">pendown</span>()
+        t.<span class="cf">forward</span>(length)
+        t.<span class="cf">backward</span>(length)
+        t.<span class="cf">penup</span>()
+        t.<span class="cf">left</span>(<span class="cn">15</span>)
+
+<span class="ck">for</span> i <span class="ck">in</span> <span class="cf">range</span>(<span class="cn">6</span>):
+    x = random.<span class="cf">randint</span>(-<span class="cn">220</span>, <span class="cn">220</span>)
+    y = random.<span class="cf">randint</span>(-<span class="cn">150</span>, <span class="cn">150</span>)
+    <span class="cf">draw_explosion</span>(x, y)
+
+turtle.<span class="cf">done</span>()</pre>
+
+      <!-- fireworks canvas preview -->
+      <canvas id="fw2" width="480" height="240" style="display:block; background:#000; border:1px solid #202540; border-radius:8px; margin:16px 0;"></canvas>
+      <script>
+      (function(){
+        var c = document.getElementById('fw2');
+        var ctx = c.getContext('2d');
+        var explosions = [
+          {x:80,  y:60},
+          {x:220, y:120},
+          {x:370, y:50},
+          {x:140, y:190},
+          {x:310, y:185},
+          {x:430, y:130},
+        ];
+        var seed = 7;
+        function rand(min, max) {
+          seed = (seed * 1664525 + 1013904223) & 0xffffffff;
+          return min + Math.abs(seed % (max - min + 1));
+        }
+        explosions.forEach(function(e) {
+          for (var a = 0; a < 360; a += 15) {
+            var len = rand(20, 80);
+            if (len > 60)      ctx.strokeStyle = 'gold';
+            else if (len > 40) ctx.strokeStyle = '#ff4444';
+            else               ctx.strokeStyle = '#5b9cf6';
+            ctx.lineWidth = 1.5;
+            var rad = a * Math.PI / 180;
+            ctx.beginPath();
+            ctx.moveTo(e.x, e.y);
+            ctx.lineTo(e.x + Math.cos(rad) * len, e.y - Math.sin(rad) * len);
+            ctx.stroke();
+          }
+        });
+        // label
+        ctx.fillStyle = 'rgba(255,255,255,0.3)';
+        ctx.font = '11px monospace';
+        ctx.fillText('draw_explosion(x, y)  ×6', 12, 228);
+      })();
+      </script>
+
+      <div class="try-box">
+        <div class="try-label">Спробуй сам!</div>
+        <ul>
+          <li>Запусти — той самий феєрверк, що на уроці 4, але тепер через функцію</li>
+          <li>Зміни <code>range(6)</code> на <code>range(12)</code> — стало більше вибухів без змін у функції?</li>
+          <li>Зміни крок на <code>range(0, 360, 10)</code> — густіший вибух?</li>
+          <li>Бонус: додай параметр <code>draw_explosion(x, y, step=15)</code> і виклич з різними кроками для різних вибухів</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════ -->
+<!-- КРОК 6 — ПРАКТИКА: КВІТИ НА ГАЛЯВИНІ                   -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="step">
+  <div class="step-num">06</div>
+  <div class="step-inner">
+    <div class="step-title">Практика — Квіти на галявині</div>
+    <div class="step-sub">draw_regular_polygon · for · random · змінна з параметра · пелюстки навколо центра</div>
+    <div class="step-body">
+
+      <p>Намалюй галявину з <strong>8–10 квіток</strong>. Кожна квітка — це 6 пелюсток і жовтий центр. Пелюстки — це кола, розставлені по колу. Це перше самостійне завдання уроку — пробуй, роби помилки, читай підказки.</p>
+
+      <!-- flowers canvas -->
+      <canvas id="flowers" width="480" height="220" style="display:block; background:#1a2e0a; border:1px solid #202540; border-radius:8px; margin:16px 0;"></canvas>
+      <script>
+      (function(){
+        var c = document.getElementById('flowers');
+        var ctx = c.getContext('2d');
+        // grass
+        ctx.fillStyle = '#2d5a1b';
+        ctx.fillRect(0, 160, 480, 60);
+        var seed = 17;
+        function rand(a, b) {
+          seed = (seed * 1664525 + 1013904223) & 0xffffffff;
+          return a + Math.abs(seed % (b - a + 1));
+        }
+        var cols = ['#ff9ff3','#ff6b6b','#feca57','#48dbfb','#ff9f43','#ee5a24'];
+        function drawFlower(cx, cy, size, col) {
+          var pr = size / 2;
+          for (var a = 0; a < 360; a += 60) {
+            var rad = a * Math.PI / 180;
+            var px = cx + Math.cos(rad) * size;
+            var py = cy - Math.sin(rad) * size;
+            ctx.beginPath();
+            ctx.arc(px, py, pr, 0, Math.PI * 2);
+            ctx.fillStyle = col;
+            ctx.globalAlpha = 0.85;
+            ctx.fill();
+          }
+          ctx.beginPath();
+          ctx.arc(cx, cy, size / 2.5, 0, Math.PI * 2);
+          ctx.fillStyle = '#ffd700';
+          ctx.globalAlpha = 1;
+          ctx.fill();
+        }
+        for (var i = 0; i < 9; i++) {
+          var x = rand(35, 445);
+          var y = rand(130, 175);
+          var s = rand(14, 26);
+          var col = cols[rand(0, cols.length - 1)];
+          drawFlower(x, y, s, col);
+        }
+        ctx.fillStyle = 'rgba(255,255,255,0.25)';
+        ctx.font = '11px monospace';
+        ctx.globalAlpha = 1;
+        ctx.fillText('draw_flower(x, y, size, color)  ×9', 12, 212);
+      })();
+      </script>
+
+      <p><strong>Як влаштована одна квітка:</strong> 6 пелюсток рівномірно навколо центра. Кожна пелюстка — це коло. Щоб розмістити коло навколо центра, черепашка дивиться у бік пелюстки (<code>setheading</code>), рухається вперед на відстань <code>size</code>, малює коло радіусом <code>size // 2</code>, потім повертається в центр (<code>goto</code>).</p>
+
+      <table class="cmd-table">
+        <tr><th>Що треба зробити</th><th>Яким інструментом</th></tr>
+        <tr>
+          <td>Намалювати одну квітку</td>
+          <td><code>def draw_flower(x, y, size, color):</code></td>
+        </tr>
+        <tr>
+          <td>Розмір пелюстки залежить від size</td>
+          <td>Змінна всередині: <code>petal = size // 2</code></td>
+        </tr>
+        <tr>
+          <td>6 пелюсток рівномірно</td>
+          <td><code>for angle in range(0, 360, 60):</code> + <code>setheading(angle)</code></td>
+        </tr>
+        <tr>
+          <td>Поставити черепашку до пелюстки</td>
+          <td><code>forward(size)</code> → малюємо коло → <code>penup(); goto(x, y)</code></td>
+        </tr>
+        <tr>
+          <td>Жовтий центр поверх пелюсток</td>
+          <td><code>goto(x, y)</code> → <code>circle(petal // 2)</code> із жовтим fill</td>
+        </tr>
+        <tr>
+          <td>Зелений фон</td>
+          <td><code>draw_rect(-280, -160, 560, 80, "#2d5a1b")</code> — трава знизу</td>
+        </tr>
+        <tr>
+          <td>8–10 квіток у випадкових місцях</td>
+          <td>Зовнішній <code>for</code> + <code>random.randint()</code> + <code>random.choice()</code></td>
+        </tr>
+      </table>
+
+      <div class="warn-box">
+        <strong>Типова пастка — черепашка не повертається в центр:</strong><br>
+        Після <code>forward(size)</code> черепашка знаходиться біля пелюстки. Після малювання кола — там само. Щоб намалювати наступну пелюстку від центра, потрібно зробити <code>penup(); goto(x, y)</code> явно — <code>backward(size)</code> не спрацює, бо напрям після кола змінився.
+      </div>
+
+      <div class="try-box">
+        <div class="try-label">Здай роботу (1-й рівень)</div>
+        <ul>
+          <li>Функція <code>draw_flower</code> написана і використана</li>
+          <li>8+ квіток у випадкових місцях, зелений фон-трава</li>
+          <li>Змінна <code>petal = size // 2</code> є всередині функції</li>
+          <li>Бонус: <code>random.choice(["#ff9ff3", "#ff6b6b", "#feca57", "#48dbfb"])</code> для кольору</li>
+          <li>Бонус 2: якщо квітка велика (<code>size > 25</code>) — <code>if/elif</code> для зміни кольору центра</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- КРОК 7 — ПРАКТИКА: ПОЛЕ СНІЖИНОК                       -->
+<!-- ══════════════════════════════════════════════════════ -->
+<div class="step">
+  <div class="step-num">07</div>
+  <div class="step-inner">
+    <div class="step-title">Практика — Поле сніжинок</div>
+    <div class="step-sub">def · параметри · змінна з параметра · for · random · все разом</div>
+    <div class="step-body">
+
+      <p>Намалюй поле з <strong>15 сніжинок</strong> на чорному фоні. Кожна сніжинка — у випадковому місці, випадкового розміру. Завдання вимагає поєднати <em>всі чотири інструменти уроку</em>: <code>def</code>, параметри, <code>for</code> і <code>random</code>.</p>
+
+      <!-- canvas preview -->
+      <canvas id="snow" width="480" height="260" style="display:block; background:#000; border:1px solid #202540; border-radius:8px; margin:16px 0;"></canvas>
+      <script>
+      (function(){
+        var c = document.getElementById('snow');
+        var ctx = c.getContext('2d');
+        var seed = 31;
+        function rand(a, b) {
+          seed = (seed * 1664525 + 1013904223) & 0xffffffff;
+          return a + Math.abs(seed % (b - a + 1));
+        }
+        function drawSnowflake(cx, cy, size) {
+          var branch = size / 3;
+          for (var a = 0; a < 360; a += 60) {
+            var rad = a * Math.PI / 180;
+            var ex = cx + Math.cos(rad) * size;
+            var ey = cy - Math.sin(rad) * size;
+            ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(ex, ey); ctx.stroke();
+            // two sub-branches at ±60°
+            [a + 60, a - 60].forEach(function(ba) {
+              var halfRad = a * Math.PI / 180;
+              var bRad = ba * Math.PI / 180;
+              var mx = cx + Math.cos(halfRad) * (size * 0.55);
+              var my = cy - Math.sin(halfRad) * (size * 0.55);
+              ctx.beginPath(); ctx.moveTo(mx, my);
+              ctx.lineTo(mx + Math.cos(bRad) * branch, my - Math.sin(bRad) * branch);
+              ctx.stroke();
+            });
+          }
+        }
+        ctx.strokeStyle = 'rgba(180,220,255,0.85)';
+        ctx.lineWidth = 1.2;
+        for (var i = 0; i < 15; i++) {
+          var x = rand(30, 450);
+          var y = rand(25, 235);
+          var s = rand(15, 45);
+          drawSnowflake(x, y, s);
+        }
+        ctx.fillStyle = 'rgba(255,255,255,0.25)';
+        ctx.font = '11px monospace';
+        ctx.fillText('draw_snowflake(x, y, size)  ×15', 12, 252);
+      })();
+      </script>
+
+      <p><strong>Як влаштована одна сніжинка:</strong> 6 гілок, рівномірно через кожні 60°. На кожній гілці — дві коротші гілочки, відхилені на 60° в боки. Довжина гілочок залежить від розміру сніжинки.</p>
+
+      <table class="cmd-table">
+        <tr><th>Що треба зробити</th><th>Яким інструментом</th></tr>
+        <tr>
+          <td>Намалювати одну сніжинку</td>
+          <td><code>def draw_snowflake(x, y, size):</code> — функція з трьома параметрами</td>
+        </tr>
+        <tr>
+          <td>Розрахувати довжину гілочок</td>
+          <td>Змінна всередині функції: <code>branch = size // 3</code></td>
+        </tr>
+        <tr>
+          <td>6 гілок рівно через 60°</td>
+          <td><code>for angle in range(0, 360, 60):</code> + <code>setheading(angle)</code></td>
+        </tr>
+        <tr>
+          <td>Намалювати гілку і повернутись</td>
+          <td><code>forward(size)</code> → дві гілочки → <code>backward(size)</code></td>
+        </tr>
+        <tr>
+          <td>15 сніжинок у випадкових місцях</td>
+          <td>Зовнішній <code>for</code> + <code>random.randint()</code> для x, y, size</td>
+        </tr>
+      </table>
+
+      <div class="tip-box">
+        <strong>Підказка — як намалювати одну гілку з гілочками:</strong><br>
+        Встанови напрям → <code>forward(size)</code> → повернись на 60° ліворуч →
+        <code>forward(branch)</code> → <code>backward(branch)</code> →
+        повернись на 120° праворуч →
+        <code>forward(branch)</code> → <code>backward(branch)</code> →
+        повернись на 60° ліворуч (назад до напряму гілки) → <code>backward(size)</code>.
+      </div>
+
+      <div class="warn-box">
+        <strong>Не забудь:</strong>
+        <ul>
+          <li>На початку функції: <code>setheading(0)</code> — інакше сніжинки будуть повернуті</li>
+          <li><code>penup()</code> перед <code>goto()</code>, <code>pendown()</code> перед малюванням</li>
+          <li>Чорний фон: <code>screen = turtle.Screen()</code> → <code>screen.bgcolor("black")</code></li>
+          <li>Зовнішній <code>for</code> — <strong>після</strong> визначення функції</li>
+        </ul>
+      </div>
+
+      <div class="try-box">
+        <div class="try-label">Здай роботу</div>
+        <ul>
+          <li>Збережи файл: <strong>Прізвище_Урок5.py</strong></li>
+          <li>15+ сніжинок різного розміру в різних місцях, чорний фон</li>
+          <li>Функція <code>draw_snowflake</code> визначена і використана</li>
+          <li>Змінна <code>branch</code> розраховується всередині функції через <code>size</code></li>
+          <li>Бонус: зроби колір залежним від розміру — великі сніжинки білі, малі — блакитні (<code>if/elif</code> з уроку 4)</li>
+          <li>Бонус 2: додай параметр <code>color</code> до функції і передавай <code>random.choice([...])</code></li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ══ ШПАРГАЛКА ══ -->
+<div class="slabel">Шпаргалка уроку 5</div>
+<div class="summary">
+  <div class="summary-head">Всі команди уроку 5</div>
+  <table>
+    <tr>
+      <th>Команда</th>
+      <th>Що робить</th>
+      <th>Приклад</th>
+    </tr>
+    <tr>
+      <td>def назва():</td>
+      <td>Визначає функцію. Тіло — з відступом. Спочатку визначення, потім виклик</td>
+      <td>def draw_square():</td>
+    </tr>
+    <tr>
+      <td>def назва(param):</td>
+      <td>Функція з параметром — змінна, яку передаємо при виклику</td>
+      <td>def draw_square(size):</td>
+    </tr>
+    <tr>
+      <td>назва(аргумент)</td>
+      <td>Виклик функції — передаємо значення аргументу</td>
+      <td>draw_square(80)</td>
+    </tr>
+    <tr>
+      <td>def f(a, b, c):</td>
+      <td>Кілька параметрів через кому</td>
+      <td>def draw_rect(x, y, w, h, color):</td>
+    </tr>
+    <tr>
+      <td>t.setheading(кут)</td>
+      <td>Встановлює абсолютний напрям черепашки. 0° → вправо, 90° → вгору</td>
+      <td>t.setheading(0)</td>
+    </tr>
+    <tr>
+      <td>Перший рядок у функції</td>
+      <td>Завжди <code>setheading(0)</code> — функція дає однаковий результат незалежно від стану черепашки</td>
+      <td>t.setheading(0)</td>
+    </tr>
+    <tr>
+      <td>for side in [w, h, w, h]:</td>
+      <td>Цикл по списку — малює 4 сторони прямокутника (w, h, w, h)</td>
+      <td>t.forward(side); t.right(90)</td>
+    </tr>
+    <tr>
+      <td>DRY</td>
+      <td>Don't Repeat Yourself — описати дію один раз у функції і викликати скільки треба</td>
+      <td>draw_house(x1, …); draw_house(x2, …)</td>
+    </tr>
+    <tr>
+      <td>список[i]</td>
+      <td>Доступ до i-го елемента списку (нумерація з 0)</td>
+      <td>walls[i], roofs[i]</td>
+    </tr>
+    <tr>
+      <td>draw_regular_polygon(x, y, n, size, color)</td>
+      <td>Правильний многокутник: n=3 трикутник, n=4 квадрат, n=6 шестикутник… <code>left(360/n)</code> всередині</td>
+      <td>draw_regular_polygon(x, y, 6, 30, "skyblue")</td>
+    </tr>
+    <tr>
+      <td>win = size // 4</td>
+      <td>Змінна всередині функції, похідна від параметра — масштабує всі розміри разом із size</td>
+      <td>def draw_house(x, y, size, …): win = size // 4</td>
+    </tr>
+    <tr>
+      <td>Рефакторинг</td>
+      <td>Переписати існуючий код з функціями — результат той самий, структура чистіша</td>
+      <td>draw_explosion(x, y) замість вкладених циклів</td>
+    </tr>
+  </table>
+</div>
+
+
+<footer>
+  <span>УРОК 5 · PYTHON TURTLE · САМОСТІЙНЕ ВИВЧЕННЯ · 7 КЛАС</span>
+  <span>TRINKET.IO · TURTLE GRAPHICS</span>
+</footer>
+
+</div>
+</body>
+</html>

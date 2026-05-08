@@ -1006,126 +1006,12 @@ turtle.<span class="cf">done</span>()</pre>
 </div>
 
 
-<!-- ══════════════════════════════════════════════════════ -->
-<!-- КРОК 6 — ПРАКТИКА: КВІТИ НА ГАЛЯВИНІ                   -->
+<!-- КРОК 6 — ПРАКТИКА: ПОЛЕ СНІЖИНОК                       -->
 <!-- ══════════════════════════════════════════════════════ -->
 <div class="step">
   <div class="step-num">06</div>
   <div class="step-inner">
-    <div class="step-title">Практика — Квіти на галявині</div>
-    <div class="step-sub">draw_regular_polygon · for · random · змінна з параметра · пелюстки навколо центра</div>
-    <div class="step-body">
-
-      <p>Намалюй галявину з <strong>8–10 квіток</strong>. Кожна квітка — це 6 пелюсток і жовтий центр. Пелюстки — це кола, розставлені по колу. Це перше самостійне завдання уроку — пробуй, роби помилки, читай підказки.</p>
-
-      <!-- flowers canvas -->
-      <canvas id="flowers" width="480" height="220" style="display:block; background:#1a2e0a; border:1px solid #202540; border-radius:8px; margin:16px 0;"></canvas>
-      <script>
-      (function(){
-        var c = document.getElementById('flowers');
-        var ctx = c.getContext('2d');
-        // grass
-        ctx.fillStyle = '#2d5a1b';
-        ctx.fillRect(0, 160, 480, 60);
-        var seed = 17;
-        function rand(a, b) {
-          seed = (seed * 1664525 + 1013904223) & 0xffffffff;
-          return a + Math.abs(seed % (b - a + 1));
-        }
-        var cols = ['#ff9ff3','#ff6b6b','#feca57','#48dbfb','#ff9f43','#ee5a24'];
-        function drawFlower(cx, cy, size, col) {
-          var pr = size / 2;
-          for (var a = 0; a < 360; a += 60) {
-            var rad = a * Math.PI / 180;
-            var px = cx + Math.cos(rad) * size;
-            var py = cy - Math.sin(rad) * size;
-            ctx.beginPath();
-            ctx.arc(px, py, pr, 0, Math.PI * 2);
-            ctx.fillStyle = col;
-            ctx.globalAlpha = 0.85;
-            ctx.fill();
-          }
-          ctx.beginPath();
-          ctx.arc(cx, cy, size / 2.5, 0, Math.PI * 2);
-          ctx.fillStyle = '#ffd700';
-          ctx.globalAlpha = 1;
-          ctx.fill();
-        }
-        for (var i = 0; i < 9; i++) {
-          var x = rand(35, 445);
-          var y = rand(130, 175);
-          var s = rand(14, 26);
-          var col = cols[rand(0, cols.length - 1)];
-          drawFlower(x, y, s, col);
-        }
-        ctx.fillStyle = 'rgba(255,255,255,0.25)';
-        ctx.font = '11px monospace';
-        ctx.globalAlpha = 1;
-        ctx.fillText('draw_flower(x, y, size, color)  ×9', 12, 212);
-      })();
-      </script>
-
-      <p><strong>Як влаштована одна квітка:</strong> 6 пелюсток рівномірно навколо центра. Кожна пелюстка — це коло. Щоб розмістити коло навколо центра, черепашка дивиться у бік пелюстки (<code>setheading</code>), рухається вперед на відстань <code>size</code>, малює коло радіусом <code>size // 2</code>, потім повертається в центр (<code>goto</code>).</p>
-
-      <table class="cmd-table">
-        <tr><th>Що треба зробити</th><th>Яким інструментом</th></tr>
-        <tr>
-          <td>Намалювати одну квітку</td>
-          <td><code>def draw_flower(x, y, size, color):</code></td>
-        </tr>
-        <tr>
-          <td>Розмір пелюстки залежить від size</td>
-          <td>Змінна всередині: <code>petal = size // 2</code></td>
-        </tr>
-        <tr>
-          <td>6 пелюсток рівномірно</td>
-          <td><code>for angle in range(0, 360, 60):</code> + <code>setheading(angle)</code></td>
-        </tr>
-        <tr>
-          <td>Поставити черепашку до пелюстки</td>
-          <td><code>forward(size)</code> → малюємо коло → <code>penup(); goto(x, y)</code></td>
-        </tr>
-        <tr>
-          <td>Жовтий центр поверх пелюсток</td>
-          <td><code>goto(x, y)</code> → <code>circle(petal // 2)</code> із жовтим fill</td>
-        </tr>
-        <tr>
-          <td>Зелений фон</td>
-          <td><code>draw_rect(-280, -160, 560, 80, "#2d5a1b")</code> — трава знизу</td>
-        </tr>
-        <tr>
-          <td>8–10 квіток у випадкових місцях</td>
-          <td>Зовнішній <code>for</code> + <code>random.randint()</code> + <code>random.choice()</code></td>
-        </tr>
-      </table>
-
-      <div class="warn-box">
-        <strong>Типова пастка — черепашка не повертається в центр:</strong><br>
-        Після <code>forward(size)</code> черепашка знаходиться біля пелюстки. Після малювання кола — там само. Щоб намалювати наступну пелюстку від центра, потрібно зробити <code>penup(); goto(x, y)</code> явно — <code>backward(size)</code> не спрацює, бо напрям після кола змінився.
-      </div>
-
-      <div class="try-box">
-        <div class="try-label">Здай роботу (1-й рівень)</div>
-        <ul>
-          <li>Функція <code>draw_flower</code> написана і використана</li>
-          <li>8+ квіток у випадкових місцях, зелений фон-трава</li>
-          <li>Змінна <code>petal = size // 2</code> є всередині функції</li>
-          <li>Бонус: <code>random.choice(["#ff9ff3", "#ff6b6b", "#feca57", "#48dbfb"])</code> для кольору</li>
-          <li>Бонус 2: якщо квітка велика (<code>size > 25</code>) — <code>if/elif</code> для зміни кольору центра</li>
-        </ul>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-
-<!-- КРОК 7 — ПРАКТИКА: ПОЛЕ СНІЖИНОК                       -->
-<!-- ══════════════════════════════════════════════════════ -->
-<div class="step">
-  <div class="step-num">07</div>
-  <div class="step-inner">
-    <div class="step-title">Практика — Поле сніжинок</div>
+    <div class="step-title">Самостійна — Поле сніжинок</div>
     <div class="step-sub">def · параметри · змінна з параметра · for · random · все разом</div>
     <div class="step-body">
 

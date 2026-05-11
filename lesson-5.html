@@ -492,15 +492,23 @@ t.<span class="cf">penup</span>(); t.<span class="cf">goto</span>(-<span class="
 <span class="cm"># ... і так 5+ разів</span></div>
         </div>
         <div class="compare-block">
-          <div class="compare-label good">Урок 5 — draw_rect один раз → виклик</div>
-          <div class="compare-code"><span class="ck">def</span> <span class="cf">draw_rect</span>(x, y, w, h, color):
-    t.<span class="cf">penup</span>(); t.<span class="cf">goto</span>(x, y); t.<span class="cf">setheading</span>(<span class="cn">0</span>)
-    t.<span class="cf">fillcolor</span>(color); t.<span class="cf">begin_fill</span>()
-    <span class="ck">for</span> s <span class="ck">in</span> [w, h, w, h]: t.<span class="cf">forward</span>(s); t.<span class="cf">right</span>(<span class="cn">90</span>)
+          <div class="compare-label good">Урок 5 — move_to та draw_rect один раз → виклик</div>
+          <div class="compare-code"><span class="ck">def</span> <span class="cf">move_to</span>(x, y):
+    t.<span class="cf">penup</span>()
+    t.<span class="cf">goto</span>(x, y)
+    t.<span class="cf">pendown</span>()
+
+<span class="ck">def</span> <span class="cf">draw_rect</span>(x, y, w, h, color):
+    t.<span class="cf">fillcolor</span>(color)
+    t.<span class="cf">begin_fill</span>()
+    <span class="ck">for</span> s <span class="ck">in</span> [w, h, w, h]:
+        t.<span class="cf">forward</span>(s)
+        t.<span class="cf">right</span>(<span class="cn">90</span>)
     t.<span class="cf">end_fill</span>()
 
 <span class="cm"># 5 стовпчиків — 5 рядків</span>
 <span class="ck">for</span> i <span class="ck">in</span> <span class="cf">range</span>(<span class="cn">5</span>):
+    <span class="cf">move_to</span>(-<span class="cn">100</span> + i*<span class="cn">25</span>, -<span class="cn">80</span>)
     <span class="cf">draw_rect</span>(-<span class="cn">100</span> + i*<span class="cn">25</span>, -<span class="cn">80</span>, <span class="cn">10</span>, <span class="cn">35</span>, <span class="cs">"#8B4513"</span>)</div>
         </div>
       </div>
@@ -510,9 +518,14 @@ t.<span class="cf">penup</span>(); t.<span class="cf">goto</span>(-<span class="
       <table class="cmd-table">
         <tr><th>Функція</th><th>Для чого</th><th>Параметри</th></tr>
         <tr>
+          <td>move_to(x, y)</td>
+          <td>Перемістити черепашку в точку без лінії (penup → goto → pendown)</td>
+          <td>x, y</td>
+        </tr>
+        <tr>
           <td>draw_rect(x, y, w, h, color)</td>
-          <td>Будь-який прямокутник: стіна, двері, паркан, трава</td>
-          <td>позиція, розмір, колір</td>
+          <td>Залити прямокутник з поточної позиції: стіна, двері, паркан, трава</td>
+          <td>позиція (для однакових викликів), розмір, колір</td>
         </tr>
         <tr>
           <td>draw_triangle(x, y, size, color)</td>

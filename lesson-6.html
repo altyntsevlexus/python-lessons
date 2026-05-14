@@ -395,107 +395,6 @@ h1 .y { color: var(--moon); }
   color: var(--muted);
 }
 
-/* ── ADMIN PANEL ── */
-#admin-panel {
-  position: fixed;
-  top: 16px;
-  right: 16px;
-  z-index: 9999;
-  background: var(--card);
-  border: 1px solid rgba(255,170,48,.45);
-  border-radius: 10px;
-  padding: 16px 18px;
-  width: 290px;
-  box-shadow: 0 6px 28px rgba(0,0,0,.6);
-}
-.ap-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 14px;
-}
-.ap-title {
-  font-family: 'Source Code Pro', monospace;
-  font-size: 10px;
-  letter-spacing: 2px;
-  font-weight: 700;
-  color: var(--s-col);
-}
-.ap-badge {
-  font-family: 'Source Code Pro', monospace;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  padding: 3px 9px;
-  border-radius: 4px;
-  border: 1px solid;
-}
-.ap-badge.ap-open   { color: var(--v-col); border-color: rgba(80,227,164,.4); background: rgba(80,227,164,.1); }
-.ap-badge.ap-closed { color: var(--p-col); border-color: rgba(255,92,92,.4);  background: rgba(255,92,92,.1); }
-.ap-badge.ap-loading { color: var(--muted); border-color: var(--border2); }
-.ap-input {
-  display: block;
-  width: 100%;
-  background: rgba(255,255,255,.04);
-  border: 1px solid var(--border2);
-  border-radius: 4px;
-  color: var(--text);
-  font-family: 'Source Code Pro', monospace;
-  font-size: 11px;
-  padding: 6px 8px;
-  margin-bottom: 8px;
-  outline: none;
-}
-.ap-input:focus { border-color: var(--s-col); }
-.ap-input::placeholder { color: var(--muted); }
-.ap-save-btn {
-  width: 100%;
-  padding: 8px;
-  background: rgba(255,170,48,.12);
-  border: 1px solid rgba(255,170,48,.4);
-  border-radius: 5px;
-  color: var(--s-col);
-  font-family: 'Montserrat', sans-serif;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  margin-bottom: 4px;
-}
-.ap-save-btn:hover { background: rgba(255,170,48,.22); }
-.ap-toggle {
-  width: 100%;
-  padding: 10px;
-  border: none;
-  border-radius: 6px;
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 700;
-  font-size: 13px;
-  cursor: pointer;
-  transition: opacity .15s;
-}
-.ap-toggle:hover:not(:disabled) { opacity: .85; }
-.ap-toggle:disabled { opacity: .5; cursor: not-allowed; }
-.ap-toggle.is-open  { background: var(--p-col); color: #fff; }
-.ap-toggle.is-closed { background: var(--v-col); color: #000; }
-.ap-note {
-  margin-top: 10px;
-  font-size: 10px;
-  color: var(--muted);
-  font-family: 'Source Code Pro', monospace;
-  line-height: 1.6;
-}
-.ap-edit-link {
-  display: inline-block;
-  margin-top: 8px;
-  font-size: 10px;
-  color: var(--muted);
-  cursor: pointer;
-  font-family: 'Source Code Pro', monospace;
-  text-decoration: underline;
-  background: none;
-  border: none;
-  padding: 0;
-}
 .vc-header {
   padding: 14px 18px;
   display: flex;
@@ -721,24 +620,6 @@ footer span {
 </head>
 <body>
 
-<!-- ADMIN PANEL (visible only when ?admin=ortlyc141) -->
-<div id="admin-panel" hidden>
-  <div class="ap-row">
-    <span class="ap-title">⚙ АДМІН</span>
-    <span id="ap-badge" class="ap-badge ap-loading">…</span>
-  </div>
-  <div id="ap-settings">
-    <input id="ap-owner" class="ap-input" placeholder="GitHub username">
-    <input id="ap-repo"  class="ap-input" placeholder="Назва репозиторію">
-    <input id="ap-token" class="ap-input" type="password" placeholder="Personal Access Token">
-    <button class="ap-save-btn" id="ap-save">Зберегти</button>
-  </div>
-  <div id="ap-actions" hidden>
-    <button class="ap-toggle" id="ap-toggle">…</button>
-    <button class="ap-edit-link" id="ap-edit">змінити налаштування</button>
-  </div>
-  <p class="ap-note">Зміни набувають чинності через ~30 сек після оновлення сторінки учнями.</p>
-</div>
 
 <div class="wrap">
 
@@ -1309,9 +1190,7 @@ const E = {
 };
 // ─────────────────────────────────────────────────────────────────────────────
 
-const params  = new URLSearchParams(location.search);
-const isAdmin = params.get('admin') === 'ortlyc141';
-const vParam  = params.get('v');
+const vParam = new URLSearchParams(location.search).get('v');
 
 // ── VARIANT PICKER ────────────────────────────────────────────────────────────
 function showVariant(letter) {
@@ -1325,26 +1204,15 @@ document.querySelectorAll('.picker-btn').forEach(btn => {
 });
 
 // ── TASK STATUS ───────────────────────────────────────────────────────────────
-async function loadStatus() {
+(async () => {
+  let isOpen = true;
   try {
     const r = await fetch('config.json?t=' + Date.now());
     const cfg = await r.json();
-    return cfg.lessons?.['6'] === true;
-  } catch { return true; } // if unreachable, show task
-}
+    isOpen = cfg.lessons?.['6'] === true;
+  } catch {}
 
-(async () => {
-  const isOpen = await loadStatus();
-
-  if (isAdmin) {
-    apInit(isOpen);
-  }
-
-  if (vParam) {
-    // Direct link with ?v=x always shows the variant (ignores open/closed for individual links)
-    showVariant(vParam);
-    return;
-  }
+  if (vParam) { showVariant(vParam); return; }
 
   if (isOpen) {
     document.getElementById('variant-picker').hidden = false;
@@ -1382,108 +1250,6 @@ document.querySelectorAll('.submit-btn').forEach(btn => {
     window.open(`https://docs.google.com/forms/d/${FORM_ID}/viewform?usp=pp_url&${p}`, '_blank');
   });
 });
-
-// ── ADMIN PANEL ───────────────────────────────────────────────────────────────
-const AP_KEY = 'gh_admin_cfg';
-
-function apInit(currentlyOpen) {
-  document.getElementById('admin-panel').hidden = false;
-  apUpdateBadge(currentlyOpen);
-  apUpdateToggle(currentlyOpen);
-
-  const saved = apGetCfg();
-  if (saved) {
-    document.getElementById('ap-owner').value = saved.owner;
-    document.getElementById('ap-repo').value  = saved.repo;
-    document.getElementById('ap-settings').hidden = true;
-    document.getElementById('ap-actions').hidden  = false;
-  }
-
-  document.getElementById('ap-save').addEventListener('click', () => {
-    const owner = document.getElementById('ap-owner').value.trim();
-    const repo  = document.getElementById('ap-repo').value.trim();
-    const token = document.getElementById('ap-token').value.trim();
-    if (!owner || !repo || !token) { alert('Заповни всі три поля'); return; }
-    localStorage.setItem(AP_KEY, JSON.stringify({ owner, repo, token }));
-    document.getElementById('ap-settings').hidden = true;
-    document.getElementById('ap-actions').hidden  = false;
-  });
-
-  document.getElementById('ap-edit').addEventListener('click', () => {
-    document.getElementById('ap-settings').hidden = false;
-    document.getElementById('ap-actions').hidden  = true;
-  });
-
-  document.getElementById('ap-toggle').addEventListener('click', apToggle);
-}
-
-function apGetCfg() {
-  const s = localStorage.getItem(AP_KEY);
-  return s ? JSON.parse(s) : null;
-}
-
-function apUpdateBadge(isOpen) {
-  const b = document.getElementById('ap-badge');
-  b.textContent  = isOpen ? 'ВІДКРИТО' : 'ЗАКРИТО';
-  b.className    = 'ap-badge ' + (isOpen ? 'ap-open' : 'ap-closed');
-}
-
-function apUpdateToggle(isOpen) {
-  const btn = document.getElementById('ap-toggle');
-  if (isOpen) {
-    btn.textContent = '🔒 Закрити завдання';
-    btn.className   = 'ap-toggle is-open';
-    btn.dataset.open = '1';
-  } else {
-    btn.textContent = '🔓 Відкрити завдання';
-    btn.className   = 'ap-toggle is-closed';
-    btn.dataset.open = '0';
-  }
-}
-
-async function apToggle() {
-  const cfg = apGetCfg();
-  if (!cfg) { alert('Спочатку збережи налаштування'); return; }
-
-  const btn    = document.getElementById('ap-toggle');
-  const newOpen = btn.dataset.open === '0';
-  btn.disabled  = true;
-  btn.textContent = 'Оновлення…';
-
-  try {
-    const getRes = await fetch(
-      `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/config.json`,
-      { headers: { Authorization: `token ${cfg.token}` } }
-    );
-    if (!getRes.ok) throw new Error((await getRes.json()).message);
-    const file = await getRes.json();
-    const fullCfg = JSON.parse(atob(file.content));
-    if (!fullCfg.lessons) fullCfg.lessons = {};
-    fullCfg.lessons['6'] = newOpen;
-
-    const putRes = await fetch(
-      `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/config.json`,
-      {
-        method: 'PUT',
-        headers: { Authorization: `token ${cfg.token}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message: `lesson 6 ${newOpen ? 'opened' : 'closed'}`,
-          content: btoa(JSON.stringify(fullCfg, null, 2) + '\n'),
-          sha: file.sha,
-        }),
-      }
-    );
-    if (!putRes.ok) throw new Error((await putRes.json()).message);
-
-    apUpdateBadge(newOpen);
-    apUpdateToggle(newOpen);
-  } catch (e) {
-    alert('Помилка GitHub API: ' + e.message);
-    apUpdateToggle(btn.dataset.open === '1');
-  }
-
-  btn.disabled = false;
-}
 </script>
 </body>
 </html>

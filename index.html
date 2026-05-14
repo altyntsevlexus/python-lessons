@@ -240,103 +240,9 @@
     footer { justify-content: center; text-align: center; }
   }
 
-  /* ── Admin panel ── */
-  #admin-panel {
-    position: fixed;
-    top: 16px; right: 16px;
-    z-index: 9999;
-    background: #161b22;
-    border: 1px solid rgba(255,170,48,.45);
-    border-radius: 10px;
-    padding: 16px 18px;
-    width: 270px;
-    box-shadow: 0 6px 28px rgba(0,0,0,.7);
-    font-family: 'Montserrat', sans-serif;
-  }
-  .ap-title {
-    font-family: 'Source Code Pro', monospace;
-    font-size: 10px;
-    letter-spacing: 2px;
-    font-weight: 700;
-    color: #ffaa30;
-    display: block;
-    margin-bottom: 12px;
-  }
-  .ap-input {
-    display: block; width: 100%;
-    background: rgba(255,255,255,.04);
-    border: 1px solid #30363d;
-    border-radius: 4px;
-    color: #e6edf3;
-    font-family: 'Source Code Pro', monospace;
-    font-size: 11px;
-    padding: 6px 8px;
-    margin-bottom: 8px;
-    outline: none;
-  }
-  .ap-input:focus { border-color: #ffaa30; }
-  .ap-input::placeholder { color: #8b949e; }
-  .ap-save-btn {
-    width: 100%; padding: 8px;
-    background: rgba(255,170,48,.12);
-    border: 1px solid rgba(255,170,48,.4);
-    border-radius: 5px;
-    color: #ffaa30;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 12px; font-weight: 600;
-    cursor: pointer; margin-bottom: 12px;
-  }
-  .ap-save-btn:hover { background: rgba(255,170,48,.22); }
-  .ap-lesson-row {
-    display: flex; align-items: center;
-    justify-content: space-between;
-    padding: 6px 0;
-    border-bottom: 1px solid #21262d;
-  }
-  .ap-lesson-row:last-child { border-bottom: none; }
-  .ap-lesson-name {
-    font-size: 11px; color: #8b949e;
-    font-family: 'Source Code Pro', monospace;
-  }
-  .ap-lesson-btn {
-    width: 32px; height: 32px;
-    border-radius: 6px; border: 1px solid;
-    cursor: pointer; font-size: 14px;
-    display: flex; align-items: center; justify-content: center;
-    transition: opacity .15s;
-    flex-shrink: 0;
-  }
-  .ap-lesson-btn:hover:not(:disabled) { opacity: .75; }
-  .ap-lesson-btn:disabled { opacity: .4; cursor: not-allowed; }
-  .ap-lesson-btn.is-open  { background: rgba(80,227,164,.15); border-color: rgba(80,227,164,.4); }
-  .ap-lesson-btn.is-closed { background: rgba(255,92,92,.1);  border-color: rgba(255,92,92,.35); }
-  .ap-edit-link {
-    display: block; margin-top: 10px;
-    font-size: 10px; color: #8b949e;
-    cursor: pointer; font-family: 'Source Code Pro', monospace;
-    text-decoration: underline; background: none; border: none; padding: 0;
-  }
-  .ap-note {
-    margin-top: 10px; font-size: 10px; color: #8b949e;
-    font-family: 'Source Code Pro', monospace; line-height: 1.6;
-  }
 </style>
 </head>
 <body>
-
-<!-- ADMIN PANEL -->
-<div id="admin-panel" hidden>
-  <span class="ap-title">⚙ АДМІН · УРОКИ</span>
-  <div id="ap-settings">
-    <input id="ap-owner" class="ap-input" placeholder="GitHub username">
-    <input id="ap-repo"  class="ap-input" placeholder="Repo name">
-    <input id="ap-token" class="ap-input" type="password" placeholder="Personal Access Token">
-    <button class="ap-save-btn" id="ap-save">Зберегти</button>
-  </div>
-  <div id="ap-lessons" hidden></div>
-  <button class="ap-edit-link" id="ap-edit" hidden>змінити налаштування</button>
-  <p class="ap-note">Зміни набувають чинності через ~30 сек після оновлення сторінки учнями.</p>
-</div>
 
 <header>
   <div class="school-label">ORT 141 НУШ · 7 КЛАС</div>
@@ -441,17 +347,6 @@
 </footer>
 
 <script>
-const LESSON_NAMES = {
-  '1': 'Знайомство з Turtle',
-  '2': 'Цикл for',
-  '3': 'Практична: Будинок',
-  '4': 'If, Elif + Random',
-  '5': 'Функції def',
-  '6': 'Підсумкова робота',
-};
-const AP_KEY = 'gh_admin_cfg';
-const isAdmin = new URLSearchParams(location.search).get('admin') === 'ortlyc141';
-
 async function loadConfig() {
   try {
     const r = await fetch('config.json?t=' + Date.now());
@@ -461,7 +356,8 @@ async function loadConfig() {
   }
 }
 
-function applyConfig(cfg) {
+(async () => {
+  const cfg = await loadConfig();
   document.querySelectorAll('[data-lesson]').forEach(card => {
     const open = cfg.lessons[card.dataset.lesson] === true;
     card.classList.toggle('available', open);
@@ -469,115 +365,6 @@ function applyConfig(cfg) {
     const status = card.querySelector('.card-status');
     if (status) status.textContent = open ? '→ ВІДКРИТИ' : 'СКОРО';
   });
-}
-
-// ── ADMIN ─────────────────────────────────────────────────────────────
-function apGetCfg() {
-  const s = localStorage.getItem(AP_KEY);
-  return s ? JSON.parse(s) : null;
-}
-
-function apInit(cfg) {
-  document.getElementById('admin-panel').hidden = false;
-  const saved = apGetCfg();
-  if (saved) {
-    document.getElementById('ap-owner').value = saved.owner;
-    document.getElementById('ap-repo').value  = saved.repo;
-    document.getElementById('ap-settings').hidden = true;
-    document.getElementById('ap-edit').hidden = false;
-    apRenderLessons(cfg);
-  }
-
-  document.getElementById('ap-save').addEventListener('click', () => {
-    const owner = document.getElementById('ap-owner').value.trim();
-    const repo  = document.getElementById('ap-repo').value.trim();
-    const token = document.getElementById('ap-token').value.trim();
-    if (!owner || !repo || !token) { alert('Заповни всі три поля'); return; }
-    localStorage.setItem(AP_KEY, JSON.stringify({ owner, repo, token }));
-    document.getElementById('ap-settings').hidden = true;
-    document.getElementById('ap-edit').hidden = false;
-    apRenderLessons(cfg);
-  });
-
-  document.getElementById('ap-edit').addEventListener('click', () => {
-    document.getElementById('ap-settings').hidden = false;
-    document.getElementById('ap-lessons').hidden  = true;
-  });
-}
-
-function apRenderLessons(cfg) {
-  const container = document.getElementById('ap-lessons');
-  container.innerHTML = '';
-  for (let n = 1; n <= 6; n++) {
-    const key  = n.toString();
-    const open = cfg.lessons[key] === true;
-    const row  = document.createElement('div');
-    row.className = 'ap-lesson-row';
-    row.innerHTML = `
-      <span class="ap-lesson-name">${n}. ${LESSON_NAMES[key]}</span>
-      <button class="ap-lesson-btn ${open ? 'is-open' : 'is-closed'}"
-              data-lesson="${key}" data-open="${open ? '1' : '0'}"
-              title="${open ? 'Закрити' : 'Відкрити'}">
-        ${open ? '🔓' : '🔒'}
-      </button>`;
-    container.appendChild(row);
-  }
-  container.querySelectorAll('.ap-lesson-btn').forEach(btn => {
-    btn.addEventListener('click', () => apToggle(btn, cfg));
-  });
-  container.hidden = false;
-}
-
-async function apToggle(btn, cfg) {
-  const saved = apGetCfg();
-  if (!saved) { alert('Спочатку збережи налаштування'); return; }
-
-  const key    = btn.dataset.lesson;
-  const newOpen = btn.dataset.open === '0';
-  btn.disabled  = true;
-  btn.textContent = '…';
-
-  cfg.lessons[key] = newOpen;
-
-  try {
-    const getRes = await fetch(
-      `https://api.github.com/repos/${saved.owner}/${saved.repo}/contents/config.json`,
-      { headers: { Authorization: `token ${saved.token}` } }
-    );
-    if (!getRes.ok) throw new Error((await getRes.json()).message);
-    const file = await getRes.json();
-
-    const putRes = await fetch(
-      `https://api.github.com/repos/${saved.owner}/${saved.repo}/contents/config.json`,
-      {
-        method: 'PUT',
-        headers: { Authorization: `token ${saved.token}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message: `lesson ${key} ${newOpen ? 'opened' : 'closed'}`,
-          content: btoa(JSON.stringify(cfg, null, 2) + '\n'),
-          sha: file.sha,
-        }),
-      }
-    );
-    if (!putRes.ok) throw new Error((await putRes.json()).message);
-
-    btn.dataset.open   = newOpen ? '1' : '0';
-    btn.className      = `ap-lesson-btn ${newOpen ? 'is-open' : 'is-closed'}`;
-    btn.textContent    = newOpen ? '🔓' : '🔒';
-    applyConfig(cfg);
-  } catch (e) {
-    cfg.lessons[key] = !newOpen;
-    alert('Помилка GitHub API: ' + e.message);
-    btn.textContent = newOpen ? '🔒' : '🔓';
-  }
-  btn.disabled = false;
-}
-
-// ── INIT ──────────────────────────────────────────────────────────────
-(async () => {
-  const cfg = await loadConfig();
-  applyConfig(cfg);
-  if (isAdmin) apInit(cfg);
 })();
 </script>
 </body>

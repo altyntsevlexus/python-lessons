@@ -714,6 +714,107 @@ footer span {
 
 
 
+
+<!-- ЗРАЗОК КОДУ -->
+<div class="slabel">Зразок коду</div>
+<div class="code-block"><span class="code-line"><span class="ln"> 1</span><span class="ck">import</span> <span class="cm">turtle</span></span>
+<span class="code-line"><span class="ln"> 2</span><span class="ck">import</span> <span class="cm">random</span></span>
+<span class="code-line"><span class="ln"> 3</span></span>
+<span class="code-line"><span class="ln"> 4</span><span class="cc"># ── Налаштування вікна ──</span></span>
+<span class="code-line"><span class="ln"> 5</span><span class="cv">screen</span> = <span class="cm">turtle</span>.<span class="cf">Screen</span>()</span>
+<span class="code-line"><span class="ln"> 6</span><span class="cv">screen</span>.<span class="cf">bgcolor</span>(<span class="cs">&quot;#06080f&quot;</span>)</span>
+<span class="code-line"><span class="ln"> 7</span><span class="cv">screen</span>.<span class="cf">tracer</span>(<span class="cn">2</span>)</span>
+<span class="code-line"><span class="ln"> 8</span></span>
+<span class="code-line"><span class="ln"> 9</span><span class="cv">t</span> = <span class="cm">turtle</span>.<span class="cf">Turtle</span>()</span>
+<span class="code-line"><span class="ln">10</span><span class="cv">t</span>.<span class="cf">speed</span>(<span class="cn">0</span>)</span>
+<span class="code-line"><span class="ln">11</span></span>
+<span class="code-line"><span class="ln">12</span></span>
+<span class="code-line"><span class="ln">13</span><span class="cc"># ── Допоміжна функція: зірка ──</span></span>
+<span class="code-line"><span class="ln">14</span><span class="ck">def</span> <span class="cf">star</span>(<span class="cv">size</span>, <span class="cv">color</span>):</span>
+<span class="code-line"><span class="ln">15</span>    <span class="cv">t</span>.<span class="cf">pencolor</span>(<span class="cv">color</span>)</span>
+<span class="code-line"><span class="ln">16</span>    <span class="ck">for</span> <span class="cv">_</span> <span class="ck">in</span> <span class="cm">range</span>(<span class="cn">8</span>):</span>
+<span class="code-line"><span class="ln">17</span>        <span class="cv">t</span>.<span class="cf">forward</span>(<span class="cv">size</span>)</span>
+<span class="code-line"><span class="ln">18</span>        <span class="cv">t</span>.<span class="cf">backward</span>(<span class="cv">size</span>)</span>
+<span class="code-line"><span class="ln">19</span>        <span class="cv">t</span>.<span class="cf">right</span>(<span class="cn">45</span>)</span>
+<span class="code-line"><span class="ln">20</span></span>
+<span class="code-line"><span class="ln">21</span></span>
+<span class="code-line"><span class="ln">22</span><span class="cc"># ══════════════════════════════════════</span></span>
+<span class="code-line"><span class="ln">23</span><span class="cc"># 1. ЗІРКИ — цикл for + random + if/elif/else</span></span>
+<span class="code-line"><span class="ln">24</span><span class="cc"># ══════════════════════════════════════</span></span>
+<span class="code-line"><span class="ln">25</span><span class="ck">for</span> <span class="cv">i</span> <span class="ck">in</span> <span class="cm">range</span>(<span class="cn">80</span>):</span>
+<span class="code-line"><span class="ln">26</span>    <span class="cv">x</span> = <span class="cm">random</span>.<span class="cf">randint</span>(-<span class="cn">300</span>, <span class="cn">300</span>)</span>
+<span class="code-line"><span class="ln">27</span>    <span class="cv">y</span> = <span class="cm">random</span>.<span class="cf">randint</span>(-<span class="cn">290</span>, <span class="cn">290</span>)</span>
+<span class="code-line"><span class="ln">28</span>    <span class="cv">size</span> = <span class="cm">random</span>.<span class="cf">randint</span>(<span class="cn">1</span>, <span class="cn">8</span>)</span>
+<span class="code-line"><span class="ln">29</span></span>
+<span class="code-line"><span class="ln">30</span>    <span class="cc"># Розгалуження: колір залежить від розміру</span></span>
+<span class="code-line"><span class="ln">31</span>    <span class="ck">if</span> <span class="cv">size</span> &gt; <span class="cn">6</span>:</span>
+<span class="code-line"><span class="ln">32</span>        <span class="cv">color</span> = <span class="cs">&quot;#ffe680&quot;</span>       <span class="cc"># великі зірки — жовті</span></span>
+<span class="code-line"><span class="ln">33</span>    <span class="ck">elif</span> <span class="cv">size</span> &gt; <span class="cn">3</span>:</span>
+<span class="code-line"><span class="ln">34</span>        <span class="cv">color</span> = <span class="cs">&quot;#ffffff&quot;</span>       <span class="cc"># середні — білі</span></span>
+<span class="code-line"><span class="ln">35</span>    <span class="ck">else</span>:</span>
+<span class="code-line"><span class="ln">36</span>        <span class="cv">color</span> = <span class="cs">&quot;#888899&quot;</span>       <span class="cc"># малі — сірі (тьмяні)</span></span>
+<span class="code-line"><span class="ln">37</span></span>
+<span class="code-line"><span class="ln">38</span>    <span class="cv">t</span>.<span class="cf">penup</span>()</span>
+<span class="code-line"><span class="ln">39</span>    <span class="cv">t</span>.<span class="cf">goto</span>(<span class="cv">x</span>, <span class="cv">y</span>)</span>
+<span class="code-line"><span class="ln">40</span>    <span class="cv">t</span>.<span class="cf">pendown</span>()</span>
+<span class="code-line"><span class="ln">41</span>    <span class="cf">star</span>(<span class="cv">size</span>, <span class="cv">color</span>)</span>
+<span class="code-line"><span class="ln">42</span></span>
+<span class="code-line"><span class="ln">43</span></span>
+<span class="code-line"><span class="ln">44</span><span class="cc"># 2. ЧЕРВОНА ПЛАНЕТА</span></span>
+<span class="code-line"><span class="ln">45</span><span class="cv">t</span>.<span class="cf">penup</span>()</span>
+<span class="code-line"><span class="ln">46</span><span class="cv">t</span>.<span class="cf">goto</span>(<span class="cn">150</span>, <span class="cn">100</span>)</span>
+<span class="code-line"><span class="ln">47</span><span class="cv">t</span>.<span class="cf">pendown</span>()</span>
+<span class="code-line"><span class="ln">48</span><span class="cv">t</span>.<span class="cf">fillcolor</span>(<span class="cs">&quot;#cc3333&quot;</span>)</span>
+<span class="code-line"><span class="ln">49</span><span class="cv">t</span>.<span class="cf">pencolor</span>(<span class="cs">&quot;#cc3333&quot;</span>)</span>
+<span class="code-line"><span class="ln">50</span><span class="cv">t</span>.<span class="cf">begin_fill</span>()</span>
+<span class="code-line"><span class="ln">51</span><span class="cv">t</span>.<span class="cf">circle</span>(<span class="cn">45</span>)</span>
+<span class="code-line"><span class="ln">52</span><span class="cv">t</span>.<span class="cf">end_fill</span>()</span>
+<span class="code-line"><span class="ln">53</span></span>
+<span class="code-line"><span class="ln">54</span><span class="cc"># Кільця (простий цикл, не вкладений)</span></span>
+<span class="code-line"><span class="ln">55</span><span class="cv">t</span>.<span class="cf">pencolor</span>(<span class="cs">&quot;#aa5555&quot;</span>)</span>
+<span class="code-line"><span class="ln">56</span><span class="cv">t</span>.<span class="cf">pensize</span>(<span class="cn">1</span>)</span>
+<span class="code-line"><span class="ln">57</span><span class="ck">for</span> <span class="cv">r</span> <span class="ck">in</span> <span class="cm">range</span>(<span class="cn">55</span>, <span class="cn">80</span>, <span class="cn">8</span>):</span>
+<span class="code-line"><span class="ln">58</span>    <span class="cv">t</span>.<span class="cf">penup</span>()</span>
+<span class="code-line"><span class="ln">59</span>    <span class="cv">t</span>.<span class="cf">goto</span>(<span class="cn">150</span>, <span class="cn">100</span> - <span class="cv">r</span> + <span class="cn">45</span>)</span>
+<span class="code-line"><span class="ln">60</span>    <span class="cv">t</span>.<span class="cf">pendown</span>()</span>
+<span class="code-line"><span class="ln">61</span>    <span class="cv">t</span>.<span class="cf">circle</span>(<span class="cv">r</span>)</span>
+<span class="code-line"><span class="ln">62</span></span>
+<span class="code-line"><span class="ln">63</span></span>
+<span class="code-line"><span class="ln">64</span><span class="cc"># 3. СИНЯ ПЛАНЕТА — Нептун</span></span>
+<span class="code-line"><span class="ln">65</span><span class="cv">t</span>.<span class="cf">penup</span>()</span>
+<span class="code-line"><span class="ln">66</span><span class="cv">t</span>.<span class="cf">goto</span>(-<span class="cn">150</span>, -<span class="cn">80</span>)</span>
+<span class="code-line"><span class="ln">67</span><span class="cv">t</span>.<span class="cf">pendown</span>()</span>
+<span class="code-line"><span class="ln">68</span><span class="cv">t</span>.<span class="cf">fillcolor</span>(<span class="cs">&quot;#3366bb&quot;</span>)</span>
+<span class="code-line"><span class="ln">69</span><span class="cv">t</span>.<span class="cf">pencolor</span>(<span class="cs">&quot;#3366bb&quot;</span>)</span>
+<span class="code-line"><span class="ln">70</span><span class="cv">t</span>.<span class="cf">begin_fill</span>()</span>
+<span class="code-line"><span class="ln">71</span><span class="cv">t</span>.<span class="cf">circle</span>(<span class="cn">30</span>)</span>
+<span class="code-line"><span class="ln">72</span><span class="cv">t</span>.<span class="cf">end_fill</span>()</span>
+<span class="code-line"><span class="ln">73</span></span>
+<span class="code-line"><span class="ln">74</span></span>
+<span class="code-line"><span class="ln">75</span><span class="cc"># ══════════════════════════════════════</span></span>
+<span class="code-line"><span class="ln">76</span><span class="cc"># 4. МІСЯЦЬ — серп</span></span>
+<span class="code-line"><span class="ln">77</span><span class="cc"># ══════════════════════════════════════</span></span>
+<span class="code-line"><span class="ln">78</span></span>
+<span class="code-line"><span class="ln">79</span><span class="cc"># Повне коло (жовте)</span></span>
+<span class="code-line"><span class="ln">80</span><span class="cv">t</span>.<span class="cf">penup</span>()</span>
+<span class="code-line"><span class="ln">81</span><span class="cv">t</span>.<span class="cf">goto</span>(-<span class="cn">200</span>, <span class="cn">100</span>)</span>
+<span class="code-line"><span class="ln">82</span><span class="cv">t</span>.<span class="cf">pendown</span>()</span>
+<span class="code-line"><span class="ln">83</span><span class="cv">t</span>.<span class="cf">fillcolor</span>(<span class="cs">&quot;#ffe680&quot;</span>)</span>
+<span class="code-line"><span class="ln">84</span><span class="cv">t</span>.<span class="cf">pencolor</span>(<span class="cs">&quot;#ffe680&quot;</span>)</span>
+<span class="code-line"><span class="ln">85</span><span class="cv">t</span>.<span class="cf">begin_fill</span>()</span>
+<span class="code-line"><span class="ln">86</span><span class="cv">t</span>.<span class="cf">circle</span>(<span class="cn">40</span>)</span>
+<span class="code-line"><span class="ln">87</span><span class="cv">t</span>.<span class="cf">end_fill</span>()</span>
+<span class="code-line"><span class="ln">88</span></span>
+<span class="code-line"><span class="ln">89</span><span class="cc"># Накладне коло (темне) — створює серп</span></span>
+<span class="code-line"><span class="ln">90</span><span class="cv">t</span>.<span class="cf">penup</span>()</span>
+<span class="code-line"><span class="ln">91</span><span class="cv">t</span>.<span class="cf">goto</span>(-<span class="cn">180</span>, <span class="cn">100</span>)</span>
+<span class="code-line"><span class="ln">92</span><span class="cv">t</span>.<span class="cf">pendown</span>()</span>
+<span class="code-line"><span class="ln">93</span><span class="cv">t</span>.<span class="cf">fillcolor</span>(<span class="cs">&quot;#06080f&quot;</span>)</span>
+<span class="code-line"><span class="ln">94</span><span class="cv">t</span>.<span class="cf">pencolor</span>(<span class="cs">&quot;#06080f&quot;</span>)</span>
+<span class="code-line"><span class="ln">95</span><span class="cv">t</span>.<span class="cf">begin_fill</span>()</span>
+<span class="code-line"><span class="ln">96</span><span class="cv">t</span>.<span class="cf">circle</span>(<span class="cn">34</span>)</span>
+<span class="code-line"><span class="ln">97</span><span class="cv">t</span>.<span class="cf">end_fill</span>()</span></div>
+
 <!-- ЕЛЕМЕНТИ -->
 <div class="slabel">Елементи сцени</div>
 <div class="elements">

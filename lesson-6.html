@@ -1,1361 +1,2188 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="uk">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Підсумкова практична робота · Космічний пейзаж · Python Turtle</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
-<style>
-:root {
-  --bg:      #06080f;
-  --surface: #0c0f1a;
-  --card:    #101424;
-  --border:  #1c2238;
-  --border2: #252d45;
-  --text:    #dde4f5;
-  --muted:   #5a6485;
-  --moon:    #8888ff;
-  --p-col:   #ff5c5c;
-  --s-col:   #ffaa30;
-  --d-col:   #4db8ff;
-  --v-col:   #50e3a4;
-}
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Підсумкова практична робота · Космічний пейзаж · Python Turtle</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #06080f;
+        --surface: #0c0f1a;
+        --card: #101424;
+        --border: #1c2238;
+        --border2: #252d45;
+        --text: #dde4f5;
+        --muted: #5a6485;
+        --moon: #8888ff;
+        --p-col: #ff5c5c;
+        --s-col: #ffaa30;
+        --d-col: #4db8ff;
+        --v-col: #50e3a4;
+      }
 
-*{margin:0;padding:0;box-sizing:border-box;}
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 400;
-  min-height: 100vh;
-}
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Montserrat", sans-serif;
+        font-weight: 400;
+        min-height: 100vh;
+      }
 
-body::before {
-  content:'';
-  position:fixed;inset:0;
-  background:
-    radial-gradient(1px 1px at 12% 12%, rgba(136,136,255,.5) 0%,transparent 100%),
-    radial-gradient(1px 1px at 70%  7%, rgba(255,255,255,.4) 0%,transparent 100%),
-    radial-gradient(1px 1px at 38% 30%, rgba(136,136,255,.3) 0%,transparent 100%),
-    radial-gradient(1px 1px at 85% 22%, rgba(255,255,255,.5) 0%,transparent 100%),
-    radial-gradient(1px 1px at 55%  5%, rgba(192,192,192,.3) 0%,transparent 100%),
-    radial-gradient(1px 1px at 92% 55%, rgba(255,255,255,.4) 0%,transparent 100%);
-  pointer-events:none;z-index:0;
-}
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background:
+          radial-gradient(1px 1px at 12% 12%, rgba(136, 136, 255, 0.5) 0%, transparent 100%),
+          radial-gradient(1px 1px at 70% 7%, rgba(255, 255, 255, 0.4) 0%, transparent 100%),
+          radial-gradient(1px 1px at 38% 30%, rgba(136, 136, 255, 0.3) 0%, transparent 100%),
+          radial-gradient(1px 1px at 85% 22%, rgba(255, 255, 255, 0.5) 0%, transparent 100%),
+          radial-gradient(1px 1px at 55% 5%, rgba(192, 192, 192, 0.3) 0%, transparent 100%),
+          radial-gradient(1px 1px at 92% 55%, rgba(255, 255, 255, 0.4) 0%, transparent 100%);
+        pointer-events: none;
+        z-index: 0;
+      }
 
-.wrap {
-  max-width: 1060px;
-  margin: 0 auto;
-  padding: 0 24px 72px;
-  position: relative;
-  z-index: 1;
-}
+      .wrap {
+        max-width: 1060px;
+        margin: 0 auto;
+        padding: 0 24px 72px;
+        position: relative;
+        z-index: 1;
+      }
 
-/* ── HEADER ── */
-header {
-  padding: 52px 0 36px;
-  border-bottom: 1px solid var(--border2);
-  margin-bottom: 32px;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: end;
-  gap: 20px;
-}
-.eyebrow {
-  font-family: 'Source Code Pro', monospace;
-  font-size: 10px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 14px;
-}
-h1 {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(44px, 8vw, 80px);
-  line-height: .95;
-  letter-spacing: 2px;
-  color: #fff;
-}
-h1 .y { color: var(--moon); }
-.hdr-chips { display:flex; flex-direction:column; gap:7px; align-items:flex-end; }
-.chip {
-  font-family: 'Source Code Pro', monospace;
-  font-size: 11px;
-  padding: 5px 13px;
-  border: 1px solid var(--border2);
-  color: var(--text);
-  white-space: nowrap;
-}
-.chip.hi {
-  background: rgba(136,136,255,.1);
-  border-color: rgba(136,136,255,.35);
-  color: var(--moon);
-  font-weight: 600;
-}
+      /* ── HEADER ── */
+      header {
+        padding: 52px 0 36px;
+        border-bottom: 1px solid var(--border2);
+        margin-bottom: 32px;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: end;
+        gap: 20px;
+      }
+      .eyebrow {
+        font-family: "Source Code Pro", monospace;
+        font-size: 10px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 14px;
+      }
+      h1 {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: clamp(44px, 8vw, 80px);
+        line-height: 0.95;
+        letter-spacing: 2px;
+        color: #fff;
+      }
+      h1 .y {
+        color: var(--moon);
+      }
+      .hdr-chips {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+        align-items: flex-end;
+      }
+      .chip {
+        font-family: "Source Code Pro", monospace;
+        font-size: 11px;
+        padding: 5px 13px;
+        border: 1px solid var(--border2);
+        color: var(--text);
+        white-space: nowrap;
+      }
+      .chip.hi {
+        background: rgba(136, 136, 255, 0.1);
+        border-color: rgba(136, 136, 255, 0.35);
+        color: var(--moon);
+        font-weight: 600;
+      }
 
-/* ── SPACE SVG ── */
-.space-svg { width:100%; display:block; margin-top:24px; opacity:.75; }
+      /* ── SPACE SVG ── */
+      .space-svg {
+        width: 100%;
+        display: block;
+        margin-top: 24px;
+        opacity: 0.75;
+      }
 
-/* ── SECTION LABEL ── */
-.slabel {
-  font-family: 'Source Code Pro', monospace;
-  font-size: 10px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 16px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.slabel::after { content:''; flex:1; height:1px; background:var(--border); }
+      /* ── SECTION LABEL ── */
+      .slabel {
+        font-family: "Source Code Pro", monospace;
+        font-size: 10px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .slabel::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: var(--border);
+      }
 
-/* ── PART DIVIDER ── */
-.part-div {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  margin: 40px 0 28px;
-  padding: 16px 20px;
-  background: var(--surface);
-  border: 1px solid var(--border2);
-  border-left: 4px solid;
-}
-.part-div.p1 { border-left-color: var(--moon); }
-.part-div.p2 { border-left-color: var(--v-col); }
-.part-num {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 30px;
-  line-height: 1;
-  letter-spacing: 2px;
-}
-.p1 .part-num { color: var(--moon); }
-.p2 .part-num { color: var(--v-col); }
-.part-info { flex: 1; }
-.part-title {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text);
-  margin-bottom: 2px;
-}
-.part-sub {
-  font-family: 'Source Code Pro', monospace;
-  font-size: 10px;
-  color: var(--muted);
-  letter-spacing: 1px;
-}
-.part-badge {
-  font-family: 'Source Code Pro', monospace;
-  font-size: 12px;
-  font-weight: 700;
-  padding: 4px 12px;
-  border: 1px solid;
-  letter-spacing: 1px;
-}
-.p1 .part-badge { color: var(--moon); border-color: rgba(136,136,255,.35); background: rgba(136,136,255,.08); }
-.p2 .part-badge { color: var(--v-col); border-color: rgba(80,227,164,.35);  background: rgba(80,227,164,.08); }
+      /* ── PART DIVIDER ── */
+      .part-div {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        margin: 40px 0 28px;
+        padding: 16px 20px;
+        background: var(--surface);
+        border: 1px solid var(--border2);
+        border-left: 4px solid;
+      }
+      .part-div.p1 {
+        border-left-color: var(--moon);
+      }
+      .part-div.p2 {
+        border-left-color: var(--v-col);
+      }
+      .part-num {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 30px;
+        line-height: 1;
+        letter-spacing: 2px;
+      }
+      .p1 .part-num {
+        color: var(--moon);
+      }
+      .p2 .part-num {
+        color: var(--v-col);
+      }
+      .part-info {
+        flex: 1;
+      }
+      .part-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 2px;
+      }
+      .part-sub {
+        font-family: "Source Code Pro", monospace;
+        font-size: 10px;
+        color: var(--muted);
+        letter-spacing: 1px;
+      }
+      .part-badge {
+        font-family: "Source Code Pro", monospace;
+        font-size: 12px;
+        font-weight: 700;
+        padding: 4px 12px;
+        border: 1px solid;
+        letter-spacing: 1px;
+      }
+      .p1 .part-badge {
+        color: var(--moon);
+        border-color: rgba(136, 136, 255, 0.35);
+        background: rgba(136, 136, 255, 0.08);
+      }
+      .p2 .part-badge {
+        color: var(--v-col);
+        border-color: rgba(80, 227, 164, 0.35);
+        background: rgba(80, 227, 164, 0.08);
+      }
 
-/* ── TASK BOX ── */
-.task-box {
-  background: var(--surface);
-  border: 1px solid var(--border2);
-  border-left: 4px solid var(--moon);
-  padding: 24px 26px;
-  margin-bottom: 28px;
-}
-.task-box.p2 { border-left-color: var(--v-col); }
-.task-box h2 {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 24px;
-  letter-spacing: 1.5px;
-  color: var(--moon);
-  margin-bottom: 12px;
-}
-.task-box.p2 h2 { color: var(--v-col); }
-.task-box p { font-size: 14px; line-height: 1.75; color: var(--text); }
-.task-box p strong { color: #fff; }
+      /* ── TASK BOX ── */
+      .task-box {
+        background: var(--surface);
+        border: 1px solid var(--border2);
+        border-left: 4px solid var(--moon);
+        padding: 24px 26px;
+        margin-bottom: 28px;
+      }
+      .task-box.p2 {
+        border-left-color: var(--v-col);
+      }
+      .task-box h2 {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 24px;
+        letter-spacing: 1.5px;
+        color: var(--moon);
+        margin-bottom: 12px;
+      }
+      .task-box.p2 h2 {
+        color: var(--v-col);
+      }
+      .task-box p {
+        font-size: 14px;
+        line-height: 1.75;
+        color: var(--text);
+      }
+      .task-box p strong {
+        color: #fff;
+      }
 
-/* ── KNOWLEDGE PILLS ── */
-.know-row { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:32px; }
-.know-pill {
-  font-family: 'Source Code Pro', monospace;
-  font-size: 11px;
-  padding: 5px 13px;
-  border: 1px solid var(--border2);
-  color: var(--text);
-  display: flex;
-  align-items: center;
-  gap: 7px;
-}
-.know-pill .dot {
-  width:6px;height:6px;border-radius:50%;
-  background:var(--v-col);flex-shrink:0;
-}
+      /* ── KNOWLEDGE PILLS ── */
+      .know-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 32px;
+      }
+      .know-pill {
+        font-family: "Source Code Pro", monospace;
+        font-size: 11px;
+        padding: 5px 13px;
+        border: 1px solid var(--border2);
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        gap: 7px;
+      }
+      .know-pill .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--v-col);
+        flex-shrink: 0;
+      }
 
-/* ── ELEMENTS TABLE ── */
-.elements {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  margin-bottom: 32px;
-  overflow: hidden;
-}
-.el-header {
-  display: grid;
-  grid-template-columns: 32px 1fr 1fr;
-  background: var(--card);
-  border-bottom: 1px solid var(--border2);
-}
-.el-cell {
-  padding: 10px 14px;
-  font-family: 'Source Code Pro', monospace;
-  font-size: 9.5px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--muted);
-  border-right: 1px solid var(--border);
-}
-.el-cell:last-child { border-right: none; }
-.el-row {
-  display: grid;
-  grid-template-columns: 32px 1fr 1fr;
-  border-bottom: 1px solid var(--border);
-  transition: background .15s;
-}
-.el-row:last-child { border-bottom: none; }
-.el-row:hover { background: rgba(255,255,255,.02); }
-.el-row .el-cell {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 13px;
-  letter-spacing: 0;
-  text-transform: none;
-  color: var(--text);
-  padding: 12px 14px;
-}
-.el-row .el-cell:first-child { font-size:18px; text-align:center; padding:12px 6px; }
-.el-row .el-cell .cmd {
-  font-family: 'Source Code Pro', monospace;
-  font-size: 11px;
-  color: var(--moon);
-  display: block;
-  margin-top: 3px;
-  line-height: 1.7;
-}
+      /* ── ELEMENTS TABLE ── */
+      .elements {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        margin-bottom: 32px;
+        overflow: hidden;
+      }
+      .el-header {
+        display: grid;
+        grid-template-columns: 32px 1fr 1fr;
+        background: var(--card);
+        border-bottom: 1px solid var(--border2);
+      }
+      .el-cell {
+        padding: 10px 14px;
+        font-family: "Source Code Pro", monospace;
+        font-size: 9.5px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted);
+        border-right: 1px solid var(--border);
+      }
+      .el-cell:last-child {
+        border-right: none;
+      }
+      .el-row {
+        display: grid;
+        grid-template-columns: 32px 1fr 1fr;
+        border-bottom: 1px solid var(--border);
+        transition: background 0.15s;
+      }
+      .el-row:last-child {
+        border-bottom: none;
+      }
+      .el-row:hover {
+        background: rgba(255, 255, 255, 0.02);
+      }
+      .el-row .el-cell {
+        font-family: "Montserrat", sans-serif;
+        font-size: 13px;
+        letter-spacing: 0;
+        text-transform: none;
+        color: var(--text);
+        padding: 12px 14px;
+      }
+      .el-row .el-cell:first-child {
+        font-size: 18px;
+        text-align: center;
+        padding: 12px 6px;
+      }
+      .el-row .el-cell .cmd {
+        font-family: "Source Code Pro", monospace;
+        font-size: 11px;
+        color: var(--moon);
+        display: block;
+        margin-top: 3px;
+        line-height: 1.7;
+      }
 
-/* ── POINTS TABLE (Part 1 scoring) ── */
-.pts-table {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  margin-bottom: 32px;
-  overflow: hidden;
-}
-.pts-row {
-  display: grid;
-  grid-template-columns: 1fr 52px;
-  border-bottom: 1px solid var(--border);
-  transition: background .15s;
-}
-.pts-row:last-child { border-bottom: none; }
-.pts-row:hover:not(.pts-head):not(.pts-total) { background: rgba(255,255,255,.02); }
-.pts-row.pts-head {
-  background: var(--card);
-  border-bottom: 1px solid var(--border2);
-}
-.pts-row.pts-total { background: var(--card); border-top: 1px solid var(--border2); }
-.pts-desc {
-  padding: 11px 14px;
-  font-size: 13px;
-  color: var(--text);
-  line-height: 1.5;
-}
-.pts-row.pts-head .pts-desc,
-.pts-row.pts-head .pts-val {
-  font-family: 'Source Code Pro', monospace;
-  font-size: 9.5px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-.pts-row.pts-total .pts-desc {
-  font-family: 'Source Code Pro', monospace;
-  font-size: 10px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--muted);
-  font-weight: 600;
-}
-.pts-desc code {
-  font-family: 'Source Code Pro', monospace;
-  font-size: 11px;
-  color: var(--moon);
-}
-.pts-val {
-  padding: 11px 14px;
-  font-family: 'Source Code Pro', monospace;
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--moon);
-  text-align: center;
-  border-left: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.pts-row.pts-total .pts-val { color: var(--v-col); font-size: 16px; }
+      /* ── POINTS TABLE (Part 1 scoring) ── */
+      .pts-table {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        margin-bottom: 32px;
+        overflow: hidden;
+      }
+      .pts-row {
+        display: grid;
+        grid-template-columns: 1fr 52px;
+        border-bottom: 1px solid var(--border);
+        transition: background 0.15s;
+      }
+      .pts-row:last-child {
+        border-bottom: none;
+      }
+      .pts-row:hover:not(.pts-head):not(.pts-total) {
+        background: rgba(255, 255, 255, 0.02);
+      }
+      .pts-row.pts-head {
+        background: var(--card);
+        border-bottom: 1px solid var(--border2);
+      }
+      .pts-row.pts-total {
+        background: var(--card);
+        border-top: 1px solid var(--border2);
+      }
+      .pts-desc {
+        padding: 11px 14px;
+        font-size: 13px;
+        color: var(--text);
+        line-height: 1.5;
+      }
+      .pts-row.pts-head .pts-desc,
+      .pts-row.pts-head .pts-val {
+        font-family: "Source Code Pro", monospace;
+        font-size: 9.5px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .pts-row.pts-total .pts-desc {
+        font-family: "Source Code Pro", monospace;
+        font-size: 10px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted);
+        font-weight: 600;
+      }
+      .pts-desc code {
+        font-family: "Source Code Pro", monospace;
+        font-size: 11px;
+        color: var(--moon);
+      }
+      .pts-val {
+        padding: 11px 14px;
+        font-family: "Source Code Pro", monospace;
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--moon);
+        text-align: center;
+        border-left: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .pts-row.pts-total .pts-val {
+        color: var(--v-col);
+        font-size: 16px;
+      }
 
-/* ── PALETTE ── */
-.palette-wrap {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  margin-bottom: 32px;
-}
-.pal-group { background:var(--surface); border:1px solid var(--border); padding:14px 14px 12px; }
-.pal-label {
-  font-family: 'Source Code Pro', monospace;
-  font-size: 10px;
-  letter-spacing: 1px;
-  color: var(--muted);
-  margin-bottom: 10px;
-  text-transform: uppercase;
-}
-.pal-swatches { display:flex; flex-direction:column; gap:5px; }
-.sw { height:34px; display:flex; align-items:center; padding:0 10px; }
-.sw-hex { font-family:'Source Code Pro',monospace; font-size:11px; color:rgba(255,255,255,0.7); letter-spacing:.5px; }
-.sw-hex.sw-dark { color:rgba(0,0,0,0.55); }
+      /* ── PALETTE ── */
+      .palette-wrap {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        margin-bottom: 32px;
+      }
+      .pal-group {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        padding: 14px 14px 12px;
+      }
+      .pal-label {
+        font-family: "Source Code Pro", monospace;
+        font-size: 10px;
+        letter-spacing: 1px;
+        color: var(--muted);
+        margin-bottom: 10px;
+        text-transform: uppercase;
+      }
+      .pal-swatches {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+      .sw {
+        height: 34px;
+        display: flex;
+        align-items: center;
+        padding: 0 10px;
+      }
+      .sw-hex {
+        font-family: "Source Code Pro", monospace;
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.7);
+        letter-spacing: 0.5px;
+      }
+      .sw-hex.sw-dark {
+        color: rgba(0, 0, 0, 0.55);
+      }
 
-/* ── VARIANT CARDS (Part 2) ── */
-.variant-card {
-  display: none;
-  background: var(--surface);
-  border: 1px solid var(--border2);
-  margin-bottom: 28px;
-  overflow: hidden;
-}
-.variant-card.active { display: block; }
+      /* ── VARIANT CARDS (Part 2) ── */
+      .variant-card {
+        display: none;
+        background: var(--surface);
+        border: 1px solid var(--border2);
+        margin-bottom: 28px;
+        overflow: hidden;
+      }
+      .variant-card.active {
+        display: block;
+      }
 
-/* ── VARIANT PICKER ── */
-#variant-picker { margin-bottom: 28px; }
-.picker-label {
-  font-family: 'Source Code Pro', monospace;
-  font-size: 10px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 16px;
-}
-.picker-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-}
-.picker-btn {
-  padding: 28px 0;
-  border: 1px solid;
-  border-radius: 8px;
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 52px;
-  line-height: 1;
-  letter-spacing: 2px;
-  cursor: pointer;
-  background: transparent;
-  transition: background .15s, transform .1s;
-}
-.picker-btn:hover { transform: translateY(-2px); }
-.picker-btn.pva { color: var(--moon);  border-color: rgba(136,136,255,.35); }
-.picker-btn.pvb { color: var(--s-col); border-color: rgba(255,170,48,.35); }
-.picker-btn.pvc { color: var(--d-col); border-color: rgba(77,184,255,.35); }
-.picker-btn.pvd { color: var(--v-col); border-color: rgba(80,227,164,.35); }
-.picker-btn.pva:hover { background: rgba(136,136,255,.08); }
-.picker-btn.pvb:hover { background: rgba(255,170,48,.08); }
-.picker-btn.pvc:hover { background: rgba(77,184,255,.08); }
-.picker-btn.pvd:hover { background: rgba(80,227,164,.08); }
+      /* ── VARIANT PICKER ── */
+      #variant-picker {
+        margin-bottom: 28px;
+      }
+      .picker-label {
+        font-family: "Source Code Pro", monospace;
+        font-size: 10px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 16px;
+      }
+      .picker-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+      }
+      .picker-btn {
+        padding: 28px 0;
+        border: 1px solid;
+        border-radius: 8px;
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 52px;
+        line-height: 1;
+        letter-spacing: 2px;
+        cursor: pointer;
+        background: transparent;
+        transition:
+          background 0.15s,
+          transform 0.1s;
+      }
+      .picker-btn:hover {
+        transform: translateY(-2px);
+      }
+      .picker-btn.pva {
+        color: var(--moon);
+        border-color: rgba(136, 136, 255, 0.35);
+      }
+      .picker-btn.pvb {
+        color: var(--s-col);
+        border-color: rgba(255, 170, 48, 0.35);
+      }
+      .picker-btn.pvc {
+        color: var(--d-col);
+        border-color: rgba(77, 184, 255, 0.35);
+      }
+      .picker-btn.pvd {
+        color: var(--v-col);
+        border-color: rgba(80, 227, 164, 0.35);
+      }
+      .picker-btn.pva:hover {
+        background: rgba(136, 136, 255, 0.08);
+      }
+      .picker-btn.pvb:hover {
+        background: rgba(255, 170, 48, 0.08);
+      }
+      .picker-btn.pvc:hover {
+        background: rgba(77, 184, 255, 0.08);
+      }
+      .picker-btn.pvd:hover {
+        background: rgba(80, 227, 164, 0.08);
+      }
 
-/* ── TASK LOCKED ── */
-#task-locked {
-  text-align: center;
-  padding: 56px 20px;
-  border: 1px solid var(--border2);
-  background: var(--surface);
-  margin-bottom: 28px;
-}
-.locked-icon { font-size: 36px; margin-bottom: 14px; }
-.locked-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 22px;
-  letter-spacing: 3px;
-  color: var(--text);
-  margin-bottom: 6px;
-}
-.locked-sub {
-  font-family: 'Source Code Pro', monospace;
-  font-size: 10px;
-  letter-spacing: 2px;
-  color: var(--muted);
-}
+      /* ── TASK LOCKED ── */
+      #task-locked {
+        text-align: center;
+        padding: 56px 20px;
+        border: 1px solid var(--border2);
+        background: var(--surface);
+        margin-bottom: 28px;
+      }
+      .locked-icon {
+        font-size: 36px;
+        margin-bottom: 14px;
+      }
+      .locked-title {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 22px;
+        letter-spacing: 3px;
+        color: var(--text);
+        margin-bottom: 6px;
+      }
+      .locked-sub {
+        font-family: "Source Code Pro", monospace;
+        font-size: 10px;
+        letter-spacing: 2px;
+        color: var(--muted);
+      }
 
-.vc-header {
-  padding: 14px 18px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  border-bottom: 1px solid var(--border2);
-  background: var(--card);
-}
-.vc-letter {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 40px;
-  line-height: 1;
-  letter-spacing: 2px;
-}
-.va .vc-letter { color: var(--moon); }
-.vb .vc-letter { color: var(--s-col); }
-.vc .vc-letter  { color: var(--d-col); }
-.vd .vc-letter { color: var(--v-col); }
-.vc-meta { flex: 1; }
-.vc-title {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text);
-  margin-bottom: 2px;
-}
-.vc-hint {
-  font-family: 'Source Code Pro', monospace;
-  font-size: 10px;
-  color: var(--muted);
-  letter-spacing: 1px;
-}
-.vc-pts {
-  font-family: 'Source Code Pro', monospace;
-  font-size: 11px;
-  font-weight: 700;
-  padding: 3px 10px;
-  border: 1px solid;
-}
-.va .vc-pts { color:var(--moon); border-color:rgba(136,136,255,.35); background:rgba(136,136,255,.08); }
-.vb .vc-pts { color:var(--s-col); border-color:rgba(255,170,48,.35);  background:rgba(255,170,48,.08); }
-.vc .vc-pts  { color:var(--d-col); border-color:rgba(77,184,255,.35);  background:rgba(77,184,255,.08); }
-.vd .vc-pts { color:var(--v-col); border-color:rgba(80,227,164,.35);  background:rgba(80,227,164,.08); }
+      .vc-header {
+        padding: 14px 18px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        border-bottom: 1px solid var(--border2);
+        background: var(--card);
+      }
+      .vc-letter {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 40px;
+        line-height: 1;
+        letter-spacing: 2px;
+      }
+      .va .vc-letter {
+        color: var(--moon);
+      }
+      .vb .vc-letter {
+        color: var(--s-col);
+      }
+      .vc .vc-letter {
+        color: var(--d-col);
+      }
+      .vd .vc-letter {
+        color: var(--v-col);
+      }
+      .vc-meta {
+        flex: 1;
+      }
+      .vc-title {
+        font-family: "Montserrat", sans-serif;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 2px;
+      }
+      .vc-hint {
+        font-family: "Source Code Pro", monospace;
+        font-size: 10px;
+        color: var(--muted);
+        letter-spacing: 1px;
+      }
+      .vc-pts {
+        font-family: "Source Code Pro", monospace;
+        font-size: 11px;
+        font-weight: 700;
+        padding: 3px 10px;
+        border: 1px solid;
+      }
+      .va .vc-pts {
+        color: var(--moon);
+        border-color: rgba(136, 136, 255, 0.35);
+        background: rgba(136, 136, 255, 0.08);
+      }
+      .vb .vc-pts {
+        color: var(--s-col);
+        border-color: rgba(255, 170, 48, 0.35);
+        background: rgba(255, 170, 48, 0.08);
+      }
+      .vc .vc-pts {
+        color: var(--d-col);
+        border-color: rgba(77, 184, 255, 0.35);
+        background: rgba(77, 184, 255, 0.08);
+      }
+      .vd .vc-pts {
+        color: var(--v-col);
+        border-color: rgba(80, 227, 164, 0.35);
+        background: rgba(80, 227, 164, 0.08);
+      }
 
-.code-block {
-  padding: 14px 0;
-  font-family: 'Source Code Pro', monospace;
-  font-size: 14px;
-  line-height: 1.72;
-  background: rgba(0,0,0,.35);
-  border-bottom: 1px solid var(--border2);
-  overflow-x: auto;
-}
-.code-line {
-  display: block;
-  padding: 0 18px 0 0;
-  white-space: pre;
-}
-.code-line:hover { background: rgba(255,255,255,.04); }
-.ln {
-  display: inline-block;
-  width: 38px;
-  text-align: right;
-  padding-right: 14px;
-  color: #374060;
-  user-select: none;
-  font-size: 11px;
-}
+      .code-block {
+        padding: 14px 0;
+        font-family: "Source Code Pro", monospace;
+        font-size: 14px;
+        line-height: 1.72;
+        background: rgba(0, 0, 0, 0.35);
+        border-bottom: 1px solid var(--border2);
+        overflow-x: auto;
+      }
+      .code-line {
+        display: block;
+        padding: 0 18px 0 0;
+        white-space: pre;
+      }
+      .code-line:hover {
+        background: rgba(255, 255, 255, 0.04);
+      }
+      .ln {
+        display: inline-block;
+        width: 38px;
+        text-align: right;
+        padding-right: 14px;
+        color: #374060;
+        user-select: none;
+        font-size: 11px;
+      }
 
-/* ── SYNTAX HIGHLIGHTING ── */
-.cc { color: #6A9955; font-style: italic; }   /* comment */
-.ck { color: #569CD6; }                        /* keyword */
-.cs { color: #CE9178; }                        /* string */
-.cn { color: #B5CEA8; }                        /* number */
-.cf { color: #DCDCAA; }                        /* function / method name */
-.cv { color: #9CDCFE; }                        /* variable / identifier */
-.cm { color: #4EC9B0; }                        /* module / builtin */
+      /* ── SYNTAX HIGHLIGHTING ── */
+      .cc {
+        color: #6a9955;
+        font-style: italic;
+      } /* comment */
+      .ck {
+        color: #569cd6;
+      } /* keyword */
+      .cs {
+        color: #ce9178;
+      } /* string */
+      .cn {
+        color: #b5cea8;
+      } /* number */
+      .cf {
+        color: #dcdcaa;
+      } /* function / method name */
+      .cv {
+        color: #9cdcfe;
+      } /* variable / identifier */
+      .cm {
+        color: #4ec9b0;
+      } /* module / builtin */
 
-.answers { padding: 16px 18px 18px; }
-.answers-title {
-  font-family: 'Source Code Pro', monospace;
-  font-size: 10px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 14px;
-}
-.ans-row {
-  display: flex;
-  align-items: flex-end;
-  gap: 6px;
-  margin-bottom: 12px;
-}
-.ans-row:last-child { margin-bottom: 0; }
-.ans-prefix {
-  font-family: 'Source Code Pro', monospace;
-  font-size: 11.5px;
-  color: var(--muted);
-  white-space: nowrap;
-  padding-bottom: 3px;
-}
-.ans-num-box {
-  width: 30px;
-  border: none;
-  border-bottom: 1px solid var(--border2);
-  height: 24px;
-  flex-shrink: 0;
-  background: transparent;
-  color: var(--text);
-  font-family: 'Source Code Pro', monospace;
-  font-size: 12px;
-  text-align: center;
-  outline: none;
-  padding: 0;
-}
-.ans-field {
-  flex: 1;
-  border: none;
-  border-bottom: 1px solid var(--border2);
-  height: 24px;
-  background: transparent;
-  color: var(--text);
-  font-family: 'Source Code Pro', monospace;
-  font-size: 12px;
-  outline: none;
-  padding: 0 4px;
-}
-.ans-num-box:focus, .ans-field:focus { border-bottom-color: var(--moon); }
-.ans-num-box::placeholder, .ans-field::placeholder { color: var(--border2); }
-.ans-dash { color:var(--muted); font-size:12px; padding-bottom:4px; }
-.student-name {
-  display: block;
-  width: 100%;
-  background: rgba(255,255,255,.04);
-  border: 1px solid var(--border2);
-  border-radius: 4px;
-  color: var(--text);
-  font-family: 'Montserrat', sans-serif;
-  font-size: 13px;
-  padding: 7px 10px;
-  margin-bottom: 14px;
-  outline: none;
-}
-.student-name:focus { border-color: rgba(136,136,255,.5); }
-.student-name::placeholder { color: var(--muted); }
-.submit-wrap { padding: 0 18px 18px; }
-.submit-ok {
-  padding: 11px;
-  border-radius: 5px;
-  background: rgba(80,227,164,.12);
-  border: 1px solid rgba(80,227,164,.35);
-  color: var(--v-col);
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 700;
-  font-size: 13px;
-  text-align: center;
-  letter-spacing: 1px;
-}
-.submit-btn {
-  width: 100%;
-  padding: 11px;
-  border: none;
-  border-radius: 5px;
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 700;
-  font-size: 13px;
-  letter-spacing: 1px;
-  cursor: pointer;
-  transition: opacity .15s;
-}
-.submit-btn:hover { opacity: .85; }
-.va .submit-btn { background: var(--moon);  color: #000; }
-.vb .submit-btn { background: var(--s-col); color: #000; }
-.vc .submit-btn  { background: var(--d-col); color: #000; }
-.vd .submit-btn { background: var(--v-col); color: #000; }
+      .answers {
+        padding: 16px 18px 18px;
+      }
+      .answers-title {
+        font-family: "Source Code Pro", monospace;
+        font-size: 10px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 14px;
+      }
+      .ans-row {
+        display: flex;
+        align-items: flex-end;
+        gap: 6px;
+        margin-bottom: 12px;
+      }
+      .ans-row:last-child {
+        margin-bottom: 0;
+      }
+      .ans-prefix {
+        font-family: "Source Code Pro", monospace;
+        font-size: 11.5px;
+        color: var(--muted);
+        white-space: nowrap;
+        padding-bottom: 3px;
+      }
+      .ans-num-box {
+        width: 30px;
+        border: none;
+        border-bottom: 1px solid var(--border2);
+        height: 24px;
+        flex-shrink: 0;
+        background: transparent;
+        color: var(--text);
+        font-family: "Source Code Pro", monospace;
+        font-size: 12px;
+        text-align: center;
+        outline: none;
+        padding: 0;
+      }
+      .ans-field {
+        flex: 1;
+        border: none;
+        border-bottom: 1px solid var(--border2);
+        height: 24px;
+        background: transparent;
+        color: var(--text);
+        font-family: "Source Code Pro", monospace;
+        font-size: 12px;
+        outline: none;
+        padding: 0 4px;
+      }
+      .ans-num-box:focus,
+      .ans-field:focus {
+        border-bottom-color: var(--moon);
+      }
+      .ans-num-box::placeholder,
+      .ans-field::placeholder {
+        color: var(--border2);
+      }
+      .ans-dash {
+        color: var(--muted);
+        font-size: 12px;
+        padding-bottom: 4px;
+      }
+      .student-name {
+        display: block;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid var(--border2);
+        border-radius: 4px;
+        color: var(--text);
+        font-family: "Montserrat", sans-serif;
+        font-size: 13px;
+        padding: 7px 10px;
+        margin-bottom: 14px;
+        outline: none;
+      }
+      .student-name:focus {
+        border-color: rgba(136, 136, 255, 0.5);
+      }
+      .student-name::placeholder {
+        color: var(--muted);
+      }
+      .submit-wrap {
+        padding: 0 18px 18px;
+      }
+      .submit-ok {
+        padding: 11px;
+        border-radius: 5px;
+        background: rgba(80, 227, 164, 0.12);
+        border: 1px solid rgba(80, 227, 164, 0.35);
+        color: var(--v-col);
+        font-family: "Montserrat", sans-serif;
+        font-weight: 700;
+        font-size: 13px;
+        text-align: center;
+        letter-spacing: 1px;
+      }
+      .submit-btn {
+        width: 100%;
+        padding: 11px;
+        border: none;
+        border-radius: 5px;
+        font-family: "Montserrat", sans-serif;
+        font-weight: 700;
+        font-size: 13px;
+        letter-spacing: 1px;
+        cursor: pointer;
+        transition: opacity 0.15s;
+      }
+      .submit-btn:hover {
+        opacity: 0.85;
+      }
+      .va .submit-btn {
+        background: var(--moon);
+        color: #000;
+      }
+      .vb .submit-btn {
+        background: var(--s-col);
+        color: #000;
+      }
+      .vc .submit-btn {
+        background: var(--d-col);
+        color: #000;
+      }
+      .vd .submit-btn {
+        background: var(--v-col);
+        color: #000;
+      }
 
-/* ── SAVE ── */
-.save-box {
-  background: rgba(80,227,164,.05);
-  border: 1px solid rgba(80,227,164,.2);
-  padding: 16px 22px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-.save-box .icon { font-size:26px; flex-shrink:0; }
-.save-box p { font-size:13px; color:var(--text); line-height:1.65; }
-.save-box strong { font-family:'Source Code Pro',monospace; color:var(--v-col); }
+      /* ── SAVE ── */
+      .save-box {
+        background: rgba(80, 227, 164, 0.05);
+        border: 1px solid rgba(80, 227, 164, 0.2);
+        padding: 16px 22px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      .save-box .icon {
+        font-size: 26px;
+        flex-shrink: 0;
+      }
+      .save-box p {
+        font-size: 13px;
+        color: var(--text);
+        line-height: 1.65;
+      }
+      .save-box strong {
+        font-family: "Source Code Pro", monospace;
+        color: var(--v-col);
+      }
 
-/* ── FOOTER ── */
-footer {
-  border-top: 1px solid var(--border);
-  padding-top: 20px;
-  margin-top: 32px;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-footer span {
-  font-family: 'Source Code Pro', monospace;
-  font-size: 10px;
-  color: var(--muted);
-  letter-spacing: 1px;
-}
+      /* ── FOOTER ── */
+      footer {
+        border-top: 1px solid var(--border);
+        padding-top: 20px;
+        margin-top: 32px;
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      footer span {
+        font-family: "Source Code Pro", monospace;
+        font-size: 10px;
+        color: var(--muted);
+        letter-spacing: 1px;
+      }
 
-/* ── RESPONSIVE ── */
-@media(max-width:560px){
-  header { grid-template-columns: 1fr; }
-  .hdr-chips { align-items: flex-start; }
-  .el-header, .el-row { grid-template-columns: 28px 1fr; }
-  .el-header .el-cell:nth-child(3),
-  .el-row   .el-cell:nth-child(3) { display: none; }
-  .palette-wrap { grid-template-columns: 1fr 1fr; }
-  .picker-grid { grid-template-columns: 1fr 1fr; }
-}
+      /* ── RESPONSIVE ── */
+      @media (max-width: 560px) {
+        header {
+          grid-template-columns: 1fr;
+        }
+        .hdr-chips {
+          align-items: flex-start;
+        }
+        .el-header,
+        .el-row {
+          grid-template-columns: 28px 1fr;
+        }
+        .el-header .el-cell:nth-child(3),
+        .el-row .el-cell:nth-child(3) {
+          display: none;
+        }
+        .palette-wrap {
+          grid-template-columns: 1fr 1fr;
+        }
+        .picker-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
 
-/* ── RESULT SVG ── */
-.result-svg-wrap {
-  border: 1px solid var(--border2);
-  overflow: hidden;
-  max-width: 420px;
-  margin: 0 auto 32px;
-}
-.result-svg-label {
-  font-family: 'Source Code Pro', monospace;
-  font-size: 10px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--muted);
-  padding: 8px 12px;
-  background: var(--card);
-  border-bottom: 1px solid var(--border2);
-  text-align: center;
-}
-.result-svg-wrap svg { width: 100%; display: block; }
+      /* ── RESULT SVG ── */
+      .result-svg-wrap {
+        border: 1px solid var(--border2);
+        overflow: hidden;
+        max-width: 420px;
+        margin: 0 auto 32px;
+      }
+      .result-svg-label {
+        font-family: "Source Code Pro", monospace;
+        font-size: 10px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--muted);
+        padding: 8px 12px;
+        background: var(--card);
+        border-bottom: 1px solid var(--border2);
+        text-align: center;
+      }
+      .result-svg-wrap svg {
+        width: 100%;
+        display: block;
+      }
 
-/* ── PRINT ── */
-@media print {
-  body { background: #fff; color: #111; }
-  body::before { display: none; }
-  .variant-card { background: #fff; border: 1px solid #ccc; page-break-inside: avoid; }
-  .variant-card + .variant-card { page-break-before: always; }
-  .vc-header { background: #f5f5f5; border-bottom: 1px solid #ddd; }
-  .code-block { background: #f8f8f8; color: #111; border-bottom: 1px solid #ddd; }
-  .ln { color: #bbb; }
-  .ans-field, .ans-num-box { border-bottom: 1px solid #aaa; color: #111; background: #fff; }
-  .ans-prefix, .answers-title { color: #888; }
-  .student-name { background: #fff; border-color: #aaa; color: #111; }
-  .submit-wrap { display: none; }
-  #variant-picker { display: none; }
-  .vc-letter { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-}
-</style>
-</head>
-<body>
+      /* ── PRINT ── */
+      @media print {
+        body {
+          background: #fff;
+          color: #111;
+        }
+        body::before {
+          display: none;
+        }
+        .variant-card {
+          background: #fff;
+          border: 1px solid #ccc;
+          page-break-inside: avoid;
+        }
+        .variant-card + .variant-card {
+          page-break-before: always;
+        }
+        .vc-header {
+          background: #f5f5f5;
+          border-bottom: 1px solid #ddd;
+        }
+        .code-block {
+          background: #f8f8f8;
+          color: #111;
+          border-bottom: 1px solid #ddd;
+        }
+        .ln {
+          color: #bbb;
+        }
+        .ans-field,
+        .ans-num-box {
+          border-bottom: 1px solid #aaa;
+          color: #111;
+          background: #fff;
+        }
+        .ans-prefix,
+        .answers-title {
+          color: #888;
+        }
+        .student-name {
+          background: #fff;
+          border-color: #aaa;
+          color: #111;
+        }
+        .submit-wrap {
+          display: none;
+        }
+        #variant-picker {
+          display: none;
+        }
+        .vc-letter {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <!-- HEADER -->
+      <header>
+        <div>
+          <div class="eyebrow">Підсумкова практична робота · Уроки 1, 2, 4 · 45 хвилин</div>
+          <h1>КОСМІЧНИЙ<br /><span class="y">ПЕЙЗАЖ</span></h1>
+        </div>
+        <div class="hdr-chips">
+          <span class="chip hi">⏱ 45 хвилин</span>
+          <span class="chip">Python · Turtle</span>
+          <span class="chip">7 клас</span>
+        </div>
+      </header>
 
+      <!-- SPACE ILLUSTRATION -->
+      <svg class="space-svg" viewBox="0 0 820 120" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="pg1" cx="35%" cy="35%">
+            <stop offset="0%" stop-color="#ff6644" />
+            <stop offset="100%" stop-color="#aa2222" />
+          </radialGradient>
+          <radialGradient id="pg2" cx="40%" cy="40%">
+            <stop offset="0%" stop-color="#4488ff" />
+            <stop offset="100%" stop-color="#001166" />
+          </radialGradient>
+        </defs>
+        <rect width="820" height="120" fill="#06080f" />
+        <circle cx="45" cy="15" r=".8" fill="#fff" opacity=".4" />
+        <circle cx="120" cy="8" r=".6" fill="#fff" opacity=".5" />
+        <circle cx="320" cy="12" r=".9" fill="#fff" opacity=".6" />
+        <circle cx="540" cy="10" r=".8" fill="#fff" opacity=".5" />
+        <circle cx="780" cy="14" r=".6" fill="#fff" opacity=".6" />
+        <circle cx="80" cy="35" r="1.2" fill="#ffe680" opacity=".7" />
+        <circle cx="310" cy="55" r="1.3" fill="#fff" opacity=".6" />
+        <circle cx="480" cy="40" r="1.2" fill="#ffe680" opacity=".7" />
+        <circle cx="150" cy="72" r="1.8" fill="#ffe680" opacity=".9" />
+        <circle cx="380" cy="80" r="1.9" fill="#fff" opacity=".95" />
+        <circle cx="700" cy="32" r="16" fill="url(#pg1)" />
+        <ellipse cx="700" cy="36" rx="22" ry="4" fill="none" stroke="#aaaacc" stroke-width="1.5" opacity=".6" />
+        <circle cx="120" cy="95" r="12" fill="url(#pg2)" />
+        <g transform="translate(350,100)">
+          <polygon points="0,-8 -3,4 3,4" fill="#ff8800" opacity=".8" />
+          <rect x="-1.5" y="4" width="3" height="6" fill="#ff6600" opacity=".8" />
+        </g>
+        <line x1="220" y1="25" x2="180" y2="15" stroke="#ffa500" stroke-width="1.5" opacity=".6" />
+      </svg>
 
-<div class="wrap">
+      <!-- ── ЗРАЗОК РЕЗУЛЬТАТУ ── -->
+      <div class="slabel" style="margin-top: 28px">Зразок результату</div>
+      <div class="result-svg-wrap">
+        <div class="result-svg-label">Результат програми</div>
+        <svg viewBox="-300 -300 600 600" xmlns="http://www.w3.org/2000/svg">
+          <rect x="-300" y="-300" width="600" height="600" fill="#06080f" />
+          <g transform="scale(1,-1)">
+            <!-- Stars: large yellow (size > 6) -->
+            <g stroke="#ffe680" stroke-width="0.8">
+              <line x1="-91" y1="196" x2="-91" y2="204" />
+              <line x1="-95" y1="200" x2="-87" y2="200" />
+              <line x1="-93.7" y1="197.3" x2="-88.3" y2="202.7" />
+              <line x1="-93.7" y1="202.7" x2="-88.3" y2="197.3" />
+              <line x1="216" y1="247" x2="216" y2="257" />
+              <line x1="211" y1="252" x2="221" y2="252" />
+              <line x1="212.5" y1="248.5" x2="219.5" y2="255.5" />
+              <line x1="212.5" y1="255.5" x2="219.5" y2="248.5" />
+              <line x1="-263" y1="-124" x2="-263" y2="-116" />
+              <line x1="-267" y1="-120" x2="-259" y2="-120" />
+              <line x1="-265.7" y1="-122.7" x2="-260.3" y2="-117.3" />
+              <line x1="-265.7" y1="-117.3" x2="-260.3" y2="-122.7" />
+              <line x1="176" y1="-204" x2="176" y2="-196" />
+              <line x1="172" y1="-200" x2="180" y2="-200" />
+              <line x1="173.3" y1="-202.7" x2="178.7" y2="-197.3" />
+              <line x1="173.3" y1="-197.3" x2="178.7" y2="-202.7" />
+              <line x1="-31" y1="276" x2="-31" y2="284" />
+              <line x1="-35" y1="280" x2="-27" y2="280" />
+              <line x1="-33.7" y1="277.3" x2="-28.3" y2="282.7" />
+              <line x1="-33.7" y1="282.7" x2="-28.3" y2="277.3" />
+              <line x1="110" y1="60" x2="110" y2="68" />
+              <line x1="106" y1="64" x2="114" y2="64" />
+              <line x1="107.3" y1="61.3" x2="112.7" y2="66.7" />
+              <line x1="107.3" y1="66.7" x2="112.7" y2="61.3" />
+            </g>
+            <!-- Stars: medium white (size 4–6) -->
+            <g fill="#ffffff">
+              <circle cx="138" cy="202" r="2.2" />
+              <circle cx="-201" cy="183" r="2.2" />
+              <circle cx="281" cy="97" r="2.2" />
+              <circle cx="-131" cy="-198" r="2.2" />
+              <circle cx="49" cy="243" r="2.2" />
+              <circle cx="-281" cy="47" r="2.5" />
+              <circle cx="242" cy="-53" r="2.2" />
+              <circle cx="98" cy="-243" r="2.2" />
+              <circle cx="-62" cy="168" r="2.2" />
+              <circle cx="195" cy="130" r="2.2" />
+              <circle cx="-170" cy="-110" r="2.2" />
+              <circle cx="60" cy="-140" r="2.2" />
+            </g>
+            <!-- Stars: small gray (size 1–3) -->
+            <g fill="#888899">
+              <circle cx="-241" cy="278" r="1.4" />
+              <circle cx="168" cy="279" r="1.4" />
+              <circle cx="-289" cy="261" r="1.4" />
+              <circle cx="288" cy="258" r="1.4" />
+              <circle cx="-191" cy="-278" r="1.4" />
+              <circle cx="252" cy="-281" r="1.4" />
+              <circle cx="-289" cy="-232" r="1.4" />
+              <circle cx="-141" cy="251" r="1.4" />
+              <circle cx="231" cy="179" r="1.4" />
+              <circle cx="-180" cy="131" r="1.4" />
+              <circle cx="79" cy="99" r="1.4" />
+              <circle cx="158" cy="-121" r="1.4" />
+              <circle cx="-52" cy="230" r="1.4" />
+              <circle cx="290" cy="180" r="1.4" />
+              <circle cx="-130" cy="30" r="1.4" />
+              <circle cx="20" cy="195" r="1.4" />
+              <circle cx="-250" cy="-50" r="1.4" />
+              <circle cx="230" cy="-180" r="1.4" />
+            </g>
 
-<!-- HEADER -->
-<header>
-  <div>
-    <div class="eyebrow">Підсумкова практична робота · Уроки 1, 2, 4 · 45 хвилин</div>
-    <h1>КОСМІЧНИЙ<br><span class="y">ПЕЙЗАЖ</span></h1>
-  </div>
-  <div class="hdr-chips">
-    <span class="chip hi">⏱ 45 хвилин</span>
-    <span class="chip">Python · Turtle</span>
-    <span class="chip">7 клас</span>
-  </div>
-</header>
+            <!-- Moon crescent: yellow circle + dark overlay -->
+            <circle cx="-150" cy="-40" r="40" fill="#ffe680" />
+            <circle cx="-130" cy="-46" r="34" fill="#06080f" />
 
-<!-- SPACE ILLUSTRATION -->
-<svg class="space-svg" viewBox="0 0 820 120" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <radialGradient id="pg1" cx="35%" cy="35%"><stop offset="0%" stop-color="#ff6644"/><stop offset="100%" stop-color="#aa2222"/></radialGradient>
-    <radialGradient id="pg2" cx="40%" cy="40%"><stop offset="0%" stop-color="#4488ff"/><stop offset="100%" stop-color="#001166"/></radialGradient>
-  </defs>
-  <rect width="820" height="120" fill="#06080f"/>
-  <circle cx="45"  cy="15" r=".8" fill="#fff" opacity=".4"/>
-  <circle cx="120" cy="8"  r=".6" fill="#fff" opacity=".5"/>
-  <circle cx="320" cy="12" r=".9" fill="#fff" opacity=".6"/>
-  <circle cx="540" cy="10" r=".8" fill="#fff" opacity=".5"/>
-  <circle cx="780" cy="14" r=".6" fill="#fff" opacity=".6"/>
-  <circle cx="80"  cy="35" r="1.2" fill="#ffe680" opacity=".7"/>
-  <circle cx="310" cy="55" r="1.3" fill="#fff"   opacity=".6"/>
-  <circle cx="480" cy="40" r="1.2" fill="#ffe680" opacity=".7"/>
-  <circle cx="150" cy="72" r="1.8" fill="#ffe680" opacity=".9"/>
-  <circle cx="380" cy="80" r="1.9" fill="#fff"    opacity=".95"/>
-  <circle cx="700" cy="32" r="16"  fill="url(#pg1)"/>
-  <ellipse cx="700" cy="36" rx="22" ry="4" fill="none" stroke="#aaaacc" stroke-width="1.5" opacity=".6"/>
-  <circle cx="120" cy="95" r="12" fill="url(#pg2)"/>
-  <g transform="translate(350,100)">
-    <polygon points="0,-8 -3,4 3,4" fill="#ff8800" opacity=".8"/>
-    <rect x="-1.5" y="4" width="3" height="6" fill="#ff6600" opacity=".8"/>
-  </g>
-  <line x1="220" y1="25" x2="180" y2="15" stroke="#ffa500" stroke-width="1.5" opacity=".6"/>
-</svg>
+            <!-- Red planet (goto 150,100 then circle 45 → center at 150,145) -->
+            <circle cx="150" cy="145" r="45" fill="#cc3333" />
+            <!-- Rings r=55,63,71 centered at same point -->
+            <circle cx="150" cy="145" r="55" fill="none" stroke="#aa5555" stroke-width="1.5" />
+            <circle cx="150" cy="145" r="63" fill="none" stroke="#aa5555" stroke-width="1.5" />
+            <circle cx="150" cy="145" r="71" fill="none" stroke="#aa5555" stroke-width="1.5" />
 
-<!-- ── ЗРАЗОК РЕЗУЛЬТАТУ ── -->
-<div class="slabel" style="margin-top:28px;">Зразок результату</div>
-<div class="result-svg-wrap">
-  <div class="result-svg-label">Результат програми</div>
-  <svg viewBox="-300 -300 600 600" xmlns="http://www.w3.org/2000/svg">
-    <rect x="-300" y="-300" width="600" height="600" fill="#06080f"/>
-    <g transform="scale(1,-1)">
-      <!-- Stars: large yellow (size > 6) -->
-      <g stroke="#ffe680" stroke-width="0.8">
-        <line x1="-91" y1="196" x2="-91" y2="204"/><line x1="-95" y1="200" x2="-87" y2="200"/><line x1="-93.7" y1="197.3" x2="-88.3" y2="202.7"/><line x1="-93.7" y1="202.7" x2="-88.3" y2="197.3"/>
-        <line x1="216" y1="247" x2="216" y2="257"/><line x1="211" y1="252" x2="221" y2="252"/><line x1="212.5" y1="248.5" x2="219.5" y2="255.5"/><line x1="212.5" y1="255.5" x2="219.5" y2="248.5"/>
-        <line x1="-263" y1="-124" x2="-263" y2="-116"/><line x1="-267" y1="-120" x2="-259" y2="-120"/><line x1="-265.7" y1="-122.7" x2="-260.3" y2="-117.3"/><line x1="-265.7" y1="-117.3" x2="-260.3" y2="-122.7"/>
-        <line x1="176" y1="-204" x2="176" y2="-196"/><line x1="172" y1="-200" x2="180" y2="-200"/><line x1="173.3" y1="-202.7" x2="178.7" y2="-197.3"/><line x1="173.3" y1="-197.3" x2="178.7" y2="-202.7"/>
-        <line x1="-31" y1="276" x2="-31" y2="284"/><line x1="-35" y1="280" x2="-27" y2="280"/><line x1="-33.7" y1="277.3" x2="-28.3" y2="282.7"/><line x1="-33.7" y1="282.7" x2="-28.3" y2="277.3"/>
-        <line x1="110" y1="60" x2="110" y2="68"/><line x1="106" y1="64" x2="114" y2="64"/><line x1="107.3" y1="61.3" x2="112.7" y2="66.7"/><line x1="107.3" y1="66.7" x2="112.7" y2="61.3"/>
-      </g>
-      <!-- Stars: medium white (size 4–6) -->
-      <g fill="#ffffff">
-        <circle cx="138" cy="202" r="2.2"/>
-        <circle cx="-201" cy="183" r="2.2"/>
-        <circle cx="281" cy="97"  r="2.2"/>
-        <circle cx="-131" cy="-198" r="2.2"/>
-        <circle cx="49"  cy="243" r="2.2"/>
-        <circle cx="-281" cy="47"  r="2.5"/>
-        <circle cx="242" cy="-53" r="2.2"/>
-        <circle cx="98"  cy="-243" r="2.2"/>
-        <circle cx="-62" cy="168" r="2.2"/>
-        <circle cx="195" cy="130" r="2.2"/>
-        <circle cx="-170" cy="-110" r="2.2"/>
-        <circle cx="60"  cy="-140" r="2.2"/>
-      </g>
-      <!-- Stars: small gray (size 1–3) -->
-      <g fill="#888899">
-        <circle cx="-241" cy="278" r="1.4"/>
-        <circle cx="168"  cy="279" r="1.4"/>
-        <circle cx="-289" cy="261" r="1.4"/>
-        <circle cx="288"  cy="258" r="1.4"/>
-        <circle cx="-191" cy="-278" r="1.4"/>
-        <circle cx="252"  cy="-281" r="1.4"/>
-        <circle cx="-289" cy="-232" r="1.4"/>
-        <circle cx="-141" cy="251" r="1.4"/>
-        <circle cx="231"  cy="179" r="1.4"/>
-        <circle cx="-180" cy="131" r="1.4"/>
-        <circle cx="79"   cy="99"  r="1.4"/>
-        <circle cx="158"  cy="-121" r="1.4"/>
-        <circle cx="-52"  cy="230" r="1.4"/>
-        <circle cx="290"  cy="180" r="1.4"/>
-        <circle cx="-130" cy="30"  r="1.4"/>
-        <circle cx="20"   cy="195" r="1.4"/>
-        <circle cx="-250" cy="-50" r="1.4"/>
-        <circle cx="230"  cy="-180" r="1.4"/>
-      </g>
+            <!-- Comet: tail goes NE -->
+            <line x1="50" y1="-160" x2="61" y2="-149" stroke="white" stroke-width="4" stroke-linecap="round" />
+            <line x1="61" y1="-149" x2="71" y2="-139" stroke="#fffacd" stroke-width="3.5" stroke-linecap="round" />
+            <line x1="71" y1="-139" x2="82" y2="-128" stroke="#add8e6" stroke-width="3" stroke-linecap="round" />
+            <line x1="82" y1="-128" x2="93" y2="-117" stroke="#4682b4" stroke-width="2.5" stroke-linecap="round" />
+            <line x1="93" y1="-117" x2="103" y2="-107" stroke="#4682b4" stroke-width="2" stroke-linecap="round" />
+            <line x1="103" y1="-107" x2="114" y2="-96" stroke="#4682b4" stroke-width="1.5" stroke-linecap="round" />
+          </g>
+        </svg>
+      </div>
 
-      <!-- Moon crescent: yellow circle + dark overlay -->
-      <circle cx="-150" cy="50" r="40" fill="#ffe680"/>
-      <circle cx="-130" cy="50" r="34" fill="#06080f"/>
+      <!-- ═══════════════════════════════════════════════════ -->
+      <!-- ЧАСТИНА 1                                          -->
+      <!-- ═══════════════════════════════════════════════════ -->
+      <div class="part-div p1">
+        <div class="part-num">ЧАСТИНА 1</div>
+        <div class="part-info">
+          <div class="part-title">Малюємо космічний пейзаж</div>
+          <div class="part-sub">Python Turtle · самостійна робота</div>
+        </div>
+        <div class="part-badge">8 БАЛІВ</div>
+      </div>
 
-      <!-- Red planet (goto 150,100 then circle 45 → center at 150,145) -->
-      <circle cx="150" cy="145" r="45" fill="#cc3333"/>
-      <!-- Rings r=55,63,71 centered at same point -->
-      <circle cx="150" cy="145" r="55" fill="none" stroke="#aa5555" stroke-width="1.5"/>
-      <circle cx="150" cy="145" r="63" fill="none" stroke="#aa5555" stroke-width="1.5"/>
-      <circle cx="150" cy="145" r="71" fill="none" stroke="#aa5555" stroke-width="1.5"/>
+      <!-- ЗНАННЯ -->
+      <div style="margin: 0 0 28px">
+        <div class="slabel">Що ти вже вмієш (після уроків 1–2 та 4)</div>
+        <div class="know-row">
+          <span class="know-pill"><span class="dot"></span>Темний фон — bgcolor()</span>
+          <span class="know-pill"><span class="dot"></span>Переміщення — goto(), penup/down</span>
+          <span class="know-pill"><span class="dot"></span>Заливка — begin_fill / end_fill</span>
+          <span class="know-pill"><span class="dot"></span>Цикл for + range()</span>
+          <span class="know-pill"><span class="dot"></span>if / elif / else — розгалуження</span>
+          <span class="know-pill"><span class="dot"></span>random — randint()</span>
+          <span class="know-pill"><span class="dot"></span>Функція — def star()</span>
+          <span class="know-pill"><span class="dot"></span>setheading() + circle() із заливкою</span>
+          <span class="know-pill"><span class="dot"></span>HEX-кольори</span>
+        </div>
+      </div>
 
-      <!-- Blue planet (goto -150,-80 then circle 30 → center at -150,-50) -->
-      <circle cx="-150" cy="-50" r="30" fill="#3366bb"/>
+      <!-- ЗАВДАННЯ -->
+      <div class="slabel">Завдання</div>
+      <div class="task-box">
+        <h2>🚀 Намалюй космічний пейзаж</h2>
+        <p>
+          Напиши програму на Python Turtle, яка малює <strong>космічний пейзаж</strong>. Програма повинна запускатись
+          без помилок і показувати результат на екрані.<br /><br />
+          <strong>Обов'язково:</strong> зірки — використай функцію <strong>def star()</strong>, цикл
+          <strong>for</strong>, розгалуження <strong>if / elif / else</strong> та <strong>random</strong>.<br />
+          <strong>Додатково — обери елементи зі сцени:</strong> 🌙 місяць-серп, 🔴 червона планета з кільцями, ☄️ комета.
+        </p>
+      </div>
 
-      <!-- Comet: head at (50,-160), setheading(45°), tail goes NE -->
-      <circle cx="50" cy="-160" r="4" fill="white"/>
-      <line x1="50"  y1="-160" x2="61"  y2="-149" stroke="white"   stroke-width="4"   stroke-linecap="round"/>
-      <line x1="61"  y1="-149" x2="71"  y2="-139" stroke="#fffacd" stroke-width="3.5" stroke-linecap="round"/>
-      <line x1="71"  y1="-139" x2="82"  y2="-128" stroke="#add8e6" stroke-width="3"   stroke-linecap="round"/>
-      <line x1="82"  y1="-128" x2="93"  y2="-117" stroke="#4682b4" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="93"  y1="-117" x2="103" y2="-107" stroke="#4682b4" stroke-width="2"   stroke-linecap="round"/>
-      <line x1="103" y1="-107" x2="114" y2="-96"  stroke="#4682b4" stroke-width="1.5" stroke-linecap="round"/>
-    </g>
-  </svg>
-</div>
+      <!-- ЕЛЕМЕНТИ -->
+      <div class="slabel">Елементи сцени</div>
+      <div class="elements">
+        <div class="el-header">
+          <div class="el-cell"></div>
+          <div class="el-cell">Елемент</div>
+          <div class="el-cell">Що потрібно застосувати</div>
+        </div>
+        <div class="el-row">
+          <div class="el-cell">⭐</div>
+          <div class="el-cell">
+            Зірки — обов'язково, ≥30<span class="cmd"
+              >def star(size, color): for _ in range(8): forward / backward / right(45)</span
+            >
+          </div>
+          <div class="el-cell">
+            Функція star(), цикл for, random.randint() для позиції та розміру, if/elif/else для кольору
+          </div>
+        </div>
+        <div class="el-row">
+          <div class="el-cell">🌙</div>
+          <div class="el-cell">Місяць-серп<span class="cmd">circle(40) → circle(34) зміщене поверх</span></div>
+          <div class="el-cell">Жовте велике коло + темне менше зі зміщенням → утворює серп</div>
+        </div>
+        <div class="el-row">
+          <div class="el-cell">🔴</div>
+          <div class="el-cell">
+            Червона планета з кільцями<span class="cmd">fillcolor() + begin_fill + circle() + end_fill; for r in range(…): circle(r)</span>
+          </div>
+          <div class="el-cell">goto(), circle(), fillcolor() — залита куля + цикл for для кілець різних радіусів</div>
+        </div>
+        <div class="el-row">
+          <div class="el-cell">☄️</div>
+          <div class="el-cell">
+            Комета<span class="cmd">setheading(45) + for: forward()</span>
+          </div>
+          <div class="el-cell">
+            setheading() задає напрямок, for + forward() малює хвіст з кольором, що згасає
+          </div>
+        </div>
+      </div>
 
-<!-- ═══════════════════════════════════════════════════ -->
-<!-- ЧАСТИНА 1                                          -->
-<!-- ═══════════════════════════════════════════════════ -->
-<div class="part-div p1">
-  <div class="part-num">ЧАСТИНА 1</div>
-  <div class="part-info">
-    <div class="part-title">Малюємо космічний пейзаж</div>
-    <div class="part-sub">Python Turtle · самостійна робота</div>
-  </div>
-  <div class="part-badge">8 БАЛІВ</div>
-</div>
+      <!-- КОЛЬОРОВА ГАМА -->
+      <div class="slabel">Кольорова гама</div>
+      <div class="palette-wrap">
+        <div class="pal-group">
+          <div class="pal-label">🌌 Космос і фон</div>
+          <div class="pal-swatches">
+            <div class="sw" style="background: #06080f"><span class="sw-hex">#06080f</span></div>
+            <div class="sw" style="background: #0a0a2e"><span class="sw-hex">#0a0a2e</span></div>
+            <div class="sw" style="background: #0d1040"><span class="sw-hex">#0d1040</span></div>
+            <div class="sw" style="background: #141852"><span class="sw-hex">#141852</span></div>
+          </div>
+        </div>
+        <div class="pal-group">
+          <div class="pal-label">⭐ Зірки</div>
+          <div class="pal-swatches">
+            <div class="sw" style="background: #ffe680"><span class="sw-hex sw-dark">#ffe680</span></div>
+            <div class="sw" style="background: #ffffff"><span class="sw-hex sw-dark">#ffffff</span></div>
+            <div class="sw" style="background: #c0c0c0"><span class="sw-hex sw-dark">#c0c0c0</span></div>
+            <div class="sw" style="background: #888899"><span class="sw-hex">#888899</span></div>
+          </div>
+        </div>
+        <div class="pal-group">
+          <div class="pal-label">🔴 Планети</div>
+          <div class="pal-swatches">
+            <div class="sw" style="background: #cc3333"><span class="sw-hex">#cc3333</span></div>
+            <div class="sw" style="background: #3366bb"><span class="sw-hex">#3366bb</span></div>
+            <div class="sw" style="background: #88cc44"><span class="sw-hex">#88cc44</span></div>
+            <div class="sw" style="background: #ff8800"><span class="sw-hex">#ff8800</span></div>
+          </div>
+        </div>
+        <div class="pal-group">
+          <div class="pal-label">🪐 Кільця і деталі</div>
+          <div class="pal-swatches">
+            <div class="sw" style="background: #aaaacc"><span class="sw-hex">#aaaacc</span></div>
+            <div class="sw" style="background: #6688aa"><span class="sw-hex">#6688aa</span></div>
+            <div class="sw" style="background: #ffdd88"><span class="sw-hex sw-dark">#ffdd88</span></div>
+            <div class="sw" style="background: #44aaff"><span class="sw-hex sw-dark">#44aaff</span></div>
+          </div>
+        </div>
+      </div>
 
-<!-- ЗНАННЯ -->
-<div style="margin:0 0 28px;">
-  <div class="slabel">Що ти вже вмієш (після уроків 1–2 та 4)</div>
-  <div class="know-row">
-    <span class="know-pill"><span class="dot"></span>Темний фон — bgcolor()</span>
-    <span class="know-pill"><span class="dot"></span>Переміщення — goto(), penup/down</span>
-    <span class="know-pill"><span class="dot"></span>Заливка — begin_fill / end_fill</span>
-    <span class="know-pill"><span class="dot"></span>Цикл for + range()</span>
-    <span class="know-pill"><span class="dot"></span>if / elif / else — розгалуження</span>
-    <span class="know-pill"><span class="dot"></span>random — randint()</span>
-    <span class="know-pill"><span class="dot"></span>Функція — def star()</span>
-    <span class="know-pill"><span class="dot"></span>setheading() + circle() із заливкою</span>
-    <span class="know-pill"><span class="dot"></span>HEX-кольори</span>
-  </div>
-</div>
+      <!-- ОЦІНЮВАННЯ ЧАСТИНА 1 -->
+      <div class="slabel">Оцінювання — Частина 1</div>
+      <div class="pts-table">
+        <div class="pts-row pts-head">
+          <div class="pts-desc">Елемент</div>
+          <div class="pts-val">Бали</div>
+        </div>
+        <div class="pts-row">
+          <div class="pts-desc">Функція <code>def star()</code> визначена і правильно викликається</div>
+          <div class="pts-val">1</div>
+        </div>
+        <div class="pts-row">
+          <div class="pts-desc">Зірки малюються циклом <code>for</code> — не менше 30</div>
+          <div class="pts-val">1</div>
+        </div>
+        <div class="pts-row">
+          <div class="pts-desc">Позиції зірок — випадкові</div>
+          <div class="pts-val">1</div>
+        </div>
+        <div class="pts-row">
+          <div class="pts-desc">Розміри зірок — випадкові</div>
+          <div class="pts-val">1</div>
+        </div>
+        <div class="pts-row">
+          <div class="pts-desc">Розгалуження <code>if / elif / else</code> змінює колір залежно від розміру</div>
+          <div class="pts-val">1</div>
+        </div>
+        <div class="pts-row">
+          <div class="pts-desc">Місяць-серп</div>
+          <div class="pts-val">1</div>
+        </div>
+        <div class="pts-row">
+          <div class="pts-desc">Червона планета з кільцями (<code>circle із заливкою + for + circle</code>)</div>
+          <div class="pts-val">1</div>
+        </div>
+        <div class="pts-row">
+          <div class="pts-desc">Комета (<code>setheading + for + forward</code>)</div>
+          <div class="pts-val">1</div>
+        </div>
+        <div class="pts-row pts-total">
+          <div class="pts-desc">Максимум</div>
+          <div class="pts-val">8</div>
+        </div>
+      </div>
 
-<!-- ЗАВДАННЯ -->
-<div class="slabel">Завдання</div>
-<div class="task-box">
-  <h2>🚀 Намалюй космічний пейзаж</h2>
-  <p>
-    Напиши програму на Python Turtle, яка малює <strong>космічний пейзаж</strong>. Програма повинна запускатись без помилок і показувати результат на екрані.<br><br>
-    <strong>Обов'язково:</strong> зірки — використай функцію <strong>def star()</strong>, цикл <strong>for</strong>, розгалуження <strong>if / elif / else</strong> та <strong>random</strong>.<br>
-    <strong>Додатково — обери елементи зі сцени:</strong> 🌙 місяць-серп, 🔴🔵 дві планети, ☄️ комета або кільця планети.
-  </p>
-</div>
+      <!-- ═══════════════════════════════════════════════════ -->
+      <!-- ЧАСТИНА 2                                          -->
+      <!-- ═══════════════════════════════════════════════════ -->
+      <div class="part-div p2">
+        <div class="part-num">ЧАСТИНА 2</div>
+        <div class="part-info">
+          <div class="part-title">Знайди помилки в коді</div>
+          <div class="part-sub">4 варіанти · 4 помилки кожен</div>
+        </div>
+        <div class="part-badge">4 БАЛИ</div>
+      </div>
 
+      <div class="task-box p2">
+        <h2>🔍 Знайди помилки</h2>
+        <p>
+          У коді нижче є рівно <strong>4 помилки</strong>. Знайди кожну: вкажи <strong>номер рядка</strong> та
+          <strong>що саме не так</strong>. За кожну правильно знайдену помилку — <strong>1 бал</strong>.
+        </p>
+      </div>
 
+      <!-- PICKER -->
+      <div id="variant-picker" hidden>
+        <div class="picker-label">Обери свій варіант</div>
+        <div class="picker-grid">
+          <button class="picker-btn pva" data-v="a">А</button>
+          <button class="picker-btn pvb" data-v="b">Б</button>
+          <button class="picker-btn pvc" data-v="c">В</button>
+          <button class="picker-btn pvd" data-v="d">Г</button>
+        </div>
+      </div>
 
+      <!-- TASK LOCKED -->
+      <div id="task-locked" hidden>
+        <div class="locked-icon">🔒</div>
+        <div class="locked-title">Завдання ще не відкрите</div>
+        <div class="locked-sub">Очікуй на команду вчителя</div>
+      </div>
 
+      <!-- ── ВАРІАНТ А ── -->
+      <div class="variant-card va">
+        <div class="vc-header">
+          <div class="vc-letter">А</div>
+          <div class="vc-meta">
+            <div class="vc-title">Варіант А</div>
+            <div class="vc-hint">Знайди 4 помилки · 1 бал за кожну</div>
+          </div>
+          <div class="vc-pts">4 бали</div>
+        </div>
+        <div class="code-block">
+          <span class="code-line"
+            ><span class="ln"> 1</span><span class="ck">import</span> <span class="cm">turtle</span></span
+          >
+          <span class="code-line"><span class="ln"> 2</span></span>
+          <span class="code-line"
+            ><span class="ln"> 3</span><span class="cv">t</span> = <span class="cm">turtle</span>.<span class="cf"
+              >Turtle</span
+            ></span
+          >
+          <span class="code-line"
+            ><span class="ln"> 4</span><span class="cv">t</span>.<span class="cf">speed</span>(<span class="cn">0</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln"> 5</span><span class="cv">screen</span> = <span class="cm">turtle</span>.<span class="cf"
+              >Screen</span
+            >()</span
+          >
+          <span class="code-line"
+            ><span class="ln"> 6</span><span class="cv">screen</span>.<span class="cf">bgcolor</span>(<span class="cs"
+              >"lightblue"</span
+            >)</span
+          >
+          <span class="code-line"><span class="ln"> 7</span></span>
+          <span class="code-line"><span class="ln"> 8</span><span class="cc"># Стіни</span></span>
+          <span class="code-line"
+            ><span class="ln"> 9</span><span class="cv">t</span>.<span class="cf">penup</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">10</span><span class="cv">t</span>.<span class="cf">goto</span>(-<span class="cn">60</span
+            >, -<span class="cn">60</span>)</span
+          >
+          <span class="code-line"
+            ><span class="ln">11</span><span class="cv">t</span>.<span class="cf">pendown</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">12</span><span class="cv">t</span>.<span class="cf">fillcolor</span>(<span class="cs"
+              >"lightyellow"</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">13</span><span class="cv">t</span>.<span class="cf">begin_fill</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">14</span><span class="ck">for</span> <span class="cv">i</span> <span class="ck">in</span>
+            <span class="cm">range</span>(<span class="cn">4</span>)</span
+          >
+          <span class="code-line"
+            ><span class="ln">15</span> <span class="cv">t</span>.<span class="cf">forward</span>(<span class="cn"
+              >120</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">16</span> <span class="cv">t</span>.<span class="cf">left</span>(<span class="cn">90</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">17</span><span class="cv">t</span>.<span class="cf">end_fill</span>()</span
+          >
+          <span class="code-line"><span class="ln">18</span></span>
+          <span class="code-line"><span class="ln">19</span><span class="cc"># Дах</span></span>
+          <span class="code-line"
+            ><span class="ln">20</span><span class="cv">t</span>.<span class="cf">penup</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">21</span><span class="cv">t</span>.<span class="cf">goto</span>(-<span class="cn">60</span
+            >, <span class="cn">60</span>)</span
+          >
+          <span class="code-line"
+            ><span class="ln">22</span><span class="cv">t</span>.<span class="cf">pendown</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">23</span><span class="cv">t</span>.<span class="cf">fillcolor</span>(<span class="cs"
+              >"red"</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">24</span><span class="cv">t</span>.<span class="cf">begin_fill</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">25</span><span class="ck">for</span> <span class="cv">i</span> <span class="ck">in</span>
+            <span class="cm">range</span>(<span class="cn">3</span>):</span
+          >
+          <span class="code-line"
+            ><span class="ln">26</span> <span class="cv">t</span>.<span class="cf">forward</span>(<span class="cn"
+              >120</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">27</span> <span class="cv">t</span>.<span class="cf">left</span>(<span class="cn"
+              >120</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">28</span><span class="cv">t</span>.<span class="cf">end_fill</span>()</span
+          >
+          <span class="code-line"><span class="ln">29</span></span>
+          <span class="code-line"><span class="ln">30</span><span class="cc"># Двері</span></span>
+          <span class="code-line"
+            ><span class="ln">31</span><span class="cv">t</span>.<span class="cf">penup</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">32</span><span class="cv">t</span>.<span class="cf">goto</span>(-<span class="cn">20</span
+            >, -<span class="cn">60</span>)</span
+          >
+          <span class="code-line"
+            ><span class="ln">33</span><span class="cv">t</span>.<span class="cf">pendown</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">34</span><span class="cv">t</span>.<span class="cf">fillcolor</span>(<span class="cs"
+              >"brown"</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">35</span><span class="cv">t</span>.<span class="cf">begin_fill</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">36</span><span class="ck">for</span> <span class="cv">side</span>
+            <span class="ck">in</span> [<span class="cn">40</span>, <span class="cn">60</span>,
+            <span class="cn">40</span>, <span class="cn">60</span>]:</span
+          >
+          <span class="code-line"
+            ><span class="ln">37</span><span class="cv">t</span>.<span class="cf">forward</span>(<span class="cv"
+              >side</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">38</span><span class="cv">t</span>.<span class="cf">left</span>(<span class="cn">90</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">39</span><span class="cv">t</span>.<span class="cf">end_fill</span>()</span
+          >
+          <span class="code-line"><span class="ln">40</span></span>
+          <span class="code-line"><span class="ln">41</span><span class="cc"># Вікно</span></span>
+          <span class="code-line"
+            ><span class="ln">42</span><span class="cv">t</span>.<span class="cf">Penup</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">43</span><span class="cv">t</span>.<span class="cf">goto</span>(<span class="cn">20</span
+            >, <span class="cn">10</span>)</span
+          >
+          <span class="code-line"
+            ><span class="ln">44</span><span class="cv">t</span>.<span class="cf">pendown</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">45</span><span class="cv">t</span>.<span class="cf">fillcolor</span>(<span class="cs"
+              >"lightblue"</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">46</span><span class="cv">t</span>.<span class="cf">begin_fill</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">47</span><span class="ck">for</span> <span class="cv">i</span> <span class="ck">in</span>
+            <span class="cm">range</span>(<span class="cn">4</span>):</span
+          >
+          <span class="code-line"
+            ><span class="ln">48</span> <span class="cv">t</span>.<span class="cf">forward</span>(<span class="cn"
+              >30</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">49</span> <span class="cv">t</span>.<span class="cf">left</span>(<span class="cn">90</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">50</span><span class="cv">t</span>.<span class="cf">end_fill</span>()</span
+          >
+          <span class="code-line"><span class="ln">51</span></span>
+        </div>
+        <div class="answers">
+          <input type="text" class="student-name" placeholder="Прізвище та ім'я" />
+          <div class="answers-title">Твої відповіді</div>
+          <div class="ans-row">
+            <span class="ans-prefix">Помилка 1, рядок</span><input type="text" class="ans-num-box" maxlength="3" />
+          </div>
+          <div class="ans-row">
+            <span class="ans-prefix">Помилка 2, рядок</span><input type="text" class="ans-num-box" maxlength="3" />
+          </div>
+          <div class="ans-row">
+            <span class="ans-prefix">Помилка 3, рядок</span><input type="text" class="ans-num-box" maxlength="3" />
+          </div>
+          <div class="ans-row">
+            <span class="ans-prefix">Помилка 4, рядок</span><input type="text" class="ans-num-box" maxlength="3" />
+          </div>
+        </div>
+        <div class="submit-wrap">
+          <button class="submit-btn">Надіслати відповіді →</button>
+        </div>
+      </div>
 
-<!-- ЕЛЕМЕНТИ -->
-<div class="slabel">Елементи сцени</div>
-<div class="elements">
-  <div class="el-header">
-    <div class="el-cell"></div>
-    <div class="el-cell">Елемент</div>
-    <div class="el-cell">Що потрібно застосувати</div>
-  </div>
-  <div class="el-row">
-    <div class="el-cell">⭐</div>
-    <div class="el-cell">Зірки — обов'язково, ≥30<span class="cmd">def star(size, color): for _ in range(8): forward / backward / right(45)</span></div>
-    <div class="el-cell">Функція star(), цикл for, random.randint() для позиції та розміру, if/elif/else для кольору</div>
-  </div>
-  <div class="el-row">
-    <div class="el-cell">🌙</div>
-    <div class="el-cell">Місяць-серп<span class="cmd">circle(40) → circle(34) зміщене поверх</span></div>
-    <div class="el-cell">Жовте велике коло + темне менше зі зміщенням → утворює серп</div>
-  </div>
-  <div class="el-row">
-    <div class="el-cell">🔴🔵</div>
-    <div class="el-cell">Планети (червона + синя)<span class="cmd">fillcolor() + begin_fill + circle() + end_fill</span></div>
-    <div class="el-cell">goto(), circle(), fillcolor() — дві залиті кулі різних кольорів</div>
-  </div>
-  <div class="el-row">
-    <div class="el-cell">☄️</div>
-    <div class="el-cell">Комета або кільця планети<span class="cmd">setheading(45) + fillcolor() + circle() + for: forward()  або  for r in range(…): circle(r)</span></div>
-    <div class="el-cell">Комета: circle() із заливкою — голова, for + forward() — хвіст. Кільця: for + circle() різних радіусів</div>
-  </div>
-</div>
+      <!-- ── ВАРІАНТ Б ── -->
+      <div class="variant-card vb">
+        <div class="vc-header">
+          <div class="vc-letter">Б</div>
+          <div class="vc-meta">
+            <div class="vc-title">Варіант Б</div>
+            <div class="vc-hint">Знайди 4 помилки · 1 бал за кожну</div>
+          </div>
+          <div class="vc-pts">4 бали</div>
+        </div>
+        <div class="code-block">
+          <span class="code-line"
+            ><span class="ln"> 1</span><span class="ck">import</span> <span class="cm">turtle</span></span
+          >
+          <span class="code-line"><span class="ln"> 2</span></span>
+          <span class="code-line"
+            ><span class="ln"> 3</span><span class="cv">t</span> = <span class="cm">turtle</span>.<span class="cf"
+              >Turtle</span
+            >()</span
+          >
+          <span class="code-line"
+            ><span class="ln"> 4</span><span class="cv">t</span>.<span class="cf">speed</span>(<span class="cn">0</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln"> 5</span><span class="cv">screen</span> = <span class="cm">turtle</span>.<span class="cf"
+              >Screen</span
+            >()</span
+          >
+          <span class="code-line"
+            ><span class="ln"> 6</span><span class="cv">screen</span>.<span class="cf">bgcolor</span>(<span class="cs"
+              >"lightblue"</span
+            >)</span
+          >
+          <span class="code-line"><span class="ln"> 7</span></span>
+          <span class="code-line"><span class="ln"> 8</span><span class="cc"># Стіни</span></span>
+          <span class="code-line"
+            ><span class="ln"> 9</span><span class="cv">t</span>.<span class="cf">penup</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">10</span><span class="cv">t</span>.<span class="cf">goto</span>(-<span class="cn">60</span
+            >, -<span class="cn">60</span>)</span
+          >
+          <span class="code-line"
+            ><span class="ln">11</span><span class="cv">t</span>.<span class="cf">pendown</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">12</span><span class="cv">t</span>.<span class="cf">fillcolor</span>(<span class="cv"
+              >lightyellow</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">13</span><span class="cv">t</span>.<span class="cf">begin_fill</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">14</span><span class="ck">for</span> <span class="cv">i</span> <span class="ck">in</span>
+            <span class="cm">range</span>(<span class="cn">4</span>):</span
+          >
+          <span class="code-line"
+            ><span class="ln">15</span> <span class="cv">t</span>.<span class="cf">forward</span>(<span class="cn"
+              >120</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">16</span> <span class="cv">t</span>.<span class="cf">left</span>(<span class="cn">90</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">17</span><span class="cv">t</span>.<span class="cf">end_fill</span>()</span
+          >
+          <span class="code-line"><span class="ln">18</span></span>
+          <span class="code-line"><span class="ln">19</span><span class="cc"># Дах</span></span>
+          <span class="code-line"
+            ><span class="ln">20</span><span class="cv">t</span>.<span class="cf">penup</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">21</span><span class="cv">t</span>.<span class="cf">goto</span>(-<span class="cn">60</span
+            >, <span class="cn">60</span>)</span
+          >
+          <span class="code-line"
+            ><span class="ln">22</span><span class="cv">t</span>.<span class="cf">pendown</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">23</span><span class="cv">t</span>.<span class="cf">fillcolor</span>(<span class="cs"
+              >"red"</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">24</span><span class="cv">t</span>.<span class="cf">begin_fill</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">25</span><span class="ck">for</span> <span class="cv">i</span> <span class="ck">in</span>
+            <span class="cm">range</span>(<span class="cn">3</span>)</span
+          >
+          <span class="code-line"
+            ><span class="ln">26</span> <span class="cv">t</span>.<span class="cf">forward</span>(<span class="cn"
+              >120</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">27</span> <span class="cv">t</span>.<span class="cf">left</span>(<span class="cn"
+              >120</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">28</span><span class="cv">t</span>.<span class="cf">end_fill</span>()</span
+          >
+          <span class="code-line"><span class="ln">29</span></span>
+          <span class="code-line"><span class="ln">30</span><span class="cc"># Двері</span></span>
+          <span class="code-line"
+            ><span class="ln">31</span><span class="cv">t</span>.<span class="cf">penup</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">32</span><span class="cv">t</span>.<span class="cf">goto</span>(-<span class="cn">20</span
+            >, -<span class="cn">60</span>)</span
+          >
+          <span class="code-line"
+            ><span class="ln">33</span><span class="cv">t</span>.<span class="cf">Pendown</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">34</span><span class="cv">t</span>.<span class="cf">fillcolor</span>(<span class="cs"
+              >"brown"</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">35</span><span class="cv">t</span>.<span class="cf">begin_fill</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">36</span><span class="ck">for</span> <span class="cv">side</span>
+            <span class="ck">in</span> [<span class="cn">40</span>, <span class="cn">60</span>,
+            <span class="cn">40</span>, <span class="cn">60</span>]:</span
+          >
+          <span class="code-line"
+            ><span class="ln">37</span> <span class="cv">t</span>.<span class="cf">forward</span>(<span class="cv"
+              >side</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">38</span> <span class="cv">t</span>.<span class="cf">left</span>(<span class="cn">90</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">39</span><span class="cv">t</span>.<span class="cf">end_fill</span>()</span
+          >
+          <span class="code-line"><span class="ln">40</span></span>
+          <span class="code-line"><span class="ln">41</span><span class="cc"># Вікно</span></span>
+          <span class="code-line"
+            ><span class="ln">42</span><span class="cv">t</span>.<span class="cf">penup</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">43</span><span class="cv">t</span>.<span class="cf">goto</span>(<span class="cn">20</span
+            >, <span class="cn">10</span>)</span
+          >
+          <span class="code-line"
+            ><span class="ln">44</span><span class="cv">t</span>.<span class="cf">pendown</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">45</span><span class="cv">t</span>.<span class="cf">fillcolor</span>(<span class="cs"
+              >"lightblue"</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">46</span><span class="cv">t</span>.<span class="cf">begin_fill</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">47</span><span class="ck">for</span> <span class="cv">i</span> <span class="ck">in</span>
+            <span class="cm">range</span>(<span class="cn">4</span>):</span
+          >
+          <span class="code-line"
+            ><span class="ln">48</span><span class="cv">t</span>.<span class="cf">forward</span>(<span class="cn"
+              >30</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">49</span><span class="cv">t</span>.<span class="cf">left</span>(<span class="cn">90</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">50</span><span class="cv">t</span>.<span class="cf">end_fill</span>()</span
+          >
+          <span class="code-line"><span class="ln">51</span></span>
+        </div>
+        <div class="answers">
+          <input type="text" class="student-name" placeholder="Прізвище та ім'я" />
+          <div class="answers-title">Твої відповіді</div>
+          <div class="ans-row">
+            <span class="ans-prefix">Помилка 1, рядок</span><input type="text" class="ans-num-box" maxlength="3" />
+          </div>
+          <div class="ans-row">
+            <span class="ans-prefix">Помилка 2, рядок</span><input type="text" class="ans-num-box" maxlength="3" />
+          </div>
+          <div class="ans-row">
+            <span class="ans-prefix">Помилка 3, рядок</span><input type="text" class="ans-num-box" maxlength="3" />
+          </div>
+          <div class="ans-row">
+            <span class="ans-prefix">Помилка 4, рядок</span><input type="text" class="ans-num-box" maxlength="3" />
+          </div>
+        </div>
+        <div class="submit-wrap">
+          <button class="submit-btn">Надіслати відповіді →</button>
+        </div>
+      </div>
 
-<!-- КОЛЬОРОВА ГАМА -->
-<div class="slabel">Кольорова гама</div>
-<div class="palette-wrap">
-  <div class="pal-group">
-    <div class="pal-label">🌌 Космос і фон</div>
-    <div class="pal-swatches">
-      <div class="sw" style="background:#06080f"><span class="sw-hex">#06080f</span></div>
-      <div class="sw" style="background:#0a0a2e"><span class="sw-hex">#0a0a2e</span></div>
-      <div class="sw" style="background:#0d1040"><span class="sw-hex">#0d1040</span></div>
-      <div class="sw" style="background:#141852"><span class="sw-hex">#141852</span></div>
+      <!-- ── ВАРІАНТ В ── -->
+      <div class="variant-card vc">
+        <div class="vc-header">
+          <div class="vc-letter">В</div>
+          <div class="vc-meta">
+            <div class="vc-title">Варіант В</div>
+            <div class="vc-hint">Знайди 4 помилки · 1 бал за кожну</div>
+          </div>
+          <div class="vc-pts">4 бали</div>
+        </div>
+        <div class="code-block">
+          <span class="code-line"
+            ><span class="ln"> 1</span><span class="ck">import</span> <span class="cm">turtle</span></span
+          >
+          <span class="code-line"><span class="ln"> 2</span></span>
+          <span class="code-line"
+            ><span class="ln"> 3</span><span class="cv">t</span> = <span class="cm">turtle</span>.<span class="cf"
+              >Turtle</span
+            >()</span
+          >
+          <span class="code-line"
+            ><span class="ln"> 4</span><span class="cv">t</span>.<span class="cf">speed</span>(<span class="cn">0</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln"> 5</span><span class="cv">screen</span> = <span class="cm">turtle</span>.<span class="cf"
+              >Screen</span
+            ></span
+          >
+          <span class="code-line"
+            ><span class="ln"> 6</span><span class="cv">screen</span>.<span class="cf">bgcolor</span>(<span class="cs"
+              >"lightblue"</span
+            >)</span
+          >
+          <span class="code-line"><span class="ln"> 7</span></span>
+          <span class="code-line"><span class="ln"> 8</span><span class="cc"># Стіни</span></span>
+          <span class="code-line"
+            ><span class="ln"> 9</span><span class="cv">t</span>.<span class="cf">penup</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">10</span><span class="cv">t</span>.<span class="cf">goto</span>(-<span class="cn">60</span
+            >, -<span class="cn">60</span>)</span
+          >
+          <span class="code-line"
+            ><span class="ln">11</span><span class="cv">t</span>.<span class="cf">pendown</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">12</span><span class="cv">t</span>.<span class="cf">fillcolor</span>(<span class="cs"
+              >"lightyellow"</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">13</span><span class="cv">t</span>.<span class="cf">begin_fill</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">14</span><span class="ck">for</span> <span class="cm">range</span>(<span class="cn"
+              >4</span
+            >):</span
+          >
+          <span class="code-line"
+            ><span class="ln">15</span> <span class="cv">t</span>.<span class="cf">forward</span>(<span class="cn"
+              >120</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">16</span> <span class="cv">t</span>.<span class="cf">left</span>(<span class="cn">90</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">17</span><span class="cv">t</span>.<span class="cf">end_fill</span>()</span
+          >
+          <span class="code-line"><span class="ln">18</span></span>
+          <span class="code-line"><span class="ln">19</span><span class="cc"># Дах</span></span>
+          <span class="code-line"
+            ><span class="ln">20</span><span class="cv">t</span>.<span class="cf">Penup</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">21</span><span class="cv">t</span>.<span class="cf">goto</span>(-<span class="cn">60</span
+            >, <span class="cn">60</span>)</span
+          >
+          <span class="code-line"
+            ><span class="ln">22</span><span class="cv">t</span>.<span class="cf">pendown</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">23</span><span class="cv">t</span>.<span class="cf">fillcolor</span>(<span class="cs"
+              >"red"</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">24</span><span class="cv">t</span>.<span class="cf">begin_fill</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">25</span><span class="ck">for</span> <span class="cv">i</span> <span class="ck">in</span>
+            <span class="cm">range</span>(<span class="cn">3</span>):</span
+          >
+          <span class="code-line"
+            ><span class="ln">26</span> <span class="cv">t</span>.<span class="cf">forward</span>(<span class="cn"
+              >120</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">27</span> <span class="cv">t</span>.<span class="cf">left</span>(<span class="cn"
+              >120</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">28</span><span class="cv">t</span>.<span class="cf">end_fill</span>()</span
+          >
+          <span class="code-line"><span class="ln">29</span></span>
+          <span class="code-line"><span class="ln">30</span><span class="cc"># Двері</span></span>
+          <span class="code-line"
+            ><span class="ln">31</span><span class="cv">t</span>.<span class="cf">penup</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">32</span><span class="cv">t</span>.<span class="cf">goto</span>(-<span class="cn">20</span
+            >, -<span class="cn">60</span>)</span
+          >
+          <span class="code-line"
+            ><span class="ln">33</span><span class="cv">t</span>.<span class="cf">pendown</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">34</span><span class="cv">t</span>.<span class="cf">fillcolor</span>(<span class="cs"
+              >"brown"</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">35</span><span class="cv">t</span>.<span class="cf">begin_fill</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">36</span><span class="ck">for</span> <span class="cv">side</span>
+            <span class="ck">in</span> [<span class="cn">40</span>, <span class="cn">60</span>,
+            <span class="cn">40</span>, <span class="cn">60</span>]</span
+          >
+          <span class="code-line"
+            ><span class="ln">37</span> <span class="cv">t</span>.<span class="cf">forward</span>(<span class="cv"
+              >side</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">38</span> <span class="cv">t</span>.<span class="cf">left</span>(<span class="cn">90</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">39</span><span class="cv">t</span>.<span class="cf">end_fill</span>()</span
+          >
+          <span class="code-line"><span class="ln">40</span></span>
+          <span class="code-line"><span class="ln">41</span><span class="cc"># Вікно</span></span>
+          <span class="code-line"
+            ><span class="ln">42</span><span class="cv">t</span>.<span class="cf">penup</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">43</span><span class="cv">t</span>.<span class="cf">goto</span>(<span class="cn">20</span
+            >, <span class="cn">10</span>)</span
+          >
+          <span class="code-line"
+            ><span class="ln">44</span><span class="cv">t</span>.<span class="cf">pendown</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">45</span><span class="cv">t</span>.<span class="cf">fillcolor</span>(<span class="cs"
+              >"lightblue"</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">46</span><span class="cv">t</span>.<span class="cf">begin_fill</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">47</span><span class="ck">for</span> <span class="cv">i</span> <span class="ck">in</span>
+            <span class="cm">range</span>(<span class="cn">4</span>):</span
+          >
+          <span class="code-line"
+            ><span class="ln">48</span> <span class="cv">t</span>.<span class="cf">forward</span>(<span class="cn"
+              >30</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">49</span> <span class="cv">t</span>.<span class="cf">left</span>(<span class="cn">90</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">50</span><span class="cv">t</span>.<span class="cf">end_fill</span>()</span
+          >
+          <span class="code-line"><span class="ln">51</span></span>
+        </div>
+        <div class="answers">
+          <input type="text" class="student-name" placeholder="Прізвище та ім'я" />
+          <div class="answers-title">Твої відповіді</div>
+          <div class="ans-row">
+            <span class="ans-prefix">Помилка 1, рядок</span><input type="text" class="ans-num-box" maxlength="3" />
+          </div>
+          <div class="ans-row">
+            <span class="ans-prefix">Помилка 2, рядок</span><input type="text" class="ans-num-box" maxlength="3" />
+          </div>
+          <div class="ans-row">
+            <span class="ans-prefix">Помилка 3, рядок</span><input type="text" class="ans-num-box" maxlength="3" />
+          </div>
+          <div class="ans-row">
+            <span class="ans-prefix">Помилка 4, рядок</span><input type="text" class="ans-num-box" maxlength="3" />
+          </div>
+        </div>
+        <div class="submit-wrap">
+          <button class="submit-btn">Надіслати відповіді →</button>
+        </div>
+      </div>
+
+      <!-- ── ВАРІАНТ Г ── -->
+      <div class="variant-card vd">
+        <div class="vc-header">
+          <div class="vc-letter">Г</div>
+          <div class="vc-meta">
+            <div class="vc-title">Варіант Г</div>
+            <div class="vc-hint">Знайди 4 помилки · 1 бал за кожну</div>
+          </div>
+          <div class="vc-pts">4 бали</div>
+        </div>
+        <div class="code-block">
+          <span class="code-line"
+            ><span class="ln"> 1</span><span class="ck">import</span> <span class="cm">turtle</span></span
+          >
+          <span class="code-line"><span class="ln"> 2</span></span>
+          <span class="code-line"
+            ><span class="ln"> 3</span><span class="cv">t</span> = <span class="cm">turtle</span>.<span class="cf"
+              >Turtle</span
+            >()</span
+          >
+          <span class="code-line"
+            ><span class="ln"> 4</span><span class="cv">t</span>.<span class="cf">speed</span>(<span class="cn">0</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln"> 5</span><span class="cv">screen</span> = <span class="cm">turtle</span>.<span class="cf"
+              >Screen</span
+            >()</span
+          >
+          <span class="code-line"
+            ><span class="ln"> 6</span><span class="cv">screen</span>.<span class="cf">bgcolor</span>(<span class="cs"
+              >"lightblue"</span
+            >)</span
+          >
+          <span class="code-line"><span class="ln"> 7</span></span>
+          <span class="code-line"><span class="ln"> 8</span><span class="cc"># Стіни</span></span>
+          <span class="code-line"
+            ><span class="ln"> 9</span><span class="cv">t</span>.<span class="cf">penup</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">10</span><span class="cv">t</span>.<span class="cf">goto</span>(-<span class="cn">60</span
+            >, -<span class="cn">60</span>)</span
+          >
+          <span class="code-line"
+            ><span class="ln">11</span><span class="cv">t</span>.<span class="cf">Pendown</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">12</span><span class="cv">t</span>.<span class="cf">fillcolor</span>(<span class="cs"
+              >"lightyellow"</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">13</span><span class="cv">t</span>.<span class="cf">begin_fill</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">14</span><span class="ck">for</span> <span class="cv">i</span> <span class="ck">in</span>
+            <span class="cm">range</span>(<span class="cn">4</span>):</span
+          >
+          <span class="code-line"
+            ><span class="ln">15</span> <span class="cv">t</span>.<span class="cf">forward</span>(<span class="cn"
+              >120</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">16</span> <span class="cv">t</span>.<span class="cf">left</span>(<span class="cn">90</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">17</span><span class="cv">t</span>.<span class="cf">end_fill</span>()</span
+          >
+          <span class="code-line"><span class="ln">18</span></span>
+          <span class="code-line"><span class="ln">19</span><span class="cc"># Дах</span></span>
+          <span class="code-line"
+            ><span class="ln">20</span><span class="cv">t</span>.<span class="cf">penup</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">21</span><span class="cv">t</span>.<span class="cf">goto</span>(-<span class="cn">60</span
+            >, <span class="cn">60</span>)</span
+          >
+          <span class="code-line"
+            ><span class="ln">22</span><span class="cv">t</span>.<span class="cf">pendown</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">23</span><span class="cv">t</span>.<span class="cf">fillcolor</span>(<span class="cs"
+              >"red"</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">24</span><span class="cv">t</span>.<span class="cf">begin_fill</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">25</span><span class="ck">for</span> <span class="cv">i</span> <span class="ck">in</span>
+            <span class="cm">range</span>(<span class="cn">3</span>):</span
+          >
+          <span class="code-line"
+            ><span class="ln">26</span><span class="cv">t</span>.<span class="cf">forward</span>(<span class="cn"
+              >120</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">27</span><span class="cv">t</span>.<span class="cf">left</span>(<span class="cn">120</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">28</span><span class="cv">t</span>.<span class="cf">end_fill</span>()</span
+          >
+          <span class="code-line"><span class="ln">29</span></span>
+          <span class="code-line"><span class="ln">30</span><span class="cc"># Двері</span></span>
+          <span class="code-line"
+            ><span class="ln">31</span><span class="cv">t</span>.<span class="cf">penup</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">32</span><span class="cv">t</span>.<span class="cf">goto</span>(-<span class="cn">20</span
+            >, -<span class="cn">60</span>)</span
+          >
+          <span class="code-line"
+            ><span class="ln">33</span><span class="cv">t</span>.<span class="cf">pendown</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">34</span><span class="cv">t</span>.<span class="cf">fillcolor</span>(<span class="cv"
+              >brown</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">35</span><span class="cv">t</span>.<span class="cf">begin_fill</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">36</span><span class="ck">for</span> <span class="cv">side</span>
+            <span class="ck">in</span> [<span class="cn">40</span>, <span class="cn">60</span>,
+            <span class="cn">40</span>, <span class="cn">60</span>]:</span
+          >
+          <span class="code-line"
+            ><span class="ln">37</span> <span class="cv">t</span>.<span class="cf">forward</span>(<span class="cv"
+              >side</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">38</span> <span class="cv">t</span>.<span class="cf">left</span>(<span class="cn">90</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">39</span><span class="cv">t</span>.<span class="cf">end_fill</span>()</span
+          >
+          <span class="code-line"><span class="ln">40</span></span>
+          <span class="code-line"><span class="ln">41</span><span class="cc"># Вікно</span></span>
+          <span class="code-line"
+            ><span class="ln">42</span><span class="cv">t</span>.<span class="cf">penup</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">43</span><span class="cv">t</span>.<span class="cf">goto</span>(<span class="cn">20</span
+            >, <span class="cn">10</span>)</span
+          >
+          <span class="code-line"
+            ><span class="ln">44</span><span class="cv">t</span>.<span class="cf">pendown</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">45</span><span class="cv">t</span>.<span class="cf">fillcolor</span>(<span class="cs"
+              >"lightblue"</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">46</span><span class="cv">t</span>.<span class="cf">begin_fill</span>()</span
+          >
+          <span class="code-line"
+            ><span class="ln">47</span><span class="ck">for</span> <span class="cv">i</span> <span class="ck">in</span>
+            <span class="cm">range</span>(<span class="cn">4</span>)</span
+          >
+          <span class="code-line"
+            ><span class="ln">48</span> <span class="cv">t</span>.<span class="cf">forward</span>(<span class="cn"
+              >30</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">49</span> <span class="cv">t</span>.<span class="cf">left</span>(<span class="cn">90</span
+            >)</span
+          >
+          <span class="code-line"
+            ><span class="ln">50</span><span class="cv">t</span>.<span class="cf">end_fill</span>()</span
+          >
+          <span class="code-line"><span class="ln">51</span></span>
+        </div>
+        <div class="answers">
+          <input type="text" class="student-name" placeholder="Прізвище та ім'я" />
+          <div class="answers-title">Твої відповіді</div>
+          <div class="ans-row">
+            <span class="ans-prefix">Помилка 1, рядок</span><input type="text" class="ans-num-box" maxlength="3" />
+          </div>
+          <div class="ans-row">
+            <span class="ans-prefix">Помилка 2, рядок</span><input type="text" class="ans-num-box" maxlength="3" />
+          </div>
+          <div class="ans-row">
+            <span class="ans-prefix">Помилка 3, рядок</span><input type="text" class="ans-num-box" maxlength="3" />
+          </div>
+          <div class="ans-row">
+            <span class="ans-prefix">Помилка 4, рядок</span><input type="text" class="ans-num-box" maxlength="3" />
+          </div>
+        </div>
+        <div class="submit-wrap">
+          <button class="submit-btn">Надіслати відповіді →</button>
+        </div>
+      </div>
+
+      <!-- ЗБЕРЕГТИ -->
+      <div class="save-box">
+        <div class="icon">💾</div>
+        <p>
+          Частина 1 — збережи файл <strong>Прізвище_Космос_7клас.py</strong> і здай через Google Classroom.<br />Частина
+          2 — заповни відповіді вище та натисни <strong>Надіслати відповіді →</strong>
+        </p>
+      </div>
+
+      <footer>
+        <span>ПІДСУМКОВА ПРАКТИЧНА РОБОТА · PYTHON TURTLE · 7 КЛАС</span>
+        <span>УРОКИ 1, 2, 4 · 45 ХВИЛИН · 12 БАЛІВ</span>
+      </footer>
     </div>
-  </div>
-  <div class="pal-group">
-    <div class="pal-label">⭐ Зірки</div>
-    <div class="pal-swatches">
-      <div class="sw" style="background:#ffe680"><span class="sw-hex sw-dark">#ffe680</span></div>
-      <div class="sw" style="background:#ffffff"><span class="sw-hex sw-dark">#ffffff</span></div>
-      <div class="sw" style="background:#c0c0c0"><span class="sw-hex sw-dark">#c0c0c0</span></div>
-      <div class="sw" style="background:#888899"><span class="sw-hex">#888899</span></div>
-    </div>
-  </div>
-  <div class="pal-group">
-    <div class="pal-label">🔴 Планети</div>
-    <div class="pal-swatches">
-      <div class="sw" style="background:#cc3333"><span class="sw-hex">#cc3333</span></div>
-      <div class="sw" style="background:#3366bb"><span class="sw-hex">#3366bb</span></div>
-      <div class="sw" style="background:#88cc44"><span class="sw-hex">#88cc44</span></div>
-      <div class="sw" style="background:#ff8800"><span class="sw-hex">#ff8800</span></div>
-    </div>
-  </div>
-  <div class="pal-group">
-    <div class="pal-label">🪐 Кільця і деталі</div>
-    <div class="pal-swatches">
-      <div class="sw" style="background:#aaaacc"><span class="sw-hex">#aaaacc</span></div>
-      <div class="sw" style="background:#6688aa"><span class="sw-hex">#6688aa</span></div>
-      <div class="sw" style="background:#ffdd88"><span class="sw-hex sw-dark">#ffdd88</span></div>
-      <div class="sw" style="background:#44aaff"><span class="sw-hex sw-dark">#44aaff</span></div>
-    </div>
-  </div>
-</div>
 
-<!-- ОЦІНЮВАННЯ ЧАСТИНА 1 -->
-<div class="slabel">Оцінювання — Частина 1</div>
-<div class="pts-table">
-  <div class="pts-row pts-head">
-    <div class="pts-desc">Елемент</div>
-    <div class="pts-val">Бали</div>
-  </div>
-  <div class="pts-row">
-    <div class="pts-desc">Функція <code>def star()</code> визначена і правильно викликається</div>
-    <div class="pts-val">1</div>
-  </div>
-  <div class="pts-row">
-    <div class="pts-desc">Зірки малюються циклом <code>for</code> — не менше 30</div>
-    <div class="pts-val">1</div>
-  </div>
-  <div class="pts-row">
-    <div class="pts-desc">Позиції зірок — випадкові (<code>random.randint()</code>)</div>
-    <div class="pts-val">1</div>
-  </div>
-  <div class="pts-row">
-    <div class="pts-desc">Розміри зірок — випадкові (<code>random.randint()</code>)</div>
-    <div class="pts-val">1</div>
-  </div>
-  <div class="pts-row">
-    <div class="pts-desc">Розгалуження <code>if / elif / else</code> змінює колір залежно від розміру</div>
-    <div class="pts-val">1</div>
-  </div>
-  <div class="pts-row">
-    <div class="pts-desc">Місяць-серп — жовте коло + темне зміщене перекриття (<code>circle</code> × 2)</div>
-    <div class="pts-val">1</div>
-  </div>
-  <div class="pts-row">
-    <div class="pts-desc">Планети — червона та синя із заливкою (<code>fillcolor + circle</code>)</div>
-    <div class="pts-val">1</div>
-  </div>
-  <div class="pts-row">
-    <div class="pts-desc">Комета (<code>circle із заливкою + for + forward</code>) або кільця планети (<code>for + circle</code>)</div>
-    <div class="pts-val">1</div>
-  </div>
-  <div class="pts-row pts-total">
-    <div class="pts-desc">Максимум</div>
-    <div class="pts-val">8</div>
-  </div>
-</div>
+    <script>
+      // ── Google Form config (fill in after creating the form) ─────────────────────
+      const FORM_ID = "1FAIpQLSfWP1-vcPrdCCNk2uKGz37jxM0XLS_tiSFqSh3h4q9O0bjGSQ";
+      const E = {
+        name: "entry.1009431343",
+        variant: "entry.397622613",
+        l1: "entry.1271874885",
+        l2: "entry.1862016011",
+        l3: "entry.417732031",
+        l4: "entry.290041697",
+      };
+      // ─────────────────────────────────────────────────────────────────────────────
 
-<!-- ═══════════════════════════════════════════════════ -->
-<!-- ЧАСТИНА 2                                          -->
-<!-- ═══════════════════════════════════════════════════ -->
-<div class="part-div p2">
-  <div class="part-num">ЧАСТИНА 2</div>
-  <div class="part-info">
-    <div class="part-title">Знайди помилки в коді</div>
-    <div class="part-sub">4 варіанти · 4 помилки кожен</div>
-  </div>
-  <div class="part-badge">4 БАЛИ</div>
-</div>
+      const vParam = new URLSearchParams(location.search).get("v");
 
-<div class="task-box p2">
-  <h2>🔍 Знайди помилки</h2>
-  <p>
-    У коді нижче є рівно <strong>4 помилки</strong>. Знайди кожну: вкажи <strong>номер рядка</strong> та <strong>що саме не так</strong>. За кожну правильно знайдену помилку — <strong>1 бал</strong>.
-  </p>
-</div>
+      // ── VARIANT PICKER ────────────────────────────────────────────────────────────
+      function showVariant(letter) {
+        document.getElementById("variant-picker").hidden = true;
+        document.querySelectorAll(".variant-card").forEach((card) => {
+          card.classList.toggle("active", card.classList.contains("v" + letter.toLowerCase()));
+        });
+      }
+      document.querySelectorAll(".picker-btn").forEach((btn) => {
+        btn.addEventListener("click", () => showVariant(btn.dataset.v));
+      });
 
-<!-- PICKER -->
-<div id="variant-picker" hidden>
-  <div class="picker-label">Обери свій варіант</div>
-  <div class="picker-grid">
-    <button class="picker-btn pva" data-v="a">А</button>
-    <button class="picker-btn pvb" data-v="b">Б</button>
-    <button class="picker-btn pvc" data-v="c">В</button>
-    <button class="picker-btn pvd" data-v="d">Г</button>
-  </div>
-</div>
+      // ── TASK STATUS ───────────────────────────────────────────────────────────────
+      (async () => {
+        let isOpen = true;
+        try {
+          const r = await fetch("config.json?t=" + Date.now());
+          const cfg = await r.json();
+          isOpen = cfg.lessons?.["6"] === true;
+        } catch {}
 
-<!-- TASK LOCKED -->
-<div id="task-locked" hidden>
-  <div class="locked-icon">🔒</div>
-  <div class="locked-title">Завдання ще не відкрите</div>
-  <div class="locked-sub">Очікуй на команду вчителя</div>
-</div>
+        if (vParam) {
+          showVariant(vParam);
+          return;
+        }
 
-<!-- ── ВАРІАНТ А ── -->
-<div class="variant-card va">
-  <div class="vc-header">
-    <div class="vc-letter">А</div>
-    <div class="vc-meta">
-      <div class="vc-title">Варіант А</div>
-      <div class="vc-hint">Знайди 4 помилки · 1 бал за кожну</div>
-    </div>
-    <div class="vc-pts">4 бали</div>
-  </div>
-  <div class="code-block"><span class="code-line"><span class="ln"> 1</span><span class="ck">import</span> <span class="cm">turtle</span></span>
-<span class="code-line"><span class="ln"> 2</span></span>
-<span class="code-line"><span class="ln"> 3</span><span class="cv">t</span> = <span class="cm">turtle</span>.<span class="cf">Turtle</span></span>
-<span class="code-line"><span class="ln"> 4</span><span class="cv">t</span>.<span class="cf">speed</span>(<span class="cn">0</span>)</span>
-<span class="code-line"><span class="ln"> 5</span><span class="cv">screen</span> = <span class="cm">turtle</span>.<span class="cf">Screen</span>()</span>
-<span class="code-line"><span class="ln"> 6</span><span class="cv">screen</span>.<span class="cf">bgcolor</span>(<span class="cs">"lightblue"</span>)</span>
-<span class="code-line"><span class="ln"> 7</span></span>
-<span class="code-line"><span class="ln"> 8</span><span class="cc"># Стіни</span></span>
-<span class="code-line"><span class="ln"> 9</span><span class="cv">t</span>.<span class="cf">penup</span>()</span>
-<span class="code-line"><span class="ln">10</span><span class="cv">t</span>.<span class="cf">goto</span>(-<span class="cn">60</span>, -<span class="cn">60</span>)</span>
-<span class="code-line"><span class="ln">11</span><span class="cv">t</span>.<span class="cf">pendown</span>()</span>
-<span class="code-line"><span class="ln">12</span><span class="cv">t</span>.<span class="cf">fillcolor</span>(<span class="cs">"lightyellow"</span>)</span>
-<span class="code-line"><span class="ln">13</span><span class="cv">t</span>.<span class="cf">begin_fill</span>()</span>
-<span class="code-line"><span class="ln">14</span><span class="ck">for</span> <span class="cv">i</span> <span class="ck">in</span> <span class="cm">range</span>(<span class="cn">4</span>)</span>
-<span class="code-line"><span class="ln">15</span>    <span class="cv">t</span>.<span class="cf">forward</span>(<span class="cn">120</span>)</span>
-<span class="code-line"><span class="ln">16</span>    <span class="cv">t</span>.<span class="cf">left</span>(<span class="cn">90</span>)</span>
-<span class="code-line"><span class="ln">17</span><span class="cv">t</span>.<span class="cf">end_fill</span>()</span>
-<span class="code-line"><span class="ln">18</span></span>
-<span class="code-line"><span class="ln">19</span><span class="cc"># Дах</span></span>
-<span class="code-line"><span class="ln">20</span><span class="cv">t</span>.<span class="cf">penup</span>()</span>
-<span class="code-line"><span class="ln">21</span><span class="cv">t</span>.<span class="cf">goto</span>(-<span class="cn">60</span>, <span class="cn">60</span>)</span>
-<span class="code-line"><span class="ln">22</span><span class="cv">t</span>.<span class="cf">pendown</span>()</span>
-<span class="code-line"><span class="ln">23</span><span class="cv">t</span>.<span class="cf">fillcolor</span>(<span class="cs">"red"</span>)</span>
-<span class="code-line"><span class="ln">24</span><span class="cv">t</span>.<span class="cf">begin_fill</span>()</span>
-<span class="code-line"><span class="ln">25</span><span class="ck">for</span> <span class="cv">i</span> <span class="ck">in</span> <span class="cm">range</span>(<span class="cn">3</span>):</span>
-<span class="code-line"><span class="ln">26</span>    <span class="cv">t</span>.<span class="cf">forward</span>(<span class="cn">120</span>)</span>
-<span class="code-line"><span class="ln">27</span>    <span class="cv">t</span>.<span class="cf">left</span>(<span class="cn">120</span>)</span>
-<span class="code-line"><span class="ln">28</span><span class="cv">t</span>.<span class="cf">end_fill</span>()</span>
-<span class="code-line"><span class="ln">29</span></span>
-<span class="code-line"><span class="ln">30</span><span class="cc"># Двері</span></span>
-<span class="code-line"><span class="ln">31</span><span class="cv">t</span>.<span class="cf">penup</span>()</span>
-<span class="code-line"><span class="ln">32</span><span class="cv">t</span>.<span class="cf">goto</span>(-<span class="cn">20</span>, -<span class="cn">60</span>)</span>
-<span class="code-line"><span class="ln">33</span><span class="cv">t</span>.<span class="cf">pendown</span>()</span>
-<span class="code-line"><span class="ln">34</span><span class="cv">t</span>.<span class="cf">fillcolor</span>(<span class="cs">"brown"</span>)</span>
-<span class="code-line"><span class="ln">35</span><span class="cv">t</span>.<span class="cf">begin_fill</span>()</span>
-<span class="code-line"><span class="ln">36</span><span class="ck">for</span> <span class="cv">side</span> <span class="ck">in</span> [<span class="cn">40</span>, <span class="cn">60</span>, <span class="cn">40</span>, <span class="cn">60</span>]:</span>
-<span class="code-line"><span class="ln">37</span><span class="cv">t</span>.<span class="cf">forward</span>(<span class="cv">side</span>)</span>
-<span class="code-line"><span class="ln">38</span><span class="cv">t</span>.<span class="cf">left</span>(<span class="cn">90</span>)</span>
-<span class="code-line"><span class="ln">39</span><span class="cv">t</span>.<span class="cf">end_fill</span>()</span>
-<span class="code-line"><span class="ln">40</span></span>
-<span class="code-line"><span class="ln">41</span><span class="cc"># Вікно</span></span>
-<span class="code-line"><span class="ln">42</span><span class="cv">t</span>.<span class="cf">Penup</span>()</span>
-<span class="code-line"><span class="ln">43</span><span class="cv">t</span>.<span class="cf">goto</span>(<span class="cn">20</span>, <span class="cn">10</span>)</span>
-<span class="code-line"><span class="ln">44</span><span class="cv">t</span>.<span class="cf">pendown</span>()</span>
-<span class="code-line"><span class="ln">45</span><span class="cv">t</span>.<span class="cf">fillcolor</span>(<span class="cs">"lightblue"</span>)</span>
-<span class="code-line"><span class="ln">46</span><span class="cv">t</span>.<span class="cf">begin_fill</span>()</span>
-<span class="code-line"><span class="ln">47</span><span class="ck">for</span> <span class="cv">i</span> <span class="ck">in</span> <span class="cm">range</span>(<span class="cn">4</span>):</span>
-<span class="code-line"><span class="ln">48</span>    <span class="cv">t</span>.<span class="cf">forward</span>(<span class="cn">30</span>)</span>
-<span class="code-line"><span class="ln">49</span>    <span class="cv">t</span>.<span class="cf">left</span>(<span class="cn">90</span>)</span>
-<span class="code-line"><span class="ln">50</span><span class="cv">t</span>.<span class="cf">end_fill</span>()</span>
-<span class="code-line"><span class="ln">51</span></span>
-</div>
-  <div class="answers">
-    <input type="text" class="student-name" placeholder="Прізвище та ім'я">
-    <div class="answers-title">Твої відповіді</div>
-    <div class="ans-row"><span class="ans-prefix">Помилка 1, рядок</span><input type="text" class="ans-num-box" maxlength="3"></div>
-    <div class="ans-row"><span class="ans-prefix">Помилка 2, рядок</span><input type="text" class="ans-num-box" maxlength="3"></div>
-    <div class="ans-row"><span class="ans-prefix">Помилка 3, рядок</span><input type="text" class="ans-num-box" maxlength="3"></div>
-    <div class="ans-row"><span class="ans-prefix">Помилка 4, рядок</span><input type="text" class="ans-num-box" maxlength="3"></div>
-  </div>
-  <div class="submit-wrap">
-    <button class="submit-btn">Надіслати відповіді →</button>
-  </div>
-</div>
+        if (isOpen) {
+          document.getElementById("variant-picker").hidden = false;
+        } else {
+          document.getElementById("task-locked").hidden = false;
+        }
+      })();
 
-<!-- ── ВАРІАНТ Б ── -->
-<div class="variant-card vb">
-  <div class="vc-header">
-    <div class="vc-letter">Б</div>
-    <div class="vc-meta">
-      <div class="vc-title">Варіант Б</div>
-      <div class="vc-hint">Знайди 4 помилки · 1 бал за кожну</div>
-    </div>
-    <div class="vc-pts">4 бали</div>
-  </div>
-  <div class="code-block"><span class="code-line"><span class="ln"> 1</span><span class="ck">import</span> <span class="cm">turtle</span></span>
-<span class="code-line"><span class="ln"> 2</span></span>
-<span class="code-line"><span class="ln"> 3</span><span class="cv">t</span> = <span class="cm">turtle</span>.<span class="cf">Turtle</span>()</span>
-<span class="code-line"><span class="ln"> 4</span><span class="cv">t</span>.<span class="cf">speed</span>(<span class="cn">0</span>)</span>
-<span class="code-line"><span class="ln"> 5</span><span class="cv">screen</span> = <span class="cm">turtle</span>.<span class="cf">Screen</span>()</span>
-<span class="code-line"><span class="ln"> 6</span><span class="cv">screen</span>.<span class="cf">bgcolor</span>(<span class="cs">"lightblue"</span>)</span>
-<span class="code-line"><span class="ln"> 7</span></span>
-<span class="code-line"><span class="ln"> 8</span><span class="cc"># Стіни</span></span>
-<span class="code-line"><span class="ln"> 9</span><span class="cv">t</span>.<span class="cf">penup</span>()</span>
-<span class="code-line"><span class="ln">10</span><span class="cv">t</span>.<span class="cf">goto</span>(-<span class="cn">60</span>, -<span class="cn">60</span>)</span>
-<span class="code-line"><span class="ln">11</span><span class="cv">t</span>.<span class="cf">pendown</span>()</span>
-<span class="code-line"><span class="ln">12</span><span class="cv">t</span>.<span class="cf">fillcolor</span>(<span class="cv">lightyellow</span>)</span>
-<span class="code-line"><span class="ln">13</span><span class="cv">t</span>.<span class="cf">begin_fill</span>()</span>
-<span class="code-line"><span class="ln">14</span><span class="ck">for</span> <span class="cv">i</span> <span class="ck">in</span> <span class="cm">range</span>(<span class="cn">4</span>):</span>
-<span class="code-line"><span class="ln">15</span>    <span class="cv">t</span>.<span class="cf">forward</span>(<span class="cn">120</span>)</span>
-<span class="code-line"><span class="ln">16</span>    <span class="cv">t</span>.<span class="cf">left</span>(<span class="cn">90</span>)</span>
-<span class="code-line"><span class="ln">17</span><span class="cv">t</span>.<span class="cf">end_fill</span>()</span>
-<span class="code-line"><span class="ln">18</span></span>
-<span class="code-line"><span class="ln">19</span><span class="cc"># Дах</span></span>
-<span class="code-line"><span class="ln">20</span><span class="cv">t</span>.<span class="cf">penup</span>()</span>
-<span class="code-line"><span class="ln">21</span><span class="cv">t</span>.<span class="cf">goto</span>(-<span class="cn">60</span>, <span class="cn">60</span>)</span>
-<span class="code-line"><span class="ln">22</span><span class="cv">t</span>.<span class="cf">pendown</span>()</span>
-<span class="code-line"><span class="ln">23</span><span class="cv">t</span>.<span class="cf">fillcolor</span>(<span class="cs">"red"</span>)</span>
-<span class="code-line"><span class="ln">24</span><span class="cv">t</span>.<span class="cf">begin_fill</span>()</span>
-<span class="code-line"><span class="ln">25</span><span class="ck">for</span> <span class="cv">i</span> <span class="ck">in</span> <span class="cm">range</span>(<span class="cn">3</span>)</span>
-<span class="code-line"><span class="ln">26</span>    <span class="cv">t</span>.<span class="cf">forward</span>(<span class="cn">120</span>)</span>
-<span class="code-line"><span class="ln">27</span>    <span class="cv">t</span>.<span class="cf">left</span>(<span class="cn">120</span>)</span>
-<span class="code-line"><span class="ln">28</span><span class="cv">t</span>.<span class="cf">end_fill</span>()</span>
-<span class="code-line"><span class="ln">29</span></span>
-<span class="code-line"><span class="ln">30</span><span class="cc"># Двері</span></span>
-<span class="code-line"><span class="ln">31</span><span class="cv">t</span>.<span class="cf">penup</span>()</span>
-<span class="code-line"><span class="ln">32</span><span class="cv">t</span>.<span class="cf">goto</span>(-<span class="cn">20</span>, -<span class="cn">60</span>)</span>
-<span class="code-line"><span class="ln">33</span><span class="cv">t</span>.<span class="cf">Pendown</span>()</span>
-<span class="code-line"><span class="ln">34</span><span class="cv">t</span>.<span class="cf">fillcolor</span>(<span class="cs">"brown"</span>)</span>
-<span class="code-line"><span class="ln">35</span><span class="cv">t</span>.<span class="cf">begin_fill</span>()</span>
-<span class="code-line"><span class="ln">36</span><span class="ck">for</span> <span class="cv">side</span> <span class="ck">in</span> [<span class="cn">40</span>, <span class="cn">60</span>, <span class="cn">40</span>, <span class="cn">60</span>]:</span>
-<span class="code-line"><span class="ln">37</span>    <span class="cv">t</span>.<span class="cf">forward</span>(<span class="cv">side</span>)</span>
-<span class="code-line"><span class="ln">38</span>    <span class="cv">t</span>.<span class="cf">left</span>(<span class="cn">90</span>)</span>
-<span class="code-line"><span class="ln">39</span><span class="cv">t</span>.<span class="cf">end_fill</span>()</span>
-<span class="code-line"><span class="ln">40</span></span>
-<span class="code-line"><span class="ln">41</span><span class="cc"># Вікно</span></span>
-<span class="code-line"><span class="ln">42</span><span class="cv">t</span>.<span class="cf">penup</span>()</span>
-<span class="code-line"><span class="ln">43</span><span class="cv">t</span>.<span class="cf">goto</span>(<span class="cn">20</span>, <span class="cn">10</span>)</span>
-<span class="code-line"><span class="ln">44</span><span class="cv">t</span>.<span class="cf">pendown</span>()</span>
-<span class="code-line"><span class="ln">45</span><span class="cv">t</span>.<span class="cf">fillcolor</span>(<span class="cs">"lightblue"</span>)</span>
-<span class="code-line"><span class="ln">46</span><span class="cv">t</span>.<span class="cf">begin_fill</span>()</span>
-<span class="code-line"><span class="ln">47</span><span class="ck">for</span> <span class="cv">i</span> <span class="ck">in</span> <span class="cm">range</span>(<span class="cn">4</span>):</span>
-<span class="code-line"><span class="ln">48</span><span class="cv">t</span>.<span class="cf">forward</span>(<span class="cn">30</span>)</span>
-<span class="code-line"><span class="ln">49</span><span class="cv">t</span>.<span class="cf">left</span>(<span class="cn">90</span>)</span>
-<span class="code-line"><span class="ln">50</span><span class="cv">t</span>.<span class="cf">end_fill</span>()</span>
-<span class="code-line"><span class="ln">51</span></span>
-</div>
-  <div class="answers">
-    <input type="text" class="student-name" placeholder="Прізвище та ім'я">
-    <div class="answers-title">Твої відповіді</div>
-    <div class="ans-row"><span class="ans-prefix">Помилка 1, рядок</span><input type="text" class="ans-num-box" maxlength="3"></div>
-    <div class="ans-row"><span class="ans-prefix">Помилка 2, рядок</span><input type="text" class="ans-num-box" maxlength="3"></div>
-    <div class="ans-row"><span class="ans-prefix">Помилка 3, рядок</span><input type="text" class="ans-num-box" maxlength="3"></div>
-    <div class="ans-row"><span class="ans-prefix">Помилка 4, рядок</span><input type="text" class="ans-num-box" maxlength="3"></div>
-  </div>
-  <div class="submit-wrap">
-    <button class="submit-btn">Надіслати відповіді →</button>
-  </div>
-</div>
+      // ── SUBMIT BUTTON ─────────────────────────────────────────────────────────────
+      document.querySelectorAll(".submit-btn").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          const card = btn.closest(".variant-card");
+          const letter = [...card.classList].find((c) => /^v[a-d]$/.test(c))[1].toUpperCase();
+          const name = card.querySelector(".student-name").value.trim();
+          if (!name) {
+            alert("Введи своє прізвище та ім'я");
+            return;
+          }
 
-<!-- ── ВАРІАНТ В ── -->
-<div class="variant-card vc">
-  <div class="vc-header">
-    <div class="vc-letter">В</div>
-    <div class="vc-meta">
-      <div class="vc-title">Варіант В</div>
-      <div class="vc-hint">Знайди 4 помилки · 1 бал за кожну</div>
-    </div>
-    <div class="vc-pts">4 бали</div>
-  </div>
-  <div class="code-block"><span class="code-line"><span class="ln"> 1</span><span class="ck">import</span> <span class="cm">turtle</span></span>
-<span class="code-line"><span class="ln"> 2</span></span>
-<span class="code-line"><span class="ln"> 3</span><span class="cv">t</span> = <span class="cm">turtle</span>.<span class="cf">Turtle</span>()</span>
-<span class="code-line"><span class="ln"> 4</span><span class="cv">t</span>.<span class="cf">speed</span>(<span class="cn">0</span>)</span>
-<span class="code-line"><span class="ln"> 5</span><span class="cv">screen</span> = <span class="cm">turtle</span>.<span class="cf">Screen</span></span>
-<span class="code-line"><span class="ln"> 6</span><span class="cv">screen</span>.<span class="cf">bgcolor</span>(<span class="cs">"lightblue"</span>)</span>
-<span class="code-line"><span class="ln"> 7</span></span>
-<span class="code-line"><span class="ln"> 8</span><span class="cc"># Стіни</span></span>
-<span class="code-line"><span class="ln"> 9</span><span class="cv">t</span>.<span class="cf">penup</span>()</span>
-<span class="code-line"><span class="ln">10</span><span class="cv">t</span>.<span class="cf">goto</span>(-<span class="cn">60</span>, -<span class="cn">60</span>)</span>
-<span class="code-line"><span class="ln">11</span><span class="cv">t</span>.<span class="cf">pendown</span>()</span>
-<span class="code-line"><span class="ln">12</span><span class="cv">t</span>.<span class="cf">fillcolor</span>(<span class="cs">"lightyellow"</span>)</span>
-<span class="code-line"><span class="ln">13</span><span class="cv">t</span>.<span class="cf">begin_fill</span>()</span>
-<span class="code-line"><span class="ln">14</span><span class="ck">for</span> <span class="cm">range</span>(<span class="cn">4</span>):</span>
-<span class="code-line"><span class="ln">15</span>    <span class="cv">t</span>.<span class="cf">forward</span>(<span class="cn">120</span>)</span>
-<span class="code-line"><span class="ln">16</span>    <span class="cv">t</span>.<span class="cf">left</span>(<span class="cn">90</span>)</span>
-<span class="code-line"><span class="ln">17</span><span class="cv">t</span>.<span class="cf">end_fill</span>()</span>
-<span class="code-line"><span class="ln">18</span></span>
-<span class="code-line"><span class="ln">19</span><span class="cc"># Дах</span></span>
-<span class="code-line"><span class="ln">20</span><span class="cv">t</span>.<span class="cf">Penup</span>()</span>
-<span class="code-line"><span class="ln">21</span><span class="cv">t</span>.<span class="cf">goto</span>(-<span class="cn">60</span>, <span class="cn">60</span>)</span>
-<span class="code-line"><span class="ln">22</span><span class="cv">t</span>.<span class="cf">pendown</span>()</span>
-<span class="code-line"><span class="ln">23</span><span class="cv">t</span>.<span class="cf">fillcolor</span>(<span class="cs">"red"</span>)</span>
-<span class="code-line"><span class="ln">24</span><span class="cv">t</span>.<span class="cf">begin_fill</span>()</span>
-<span class="code-line"><span class="ln">25</span><span class="ck">for</span> <span class="cv">i</span> <span class="ck">in</span> <span class="cm">range</span>(<span class="cn">3</span>):</span>
-<span class="code-line"><span class="ln">26</span>    <span class="cv">t</span>.<span class="cf">forward</span>(<span class="cn">120</span>)</span>
-<span class="code-line"><span class="ln">27</span>    <span class="cv">t</span>.<span class="cf">left</span>(<span class="cn">120</span>)</span>
-<span class="code-line"><span class="ln">28</span><span class="cv">t</span>.<span class="cf">end_fill</span>()</span>
-<span class="code-line"><span class="ln">29</span></span>
-<span class="code-line"><span class="ln">30</span><span class="cc"># Двері</span></span>
-<span class="code-line"><span class="ln">31</span><span class="cv">t</span>.<span class="cf">penup</span>()</span>
-<span class="code-line"><span class="ln">32</span><span class="cv">t</span>.<span class="cf">goto</span>(-<span class="cn">20</span>, -<span class="cn">60</span>)</span>
-<span class="code-line"><span class="ln">33</span><span class="cv">t</span>.<span class="cf">pendown</span>()</span>
-<span class="code-line"><span class="ln">34</span><span class="cv">t</span>.<span class="cf">fillcolor</span>(<span class="cs">"brown"</span>)</span>
-<span class="code-line"><span class="ln">35</span><span class="cv">t</span>.<span class="cf">begin_fill</span>()</span>
-<span class="code-line"><span class="ln">36</span><span class="ck">for</span> <span class="cv">side</span> <span class="ck">in</span> [<span class="cn">40</span>, <span class="cn">60</span>, <span class="cn">40</span>, <span class="cn">60</span>]</span>
-<span class="code-line"><span class="ln">37</span>    <span class="cv">t</span>.<span class="cf">forward</span>(<span class="cv">side</span>)</span>
-<span class="code-line"><span class="ln">38</span>    <span class="cv">t</span>.<span class="cf">left</span>(<span class="cn">90</span>)</span>
-<span class="code-line"><span class="ln">39</span><span class="cv">t</span>.<span class="cf">end_fill</span>()</span>
-<span class="code-line"><span class="ln">40</span></span>
-<span class="code-line"><span class="ln">41</span><span class="cc"># Вікно</span></span>
-<span class="code-line"><span class="ln">42</span><span class="cv">t</span>.<span class="cf">penup</span>()</span>
-<span class="code-line"><span class="ln">43</span><span class="cv">t</span>.<span class="cf">goto</span>(<span class="cn">20</span>, <span class="cn">10</span>)</span>
-<span class="code-line"><span class="ln">44</span><span class="cv">t</span>.<span class="cf">pendown</span>()</span>
-<span class="code-line"><span class="ln">45</span><span class="cv">t</span>.<span class="cf">fillcolor</span>(<span class="cs">"lightblue"</span>)</span>
-<span class="code-line"><span class="ln">46</span><span class="cv">t</span>.<span class="cf">begin_fill</span>()</span>
-<span class="code-line"><span class="ln">47</span><span class="ck">for</span> <span class="cv">i</span> <span class="ck">in</span> <span class="cm">range</span>(<span class="cn">4</span>):</span>
-<span class="code-line"><span class="ln">48</span>    <span class="cv">t</span>.<span class="cf">forward</span>(<span class="cn">30</span>)</span>
-<span class="code-line"><span class="ln">49</span>    <span class="cv">t</span>.<span class="cf">left</span>(<span class="cn">90</span>)</span>
-<span class="code-line"><span class="ln">50</span><span class="cv">t</span>.<span class="cf">end_fill</span>()</span>
-<span class="code-line"><span class="ln">51</span></span>
-</div>
-  <div class="answers">
-    <input type="text" class="student-name" placeholder="Прізвище та ім'я">
-    <div class="answers-title">Твої відповіді</div>
-    <div class="ans-row"><span class="ans-prefix">Помилка 1, рядок</span><input type="text" class="ans-num-box" maxlength="3"></div>
-    <div class="ans-row"><span class="ans-prefix">Помилка 2, рядок</span><input type="text" class="ans-num-box" maxlength="3"></div>
-    <div class="ans-row"><span class="ans-prefix">Помилка 3, рядок</span><input type="text" class="ans-num-box" maxlength="3"></div>
-    <div class="ans-row"><span class="ans-prefix">Помилка 4, рядок</span><input type="text" class="ans-num-box" maxlength="3"></div>
-  </div>
-  <div class="submit-wrap">
-    <button class="submit-btn">Надіслати відповіді →</button>
-  </div>
-</div>
+          const rows = card.querySelectorAll(".ans-row");
+          const vals = [...rows].map((r) => r.querySelector(".ans-num-box").value.trim());
 
-<!-- ── ВАРІАНТ Г ── -->
-<div class="variant-card vd">
-  <div class="vc-header">
-    <div class="vc-letter">Г</div>
-    <div class="vc-meta">
-      <div class="vc-title">Варіант Г</div>
-      <div class="vc-hint">Знайди 4 помилки · 1 бал за кожну</div>
-    </div>
-    <div class="vc-pts">4 бали</div>
-  </div>
-  <div class="code-block"><span class="code-line"><span class="ln"> 1</span><span class="ck">import</span> <span class="cm">turtle</span></span>
-<span class="code-line"><span class="ln"> 2</span></span>
-<span class="code-line"><span class="ln"> 3</span><span class="cv">t</span> = <span class="cm">turtle</span>.<span class="cf">Turtle</span>()</span>
-<span class="code-line"><span class="ln"> 4</span><span class="cv">t</span>.<span class="cf">speed</span>(<span class="cn">0</span>)</span>
-<span class="code-line"><span class="ln"> 5</span><span class="cv">screen</span> = <span class="cm">turtle</span>.<span class="cf">Screen</span>()</span>
-<span class="code-line"><span class="ln"> 6</span><span class="cv">screen</span>.<span class="cf">bgcolor</span>(<span class="cs">"lightblue"</span>)</span>
-<span class="code-line"><span class="ln"> 7</span></span>
-<span class="code-line"><span class="ln"> 8</span><span class="cc"># Стіни</span></span>
-<span class="code-line"><span class="ln"> 9</span><span class="cv">t</span>.<span class="cf">penup</span>()</span>
-<span class="code-line"><span class="ln">10</span><span class="cv">t</span>.<span class="cf">goto</span>(-<span class="cn">60</span>, -<span class="cn">60</span>)</span>
-<span class="code-line"><span class="ln">11</span><span class="cv">t</span>.<span class="cf">Pendown</span>()</span>
-<span class="code-line"><span class="ln">12</span><span class="cv">t</span>.<span class="cf">fillcolor</span>(<span class="cs">"lightyellow"</span>)</span>
-<span class="code-line"><span class="ln">13</span><span class="cv">t</span>.<span class="cf">begin_fill</span>()</span>
-<span class="code-line"><span class="ln">14</span><span class="ck">for</span> <span class="cv">i</span> <span class="ck">in</span> <span class="cm">range</span>(<span class="cn">4</span>):</span>
-<span class="code-line"><span class="ln">15</span>    <span class="cv">t</span>.<span class="cf">forward</span>(<span class="cn">120</span>)</span>
-<span class="code-line"><span class="ln">16</span>    <span class="cv">t</span>.<span class="cf">left</span>(<span class="cn">90</span>)</span>
-<span class="code-line"><span class="ln">17</span><span class="cv">t</span>.<span class="cf">end_fill</span>()</span>
-<span class="code-line"><span class="ln">18</span></span>
-<span class="code-line"><span class="ln">19</span><span class="cc"># Дах</span></span>
-<span class="code-line"><span class="ln">20</span><span class="cv">t</span>.<span class="cf">penup</span>()</span>
-<span class="code-line"><span class="ln">21</span><span class="cv">t</span>.<span class="cf">goto</span>(-<span class="cn">60</span>, <span class="cn">60</span>)</span>
-<span class="code-line"><span class="ln">22</span><span class="cv">t</span>.<span class="cf">pendown</span>()</span>
-<span class="code-line"><span class="ln">23</span><span class="cv">t</span>.<span class="cf">fillcolor</span>(<span class="cs">"red"</span>)</span>
-<span class="code-line"><span class="ln">24</span><span class="cv">t</span>.<span class="cf">begin_fill</span>()</span>
-<span class="code-line"><span class="ln">25</span><span class="ck">for</span> <span class="cv">i</span> <span class="ck">in</span> <span class="cm">range</span>(<span class="cn">3</span>):</span>
-<span class="code-line"><span class="ln">26</span><span class="cv">t</span>.<span class="cf">forward</span>(<span class="cn">120</span>)</span>
-<span class="code-line"><span class="ln">27</span><span class="cv">t</span>.<span class="cf">left</span>(<span class="cn">120</span>)</span>
-<span class="code-line"><span class="ln">28</span><span class="cv">t</span>.<span class="cf">end_fill</span>()</span>
-<span class="code-line"><span class="ln">29</span></span>
-<span class="code-line"><span class="ln">30</span><span class="cc"># Двері</span></span>
-<span class="code-line"><span class="ln">31</span><span class="cv">t</span>.<span class="cf">penup</span>()</span>
-<span class="code-line"><span class="ln">32</span><span class="cv">t</span>.<span class="cf">goto</span>(-<span class="cn">20</span>, -<span class="cn">60</span>)</span>
-<span class="code-line"><span class="ln">33</span><span class="cv">t</span>.<span class="cf">pendown</span>()</span>
-<span class="code-line"><span class="ln">34</span><span class="cv">t</span>.<span class="cf">fillcolor</span>(<span class="cv">brown</span>)</span>
-<span class="code-line"><span class="ln">35</span><span class="cv">t</span>.<span class="cf">begin_fill</span>()</span>
-<span class="code-line"><span class="ln">36</span><span class="ck">for</span> <span class="cv">side</span> <span class="ck">in</span> [<span class="cn">40</span>, <span class="cn">60</span>, <span class="cn">40</span>, <span class="cn">60</span>]:</span>
-<span class="code-line"><span class="ln">37</span>    <span class="cv">t</span>.<span class="cf">forward</span>(<span class="cv">side</span>)</span>
-<span class="code-line"><span class="ln">38</span>    <span class="cv">t</span>.<span class="cf">left</span>(<span class="cn">90</span>)</span>
-<span class="code-line"><span class="ln">39</span><span class="cv">t</span>.<span class="cf">end_fill</span>()</span>
-<span class="code-line"><span class="ln">40</span></span>
-<span class="code-line"><span class="ln">41</span><span class="cc"># Вікно</span></span>
-<span class="code-line"><span class="ln">42</span><span class="cv">t</span>.<span class="cf">penup</span>()</span>
-<span class="code-line"><span class="ln">43</span><span class="cv">t</span>.<span class="cf">goto</span>(<span class="cn">20</span>, <span class="cn">10</span>)</span>
-<span class="code-line"><span class="ln">44</span><span class="cv">t</span>.<span class="cf">pendown</span>()</span>
-<span class="code-line"><span class="ln">45</span><span class="cv">t</span>.<span class="cf">fillcolor</span>(<span class="cs">"lightblue"</span>)</span>
-<span class="code-line"><span class="ln">46</span><span class="cv">t</span>.<span class="cf">begin_fill</span>()</span>
-<span class="code-line"><span class="ln">47</span><span class="ck">for</span> <span class="cv">i</span> <span class="ck">in</span> <span class="cm">range</span>(<span class="cn">4</span>)</span>
-<span class="code-line"><span class="ln">48</span>    <span class="cv">t</span>.<span class="cf">forward</span>(<span class="cn">30</span>)</span>
-<span class="code-line"><span class="ln">49</span>    <span class="cv">t</span>.<span class="cf">left</span>(<span class="cn">90</span>)</span>
-<span class="code-line"><span class="ln">50</span><span class="cv">t</span>.<span class="cf">end_fill</span>()</span>
-<span class="code-line"><span class="ln">51</span></span>
-</div>
-  <div class="answers">
-    <input type="text" class="student-name" placeholder="Прізвище та ім'я">
-    <div class="answers-title">Твої відповіді</div>
-    <div class="ans-row"><span class="ans-prefix">Помилка 1, рядок</span><input type="text" class="ans-num-box" maxlength="3"></div>
-    <div class="ans-row"><span class="ans-prefix">Помилка 2, рядок</span><input type="text" class="ans-num-box" maxlength="3"></div>
-    <div class="ans-row"><span class="ans-prefix">Помилка 3, рядок</span><input type="text" class="ans-num-box" maxlength="3"></div>
-    <div class="ans-row"><span class="ans-prefix">Помилка 4, рядок</span><input type="text" class="ans-num-box" maxlength="3"></div>
-  </div>
-  <div class="submit-wrap">
-    <button class="submit-btn">Надіслати відповіді →</button>
-  </div>
-</div>
+          const body = new URLSearchParams({
+            [E.name]: name,
+            [E.variant]: "Варіант " + letter,
+            [E.l1]: vals[0],
+            [E.l2]: vals[1],
+            [E.l3]: vals[2],
+            [E.l4]: vals[3],
+          });
 
-<!-- ЗБЕРЕГТИ -->
-<div class="save-box">
-  <div class="icon">💾</div>
-  <p>Частина 1 — збережи файл <strong>Прізвище_Космос_7клас.py</strong> і здай через Google Classroom.<br>Частина 2 — заповни відповіді вище та натисни <strong>Надіслати відповіді →</strong></p>
-</div>
+          btn.disabled = true;
+          btn.textContent = "Надсилання…";
 
-<footer>
-  <span>ПІДСУМКОВА ПРАКТИЧНА РОБОТА · PYTHON TURTLE · 7 КЛАС</span>
-  <span>УРОКИ 1, 2, 4 · 45 ХВИЛИН · 12 БАЛІВ</span>
-</footer>
+          await fetch(`https://docs.google.com/forms/d/e/${FORM_ID}/formResponse`, {
+            method: "POST",
+            mode: "no-cors",
+            body,
+          });
 
-</div>
-
-<script>
-// ── Google Form config (fill in after creating the form) ─────────────────────
-const FORM_ID = '1FAIpQLSfWP1-vcPrdCCNk2uKGz37jxM0XLS_tiSFqSh3h4q9O0bjGSQ';
-const E = {
-  name:    'entry.1009431343',
-  variant: 'entry.397622613',
-  l1: 'entry.1271874885',
-  l2: 'entry.1862016011',
-  l3: 'entry.417732031',
-  l4: 'entry.290041697',
-};
-// ─────────────────────────────────────────────────────────────────────────────
-
-const vParam = new URLSearchParams(location.search).get('v');
-
-// ── VARIANT PICKER ────────────────────────────────────────────────────────────
-function showVariant(letter) {
-  document.getElementById('variant-picker').hidden = true;
-  document.querySelectorAll('.variant-card').forEach(card => {
-    card.classList.toggle('active', card.classList.contains('v' + letter.toLowerCase()));
-  });
-}
-document.querySelectorAll('.picker-btn').forEach(btn => {
-  btn.addEventListener('click', () => showVariant(btn.dataset.v));
-});
-
-// ── TASK STATUS ───────────────────────────────────────────────────────────────
-(async () => {
-  let isOpen = true;
-  try {
-    const r = await fetch('config.json?t=' + Date.now());
-    const cfg = await r.json();
-    isOpen = cfg.lessons?.['6'] === true;
-  } catch {}
-
-  if (vParam) { showVariant(vParam); return; }
-
-  if (isOpen) {
-    document.getElementById('variant-picker').hidden = false;
-  } else {
-    document.getElementById('task-locked').hidden = false;
-  }
-})();
-
-// ── SUBMIT BUTTON ─────────────────────────────────────────────────────────────
-document.querySelectorAll('.submit-btn').forEach(btn => {
-  btn.addEventListener('click', async () => {
-    const card = btn.closest('.variant-card');
-    const letter = [...card.classList].find(c => /^v[a-d]$/.test(c))[1].toUpperCase();
-    const name = card.querySelector('.student-name').value.trim();
-    if (!name) { alert("Введи своє прізвище та ім'я"); return; }
-
-    const rows = card.querySelectorAll('.ans-row');
-    const vals = [...rows].map(r => r.querySelector('.ans-num-box').value.trim());
-
-    const body = new URLSearchParams({
-      [E.name]: name, [E.variant]: 'Варіант ' + letter,
-      [E.l1]: vals[0], [E.l2]: vals[1], [E.l3]: vals[2], [E.l4]: vals[3],
-    });
-
-    btn.disabled = true;
-    btn.textContent = 'Надсилання…';
-
-    await fetch(`https://docs.google.com/forms/d/e/${FORM_ID}/formResponse`, {
-      method: 'POST',
-      mode: 'no-cors',
-      body,
-    });
-
-    const wrap = btn.closest('.submit-wrap');
-    wrap.innerHTML = `<div class="submit-ok">✓ Відповіді надіслано</div>`;
-  });
-});
-</script>
-</body>
+          const wrap = btn.closest(".submit-wrap");
+          wrap.innerHTML = `<div class="submit-ok">✓ Відповіді надіслано</div>`;
+        });
+      });
+    </script>
+  </body>
 </html>

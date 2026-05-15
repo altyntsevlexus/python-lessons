@@ -797,7 +797,7 @@ footer span {
     <span class="know-pill"><span class="dot"></span>if / elif / else — розгалуження</span>
     <span class="know-pill"><span class="dot"></span>random — randint()</span>
     <span class="know-pill"><span class="dot"></span>Функція — def star()</span>
-    <span class="know-pill"><span class="dot"></span>dot() + setheading()</span>
+    <span class="know-pill"><span class="dot"></span>setheading() + circle() із заливкою</span>
     <span class="know-pill"><span class="dot"></span>HEX-кольори</span>
   </div>
 </div>
@@ -842,8 +842,8 @@ footer span {
   </div>
   <div class="el-row">
     <div class="el-cell">☄️</div>
-    <div class="el-cell">Комета або кільця планети<span class="cmd">dot() + setheading(45) + for: forward()  або  for r in range(…): circle(r)</span></div>
-    <div class="el-cell">Комета: dot() — голова, for + forward() — хвіст. Кільця: for + circle() різних радіусів</div>
+    <div class="el-cell">Комета або кільця планети<span class="cmd">setheading(45) + fillcolor() + circle() + for: forward()  або  for r in range(…): circle(r)</span></div>
+    <div class="el-cell">Комета: circle() із заливкою — голова, for + forward() — хвіст. Кільця: for + circle() різних радіусів</div>
   </div>
 </div>
 
@@ -896,31 +896,35 @@ footer span {
     <div class="pts-val">Бали</div>
   </div>
   <div class="pts-row">
-    <div class="pts-desc">Зірки намальовані через функцію <code>def star()</code> з циклом <code>for _ in range(8)</code></div>
+    <div class="pts-desc">Функція <code>def star()</code> визначена і правильно викликається</div>
     <div class="pts-val">1</div>
   </div>
   <div class="pts-row">
-    <div class="pts-desc">Позиція та розмір зірок — випадкові (<code>random.randint()</code>)</div>
+    <div class="pts-desc">Зірки малюються циклом <code>for</code> — не менше 30</div>
     <div class="pts-val">1</div>
   </div>
   <div class="pts-row">
-    <div class="pts-desc">Розгалуження <code>if / elif / else</code> змінює колір зірок залежно від розміру</div>
+    <div class="pts-desc">Позиції зірок — випадкові (<code>random.randint()</code>)</div>
     <div class="pts-val">1</div>
   </div>
   <div class="pts-row">
-    <div class="pts-desc">Зірок не менше 30 і вони заповнюють усе небо</div>
+    <div class="pts-desc">Розміри зірок — випадкові (<code>random.randint()</code>)</div>
+    <div class="pts-val">1</div>
+  </div>
+  <div class="pts-row">
+    <div class="pts-desc">Розгалуження <code>if / elif / else</code> змінює колір залежно від розміру</div>
     <div class="pts-val">1</div>
   </div>
   <div class="pts-row">
     <div class="pts-desc">Місяць-серп — жовте коло + темне зміщене перекриття (<code>circle</code> × 2)</div>
-    <div class="pts-val">2</div>
+    <div class="pts-val">1</div>
   </div>
   <div class="pts-row">
     <div class="pts-desc">Планети — червона та синя із заливкою (<code>fillcolor + circle</code>)</div>
     <div class="pts-val">1</div>
   </div>
   <div class="pts-row">
-    <div class="pts-desc">Комета (<code>dot + for + forward</code>) або кільця планети (<code>for + circle</code>)</div>
+    <div class="pts-desc">Комета (<code>circle із заливкою + for + forward</code>) або кільця планети (<code>for + circle</code>)</div>
     <div class="pts-val">1</div>
   </div>
   <div class="pts-row pts-total">

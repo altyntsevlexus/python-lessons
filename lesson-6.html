@@ -1244,6 +1244,9 @@
           У коді нижче є рівно <strong>4 помилки</strong>. Знайди кожну: вкажи <strong>номер рядка</strong> та
           <strong>що саме не так</strong>. За кожну правильно знайдену помилку — <strong>1 бал</strong>.
         </p>
+        <p style="margin-top:10px">
+          <a href="lesson-6-2.html" style="color:var(--acc);font-family:'Source Code Pro',monospace;font-size:13px;">Відкрити завдання окремо →</a>
+        </p>
       </div>
 
       <!-- PICKER -->
@@ -2172,6 +2175,18 @@
 
           const wrap = btn.closest(".submit-wrap");
           wrap.innerHTML = `<div class="submit-ok">✓ Відповіді надіслано</div>`;
+        });
+      });
+    </script>
+    <script>
+      // Fix linter-introduced whitespace: Prettier breaks long lines mid-span,
+      // inserting \n+spaces as text nodes inside .code-line. With white-space:pre
+      // those render as actual line breaks. Strip them here.
+      document.querySelectorAll(".code-line").forEach(function (line) {
+        Array.from(line.childNodes).forEach(function (node) {
+          if (node.nodeType === 3) {
+            node.textContent = node.textContent.replace(/\n\s*/g, "");
+          }
         });
       });
     </script>

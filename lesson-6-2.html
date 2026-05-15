@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Підсумкова практична робота · Космічний пейзаж · Python Turtle</title>
+<title>Знайди помилки в коді · Python Turtle · 7 клас</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;500;600;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -77,7 +77,7 @@ h1 {
   letter-spacing: 2px;
   color: #fff;
 }
-h1 .y { color: var(--moon); }
+h1 .y { color: var(--v-col); }
 .hdr-chips { display:flex; flex-direction:column; gap:7px; align-items:flex-end; }
 .chip {
   font-family: 'Source Code Pro', monospace;
@@ -88,50 +88,30 @@ h1 .y { color: var(--moon); }
   white-space: nowrap;
 }
 .chip.hi {
-  background: rgba(136,136,255,.1);
-  border-color: rgba(136,136,255,.35);
-  color: var(--moon);
+  background: rgba(80,227,164,.1);
+  border-color: rgba(80,227,164,.35);
+  color: var(--v-col);
   font-weight: 600;
 }
-
-/* ── SPACE SVG ── */
-.space-svg { width:100%; display:block; margin-top:24px; opacity:.75; }
-
-/* ── SECTION LABEL ── */
-.slabel {
-  font-family: 'Source Code Pro', monospace;
-  font-size: 10px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 16px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.slabel::after { content:''; flex:1; height:1px; background:var(--border); }
 
 /* ── PART DIVIDER ── */
 .part-div {
   display: flex;
   align-items: center;
   gap: 18px;
-  margin: 40px 0 28px;
+  margin: 0 0 28px;
   padding: 16px 20px;
   background: var(--surface);
   border: 1px solid var(--border2);
-  border-left: 4px solid;
+  border-left: 4px solid var(--v-col);
 }
-.part-div.p1 { border-left-color: var(--moon); }
-.part-div.p2 { border-left-color: var(--v-col); }
 .part-num {
   font-family: 'Bebas Neue', sans-serif;
   font-size: 30px;
   line-height: 1;
   letter-spacing: 2px;
+  color: var(--v-col);
 }
-.p1 .part-num { color: var(--moon); }
-.p2 .part-num { color: var(--v-col); }
 .part-info { flex: 1; }
 .part-title {
   font-family: 'Montserrat', sans-serif;
@@ -153,187 +133,28 @@ h1 .y { color: var(--moon); }
   padding: 4px 12px;
   border: 1px solid;
   letter-spacing: 1px;
+  color: var(--v-col);
+  border-color: rgba(80,227,164,.35);
+  background: rgba(80,227,164,.08);
 }
-.p1 .part-badge { color: var(--moon); border-color: rgba(136,136,255,.35); background: rgba(136,136,255,.08); }
-.p2 .part-badge { color: var(--v-col); border-color: rgba(80,227,164,.35);  background: rgba(80,227,164,.08); }
 
 /* ── TASK BOX ── */
 .task-box {
   background: var(--surface);
   border: 1px solid var(--border2);
-  border-left: 4px solid var(--moon);
+  border-left: 4px solid var(--v-col);
   padding: 24px 26px;
   margin-bottom: 28px;
 }
-.task-box.p2 { border-left-color: var(--v-col); }
 .task-box h2 {
   font-family: 'Bebas Neue', sans-serif;
   font-size: 24px;
   letter-spacing: 1.5px;
-  color: var(--moon);
+  color: var(--v-col);
   margin-bottom: 12px;
 }
-.task-box.p2 h2 { color: var(--v-col); }
 .task-box p { font-size: 14px; line-height: 1.75; color: var(--text); }
 .task-box p strong { color: #fff; }
-
-/* ── KNOWLEDGE PILLS ── */
-.know-row { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:32px; }
-.know-pill {
-  font-family: 'Source Code Pro', monospace;
-  font-size: 11px;
-  padding: 5px 13px;
-  border: 1px solid var(--border2);
-  color: var(--text);
-  display: flex;
-  align-items: center;
-  gap: 7px;
-}
-.know-pill .dot {
-  width:6px;height:6px;border-radius:50%;
-  background:var(--v-col);flex-shrink:0;
-}
-
-/* ── ELEMENTS TABLE ── */
-.elements {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  margin-bottom: 32px;
-  overflow: hidden;
-}
-.el-header {
-  display: grid;
-  grid-template-columns: 32px 1fr 1fr;
-  background: var(--card);
-  border-bottom: 1px solid var(--border2);
-}
-.el-cell {
-  padding: 10px 14px;
-  font-family: 'Source Code Pro', monospace;
-  font-size: 9.5px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--muted);
-  border-right: 1px solid var(--border);
-}
-.el-cell:last-child { border-right: none; }
-.el-row {
-  display: grid;
-  grid-template-columns: 32px 1fr 1fr;
-  border-bottom: 1px solid var(--border);
-  transition: background .15s;
-}
-.el-row:last-child { border-bottom: none; }
-.el-row:hover { background: rgba(255,255,255,.02); }
-.el-row .el-cell {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 13px;
-  letter-spacing: 0;
-  text-transform: none;
-  color: var(--text);
-  padding: 12px 14px;
-}
-.el-row .el-cell:first-child { font-size:18px; text-align:center; padding:12px 6px; }
-.el-row .el-cell .cmd {
-  font-family: 'Source Code Pro', monospace;
-  font-size: 11px;
-  color: var(--moon);
-  display: block;
-  margin-top: 3px;
-  line-height: 1.7;
-}
-
-/* ── POINTS TABLE (Part 1 scoring) ── */
-.pts-table {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  margin-bottom: 32px;
-  overflow: hidden;
-}
-.pts-row {
-  display: grid;
-  grid-template-columns: 1fr 52px;
-  border-bottom: 1px solid var(--border);
-  transition: background .15s;
-}
-.pts-row:last-child { border-bottom: none; }
-.pts-row:hover:not(.pts-head):not(.pts-total) { background: rgba(255,255,255,.02); }
-.pts-row.pts-head {
-  background: var(--card);
-  border-bottom: 1px solid var(--border2);
-}
-.pts-row.pts-total { background: var(--card); border-top: 1px solid var(--border2); }
-.pts-desc {
-  padding: 11px 14px;
-  font-size: 13px;
-  color: var(--text);
-  line-height: 1.5;
-}
-.pts-row.pts-head .pts-desc,
-.pts-row.pts-head .pts-val {
-  font-family: 'Source Code Pro', monospace;
-  font-size: 9.5px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-.pts-row.pts-total .pts-desc {
-  font-family: 'Source Code Pro', monospace;
-  font-size: 10px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--muted);
-  font-weight: 600;
-}
-.pts-desc code {
-  font-family: 'Source Code Pro', monospace;
-  font-size: 11px;
-  color: var(--moon);
-}
-.pts-val {
-  padding: 11px 14px;
-  font-family: 'Source Code Pro', monospace;
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--moon);
-  text-align: center;
-  border-left: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.pts-row.pts-total .pts-val { color: var(--v-col); font-size: 16px; }
-
-/* ── PALETTE ── */
-.palette-wrap {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  margin-bottom: 32px;
-}
-.pal-group { background:var(--surface); border:1px solid var(--border); padding:14px 14px 12px; }
-.pal-label {
-  font-family: 'Source Code Pro', monospace;
-  font-size: 10px;
-  letter-spacing: 1px;
-  color: var(--muted);
-  margin-bottom: 10px;
-  text-transform: uppercase;
-}
-.pal-swatches { display:flex; flex-direction:column; gap:5px; }
-.sw { height:34px; display:flex; align-items:center; padding:0 10px; }
-.sw-hex { font-family:'Source Code Pro',monospace; font-size:11px; color:rgba(255,255,255,0.7); letter-spacing:.5px; }
-.sw-hex.sw-dark { color:rgba(0,0,0,0.55); }
-
-/* ── VARIANT CARDS (Part 2) ── */
-.variant-card {
-  display: none;
-  background: var(--surface);
-  border: 1px solid var(--border2);
-  margin-bottom: 28px;
-  overflow: hidden;
-}
-.variant-card.active { display: block; }
 
 /* ── VARIANT PICKER ── */
 #variant-picker { margin-bottom: 28px; }
@@ -372,28 +193,15 @@ h1 .y { color: var(--moon); }
 .picker-btn.pvc:hover { background: rgba(77,184,255,.08); }
 .picker-btn.pvd:hover { background: rgba(80,227,164,.08); }
 
-/* ── TASK LOCKED ── */
-#task-locked {
-  text-align: center;
-  padding: 56px 20px;
-  border: 1px solid var(--border2);
+/* ── VARIANT CARDS ── */
+.variant-card {
+  display: none;
   background: var(--surface);
+  border: 1px solid var(--border2);
   margin-bottom: 28px;
+  overflow: hidden;
 }
-.locked-icon { font-size: 36px; margin-bottom: 14px; }
-.locked-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 22px;
-  letter-spacing: 3px;
-  color: var(--text);
-  margin-bottom: 6px;
-}
-.locked-sub {
-  font-family: 'Source Code Pro', monospace;
-  font-size: 10px;
-  letter-spacing: 2px;
-  color: var(--muted);
-}
+.variant-card.active { display: block; }
 
 .vc-header {
   padding: 14px 18px;
@@ -465,13 +273,13 @@ h1 .y { color: var(--moon); }
 }
 
 /* ── SYNTAX HIGHLIGHTING ── */
-.cc { color: #6A9955; font-style: italic; }   /* comment */
-.ck { color: #569CD6; }                        /* keyword */
-.cs { color: #CE9178; }                        /* string */
-.cn { color: #B5CEA8; }                        /* number */
-.cf { color: #DCDCAA; }                        /* function / method name */
-.cv { color: #9CDCFE; }                        /* variable / identifier */
-.cm { color: #4EC9B0; }                        /* module / builtin */
+.cc { color: #6A9955; font-style: italic; }
+.ck { color: #569CD6; }
+.cs { color: #CE9178; }
+.cn { color: #B5CEA8; }
+.cf { color: #DCDCAA; }
+.cv { color: #9CDCFE; }
+.cm { color: #4EC9B0; }
 
 .answers { padding: 16px 18px 18px; }
 .answers-title {
@@ -510,21 +318,8 @@ h1 .y { color: var(--moon); }
   outline: none;
   padding: 0;
 }
-.ans-field {
-  flex: 1;
-  border: none;
-  border-bottom: 1px solid var(--border2);
-  height: 24px;
-  background: transparent;
-  color: var(--text);
-  font-family: 'Source Code Pro', monospace;
-  font-size: 12px;
-  outline: none;
-  padding: 0 4px;
-}
-.ans-num-box:focus, .ans-field:focus { border-bottom-color: var(--moon); }
-.ans-num-box::placeholder, .ans-field::placeholder { color: var(--border2); }
-.ans-dash { color:var(--muted); font-size:12px; padding-bottom:4px; }
+.ans-num-box:focus { border-bottom-color: var(--moon); }
+.ans-num-box::placeholder { color: var(--border2); }
 .student-name {
   display: block;
   width: 100%;
@@ -571,19 +366,6 @@ h1 .y { color: var(--moon); }
 .vc .submit-btn  { background: var(--d-col); color: #000; }
 .vd .submit-btn { background: var(--v-col); color: #000; }
 
-/* ── SAVE ── */
-.save-box {
-  background: rgba(80,227,164,.05);
-  border: 1px solid rgba(80,227,164,.2);
-  padding: 16px 22px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-.save-box .icon { font-size:26px; flex-shrink:0; }
-.save-box p { font-size:13px; color:var(--text); line-height:1.65; }
-.save-box strong { font-family:'Source Code Pro',monospace; color:var(--v-col); }
-
 /* ── FOOTER ── */
 footer {
   border-top: 1px solid var(--border);
@@ -605,32 +387,8 @@ footer span {
 @media(max-width:560px){
   header { grid-template-columns: 1fr; }
   .hdr-chips { align-items: flex-start; }
-  .el-header, .el-row { grid-template-columns: 28px 1fr; }
-  .el-header .el-cell:nth-child(3),
-  .el-row   .el-cell:nth-child(3) { display: none; }
-  .palette-wrap { grid-template-columns: 1fr 1fr; }
   .picker-grid { grid-template-columns: 1fr 1fr; }
 }
-
-/* ── RESULT SVG ── */
-.result-svg-wrap {
-  border: 1px solid var(--border2);
-  overflow: hidden;
-  max-width: 420px;
-  margin: 0 auto 32px;
-}
-.result-svg-label {
-  font-family: 'Source Code Pro', monospace;
-  font-size: 10px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--muted);
-  padding: 8px 12px;
-  background: var(--card);
-  border-bottom: 1px solid var(--border2);
-  text-align: center;
-}
-.result-svg-wrap svg { width: 100%; display: block; }
 
 /* ── PRINT ── */
 @media print {
@@ -641,7 +399,7 @@ footer span {
   .vc-header { background: #f5f5f5; border-bottom: 1px solid #ddd; }
   .code-block { background: #f8f8f8; color: #111; border-bottom: 1px solid #ddd; }
   .ln { color: #bbb; }
-  .ans-field, .ans-num-box { border-bottom: 1px solid #aaa; color: #111; background: #fff; }
+  .ans-num-box { border-bottom: 1px solid #aaa; color: #111; background: #fff; }
   .ans-prefix, .answers-title { color: #888; }
   .student-name { background: #fff; border-color: #aaa; color: #111; }
   .submit-wrap { display: none; }
@@ -652,287 +410,23 @@ footer span {
 </head>
 <body>
 
-
 <div class="wrap">
 
 <!-- HEADER -->
 <header>
   <div>
-    <div class="eyebrow">Підсумкова практична робота · Уроки 1, 2, 4 · 45 хвилин</div>
-    <h1>КОСМІЧНИЙ<br><span class="y">ПЕЙЗАЖ</span></h1>
+    <div class="eyebrow">Підсумкова практична робота · Частина 2 · 7 клас</div>
+    <h1>ЗНАЙДИ<br><span class="y">ПОМИЛКИ</span></h1>
   </div>
   <div class="hdr-chips">
-    <span class="chip hi">⏱ 45 хвилин</span>
+    <span class="chip hi">4 БАЛИ</span>
     <span class="chip">Python · Turtle</span>
     <span class="chip">7 клас</span>
   </div>
 </header>
 
-<!-- SPACE ILLUSTRATION -->
-<svg class="space-svg" viewBox="0 0 820 120" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <radialGradient id="pg1" cx="35%" cy="35%"><stop offset="0%" stop-color="#ff6644"/><stop offset="100%" stop-color="#aa2222"/></radialGradient>
-    <radialGradient id="pg2" cx="40%" cy="40%"><stop offset="0%" stop-color="#4488ff"/><stop offset="100%" stop-color="#001166"/></radialGradient>
-  </defs>
-  <rect width="820" height="120" fill="#06080f"/>
-  <circle cx="45"  cy="15" r=".8" fill="#fff" opacity=".4"/>
-  <circle cx="120" cy="8"  r=".6" fill="#fff" opacity=".5"/>
-  <circle cx="320" cy="12" r=".9" fill="#fff" opacity=".6"/>
-  <circle cx="540" cy="10" r=".8" fill="#fff" opacity=".5"/>
-  <circle cx="780" cy="14" r=".6" fill="#fff" opacity=".6"/>
-  <circle cx="80"  cy="35" r="1.2" fill="#ffe680" opacity=".7"/>
-  <circle cx="310" cy="55" r="1.3" fill="#fff"   opacity=".6"/>
-  <circle cx="480" cy="40" r="1.2" fill="#ffe680" opacity=".7"/>
-  <circle cx="150" cy="72" r="1.8" fill="#ffe680" opacity=".9"/>
-  <circle cx="380" cy="80" r="1.9" fill="#fff"    opacity=".95"/>
-  <circle cx="700" cy="32" r="16"  fill="url(#pg1)"/>
-  <ellipse cx="700" cy="36" rx="22" ry="4" fill="none" stroke="#aaaacc" stroke-width="1.5" opacity=".6"/>
-  <circle cx="120" cy="95" r="12" fill="url(#pg2)"/>
-  <g transform="translate(350,100)">
-    <polygon points="0,-8 -3,4 3,4" fill="#ff8800" opacity=".8"/>
-    <rect x="-1.5" y="4" width="3" height="6" fill="#ff6600" opacity=".8"/>
-  </g>
-  <line x1="220" y1="25" x2="180" y2="15" stroke="#ffa500" stroke-width="1.5" opacity=".6"/>
-</svg>
-
-<!-- ── ЗРАЗОК РЕЗУЛЬТАТУ ── -->
-<div class="slabel" style="margin-top:28px;">Зразок результату</div>
-<div class="result-svg-wrap">
-  <div class="result-svg-label">Результат програми</div>
-  <svg viewBox="-300 -300 600 600" xmlns="http://www.w3.org/2000/svg">
-    <rect x="-300" y="-300" width="600" height="600" fill="#06080f"/>
-    <g transform="scale(1,-1)">
-      <!-- Stars: large yellow (size > 6) -->
-      <g stroke="#ffe680" stroke-width="0.8">
-        <line x1="-91" y1="196" x2="-91" y2="204"/><line x1="-95" y1="200" x2="-87" y2="200"/><line x1="-93.7" y1="197.3" x2="-88.3" y2="202.7"/><line x1="-93.7" y1="202.7" x2="-88.3" y2="197.3"/>
-        <line x1="216" y1="247" x2="216" y2="257"/><line x1="211" y1="252" x2="221" y2="252"/><line x1="212.5" y1="248.5" x2="219.5" y2="255.5"/><line x1="212.5" y1="255.5" x2="219.5" y2="248.5"/>
-        <line x1="-263" y1="-124" x2="-263" y2="-116"/><line x1="-267" y1="-120" x2="-259" y2="-120"/><line x1="-265.7" y1="-122.7" x2="-260.3" y2="-117.3"/><line x1="-265.7" y1="-117.3" x2="-260.3" y2="-122.7"/>
-        <line x1="176" y1="-204" x2="176" y2="-196"/><line x1="172" y1="-200" x2="180" y2="-200"/><line x1="173.3" y1="-202.7" x2="178.7" y2="-197.3"/><line x1="173.3" y1="-197.3" x2="178.7" y2="-202.7"/>
-        <line x1="-31" y1="276" x2="-31" y2="284"/><line x1="-35" y1="280" x2="-27" y2="280"/><line x1="-33.7" y1="277.3" x2="-28.3" y2="282.7"/><line x1="-33.7" y1="282.7" x2="-28.3" y2="277.3"/>
-        <line x1="110" y1="60" x2="110" y2="68"/><line x1="106" y1="64" x2="114" y2="64"/><line x1="107.3" y1="61.3" x2="112.7" y2="66.7"/><line x1="107.3" y1="66.7" x2="112.7" y2="61.3"/>
-      </g>
-      <!-- Stars: medium white (size 4–6) -->
-      <g fill="#ffffff">
-        <circle cx="138" cy="202" r="2.2"/>
-        <circle cx="-201" cy="183" r="2.2"/>
-        <circle cx="281" cy="97"  r="2.2"/>
-        <circle cx="-131" cy="-198" r="2.2"/>
-        <circle cx="49"  cy="243" r="2.2"/>
-        <circle cx="-281" cy="47"  r="2.5"/>
-        <circle cx="242" cy="-53" r="2.2"/>
-        <circle cx="98"  cy="-243" r="2.2"/>
-        <circle cx="-62" cy="168" r="2.2"/>
-        <circle cx="195" cy="130" r="2.2"/>
-        <circle cx="-170" cy="-110" r="2.2"/>
-        <circle cx="60"  cy="-140" r="2.2"/>
-      </g>
-      <!-- Stars: small gray (size 1–3) -->
-      <g fill="#888899">
-        <circle cx="-241" cy="278" r="1.4"/>
-        <circle cx="168"  cy="279" r="1.4"/>
-        <circle cx="-289" cy="261" r="1.4"/>
-        <circle cx="288"  cy="258" r="1.4"/>
-        <circle cx="-191" cy="-278" r="1.4"/>
-        <circle cx="252"  cy="-281" r="1.4"/>
-        <circle cx="-289" cy="-232" r="1.4"/>
-        <circle cx="-141" cy="251" r="1.4"/>
-        <circle cx="231"  cy="179" r="1.4"/>
-        <circle cx="-180" cy="131" r="1.4"/>
-        <circle cx="79"   cy="99"  r="1.4"/>
-        <circle cx="158"  cy="-121" r="1.4"/>
-        <circle cx="-52"  cy="230" r="1.4"/>
-        <circle cx="290"  cy="180" r="1.4"/>
-        <circle cx="-130" cy="30"  r="1.4"/>
-        <circle cx="20"   cy="195" r="1.4"/>
-        <circle cx="-250" cy="-50" r="1.4"/>
-        <circle cx="230"  cy="-180" r="1.4"/>
-      </g>
-
-      <!-- Moon crescent: yellow circle + dark overlay -->
-      <circle cx="-150" cy="50" r="40" fill="#ffe680"/>
-      <circle cx="-130" cy="50" r="34" fill="#06080f"/>
-
-      <!-- Red planet (goto 150,100 then circle 45 → center at 150,145) -->
-      <circle cx="150" cy="145" r="45" fill="#cc3333"/>
-      <!-- Rings r=55,63,71 centered at same point -->
-      <circle cx="150" cy="145" r="55" fill="none" stroke="#aa5555" stroke-width="1.5"/>
-      <circle cx="150" cy="145" r="63" fill="none" stroke="#aa5555" stroke-width="1.5"/>
-      <circle cx="150" cy="145" r="71" fill="none" stroke="#aa5555" stroke-width="1.5"/>
-
-      <!-- Blue planet (goto -150,-80 then circle 30 → center at -150,-50) -->
-      <circle cx="-150" cy="-50" r="30" fill="#3366bb"/>
-
-      <!-- Comet: head at (50,-160), setheading(45°), tail goes NE -->
-      <circle cx="50" cy="-160" r="4" fill="white"/>
-      <line x1="50"  y1="-160" x2="61"  y2="-149" stroke="white"   stroke-width="4"   stroke-linecap="round"/>
-      <line x1="61"  y1="-149" x2="71"  y2="-139" stroke="#fffacd" stroke-width="3.5" stroke-linecap="round"/>
-      <line x1="71"  y1="-139" x2="82"  y2="-128" stroke="#add8e6" stroke-width="3"   stroke-linecap="round"/>
-      <line x1="82"  y1="-128" x2="93"  y2="-117" stroke="#4682b4" stroke-width="2.5" stroke-linecap="round"/>
-      <line x1="93"  y1="-117" x2="103" y2="-107" stroke="#4682b4" stroke-width="2"   stroke-linecap="round"/>
-      <line x1="103" y1="-107" x2="114" y2="-96"  stroke="#4682b4" stroke-width="1.5" stroke-linecap="round"/>
-    </g>
-  </svg>
-</div>
-
-<!-- ═══════════════════════════════════════════════════ -->
-<!-- ЧАСТИНА 1                                          -->
-<!-- ═══════════════════════════════════════════════════ -->
-<div class="part-div p1">
-  <div class="part-num">ЧАСТИНА 1</div>
-  <div class="part-info">
-    <div class="part-title">Малюємо космічний пейзаж</div>
-    <div class="part-sub">Python Turtle · самостійна робота</div>
-  </div>
-  <div class="part-badge">8 БАЛІВ</div>
-</div>
-
-<!-- ЗНАННЯ -->
-<div style="margin:0 0 28px;">
-  <div class="slabel">Що ти вже вмієш (після уроків 1–2 та 4)</div>
-  <div class="know-row">
-    <span class="know-pill"><span class="dot"></span>Темний фон — bgcolor()</span>
-    <span class="know-pill"><span class="dot"></span>Переміщення — goto(), penup/down</span>
-    <span class="know-pill"><span class="dot"></span>Заливка — begin_fill / end_fill</span>
-    <span class="know-pill"><span class="dot"></span>Цикл for + range()</span>
-    <span class="know-pill"><span class="dot"></span>if / elif / else — розгалуження</span>
-    <span class="know-pill"><span class="dot"></span>random — randint()</span>
-    <span class="know-pill"><span class="dot"></span>Функція — def star()</span>
-    <span class="know-pill"><span class="dot"></span>dot() + setheading()</span>
-    <span class="know-pill"><span class="dot"></span>HEX-кольори</span>
-  </div>
-</div>
-
-<!-- ЗАВДАННЯ -->
-<div class="slabel">Завдання</div>
-<div class="task-box">
-  <h2>🚀 Намалюй космічний пейзаж</h2>
-  <p>
-    Напиши програму на Python Turtle, яка малює <strong>космічний пейзаж</strong>. Програма повинна запускатись без помилок і показувати результат на екрані.<br><br>
-    <strong>Обов'язково:</strong> зірки — використай функцію <strong>def star()</strong>, цикл <strong>for</strong>, розгалуження <strong>if / elif / else</strong> та <strong>random</strong>.<br>
-    <strong>Додатково — обери елементи зі сцени:</strong> 🌙 місяць-серп, 🔴🔵 дві планети, ☄️ комета або кільця планети.
-  </p>
-</div>
-
-
-
-
-
-<!-- ЕЛЕМЕНТИ -->
-<div class="slabel">Елементи сцени</div>
-<div class="elements">
-  <div class="el-header">
-    <div class="el-cell"></div>
-    <div class="el-cell">Елемент</div>
-    <div class="el-cell">Що потрібно застосувати</div>
-  </div>
-  <div class="el-row">
-    <div class="el-cell">⭐</div>
-    <div class="el-cell">Зірки — обов'язково, ≥30<span class="cmd">def star(size, color): for _ in range(8): forward / backward / right(45)</span></div>
-    <div class="el-cell">Функція star(), цикл for, random.randint() для позиції та розміру, if/elif/else для кольору</div>
-  </div>
-  <div class="el-row">
-    <div class="el-cell">🌙</div>
-    <div class="el-cell">Місяць-серп<span class="cmd">circle(40) → circle(34) зміщене поверх</span></div>
-    <div class="el-cell">Жовте велике коло + темне менше зі зміщенням → утворює серп</div>
-  </div>
-  <div class="el-row">
-    <div class="el-cell">🔴🔵</div>
-    <div class="el-cell">Планети (червона + синя)<span class="cmd">fillcolor() + begin_fill + circle() + end_fill</span></div>
-    <div class="el-cell">goto(), circle(), fillcolor() — дві залиті кулі різних кольорів</div>
-  </div>
-  <div class="el-row">
-    <div class="el-cell">☄️</div>
-    <div class="el-cell">Комета або кільця планети<span class="cmd">dot() + setheading(45) + for: forward()  або  for r in range(…): circle(r)</span></div>
-    <div class="el-cell">Комета: dot() — голова, for + forward() — хвіст. Кільця: for + circle() різних радіусів</div>
-  </div>
-</div>
-
-<!-- КОЛЬОРОВА ГАМА -->
-<div class="slabel">Кольорова гама</div>
-<div class="palette-wrap">
-  <div class="pal-group">
-    <div class="pal-label">🌌 Космос і фон</div>
-    <div class="pal-swatches">
-      <div class="sw" style="background:#06080f"><span class="sw-hex">#06080f</span></div>
-      <div class="sw" style="background:#0a0a2e"><span class="sw-hex">#0a0a2e</span></div>
-      <div class="sw" style="background:#0d1040"><span class="sw-hex">#0d1040</span></div>
-      <div class="sw" style="background:#141852"><span class="sw-hex">#141852</span></div>
-    </div>
-  </div>
-  <div class="pal-group">
-    <div class="pal-label">⭐ Зірки</div>
-    <div class="pal-swatches">
-      <div class="sw" style="background:#ffe680"><span class="sw-hex sw-dark">#ffe680</span></div>
-      <div class="sw" style="background:#ffffff"><span class="sw-hex sw-dark">#ffffff</span></div>
-      <div class="sw" style="background:#c0c0c0"><span class="sw-hex sw-dark">#c0c0c0</span></div>
-      <div class="sw" style="background:#888899"><span class="sw-hex">#888899</span></div>
-    </div>
-  </div>
-  <div class="pal-group">
-    <div class="pal-label">🔴 Планети</div>
-    <div class="pal-swatches">
-      <div class="sw" style="background:#cc3333"><span class="sw-hex">#cc3333</span></div>
-      <div class="sw" style="background:#3366bb"><span class="sw-hex">#3366bb</span></div>
-      <div class="sw" style="background:#88cc44"><span class="sw-hex">#88cc44</span></div>
-      <div class="sw" style="background:#ff8800"><span class="sw-hex">#ff8800</span></div>
-    </div>
-  </div>
-  <div class="pal-group">
-    <div class="pal-label">🪐 Кільця і деталі</div>
-    <div class="pal-swatches">
-      <div class="sw" style="background:#aaaacc"><span class="sw-hex">#aaaacc</span></div>
-      <div class="sw" style="background:#6688aa"><span class="sw-hex">#6688aa</span></div>
-      <div class="sw" style="background:#ffdd88"><span class="sw-hex sw-dark">#ffdd88</span></div>
-      <div class="sw" style="background:#44aaff"><span class="sw-hex sw-dark">#44aaff</span></div>
-    </div>
-  </div>
-</div>
-
-<!-- ОЦІНЮВАННЯ ЧАСТИНА 1 -->
-<div class="slabel">Оцінювання — Частина 1</div>
-<div class="pts-table">
-  <div class="pts-row pts-head">
-    <div class="pts-desc">Елемент</div>
-    <div class="pts-val">Бали</div>
-  </div>
-  <div class="pts-row">
-    <div class="pts-desc">Зірки намальовані через функцію <code>def star()</code> з циклом <code>for _ in range(8)</code></div>
-    <div class="pts-val">1</div>
-  </div>
-  <div class="pts-row">
-    <div class="pts-desc">Позиція та розмір зірок — випадкові (<code>random.randint()</code>)</div>
-    <div class="pts-val">1</div>
-  </div>
-  <div class="pts-row">
-    <div class="pts-desc">Розгалуження <code>if / elif / else</code> змінює колір зірок залежно від розміру</div>
-    <div class="pts-val">1</div>
-  </div>
-  <div class="pts-row">
-    <div class="pts-desc">Зірок не менше 30 і вони заповнюють усе небо</div>
-    <div class="pts-val">1</div>
-  </div>
-  <div class="pts-row">
-    <div class="pts-desc">Місяць-серп — жовте коло + темне зміщене перекриття (<code>circle</code> × 2)</div>
-    <div class="pts-val">2</div>
-  </div>
-  <div class="pts-row">
-    <div class="pts-desc">Планети — червона та синя із заливкою (<code>fillcolor + circle</code>)</div>
-    <div class="pts-val">1</div>
-  </div>
-  <div class="pts-row">
-    <div class="pts-desc">Комета (<code>dot + for + forward</code>) або кільця планети (<code>for + circle</code>)</div>
-    <div class="pts-val">1</div>
-  </div>
-  <div class="pts-row pts-total">
-    <div class="pts-desc">Максимум</div>
-    <div class="pts-val">8</div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════════════ -->
-<!-- ЧАСТИНА 2                                          -->
-<!-- ═══════════════════════════════════════════════════ -->
-<div class="part-div p2">
+<!-- PART HEADER -->
+<div class="part-div">
   <div class="part-num">ЧАСТИНА 2</div>
   <div class="part-info">
     <div class="part-title">Знайди помилки в коді</div>
@@ -941,7 +435,8 @@ footer span {
   <div class="part-badge">4 БАЛИ</div>
 </div>
 
-<div class="task-box p2">
+<!-- TASK -->
+<div class="task-box">
   <h2>🔍 Знайди помилки</h2>
   <p>
     У коді нижче є рівно <strong>4 помилки</strong>. Знайди кожну: вкажи <strong>номер рядка</strong> та <strong>що саме не так</strong>. За кожну правильно знайдену помилку — <strong>1 бал</strong>.
@@ -949,7 +444,7 @@ footer span {
 </div>
 
 <!-- PICKER -->
-<div id="variant-picker" hidden>
+<div id="variant-picker">
   <div class="picker-label">Обери свій варіант</div>
   <div class="picker-grid">
     <button class="picker-btn pva" data-v="a">А</button>
@@ -957,13 +452,6 @@ footer span {
     <button class="picker-btn pvc" data-v="c">В</button>
     <button class="picker-btn pvd" data-v="d">Г</button>
   </div>
-</div>
-
-<!-- TASK LOCKED -->
-<div id="task-locked" hidden>
-  <div class="locked-icon">🔒</div>
-  <div class="locked-title">Завдання ще не відкрите</div>
-  <div class="locked-sub">Очікуй на команду вчителя</div>
 </div>
 
 <!-- ── ВАРІАНТ А ── -->
@@ -1266,21 +754,14 @@ footer span {
   </div>
 </div>
 
-<!-- ЗБЕРЕГТИ -->
-<div class="save-box">
-  <div class="icon">💾</div>
-  <p>Частина 1 — збережи файл <strong>Прізвище_Космос_7клас.py</strong> і здай через Google Classroom.<br>Частина 2 — заповни відповіді вище та натисни <strong>Надіслати відповіді →</strong></p>
-</div>
-
 <footer>
-  <span>ПІДСУМКОВА ПРАКТИЧНА РОБОТА · PYTHON TURTLE · 7 КЛАС</span>
-  <span>УРОКИ 1, 2, 4 · 45 ХВИЛИН · 12 БАЛІВ</span>
+  <span>ПІДСУМКОВА ПРАКТИЧНА РОБОТА · ЧАСТИНА 2 · PYTHON TURTLE · 7 КЛАС</span>
+  <span>ЗНАЙДИ ПОМИЛКИ · 4 БАЛИ</span>
 </footer>
 
 </div>
 
 <script>
-// ── Google Form config (fill in after creating the form) ─────────────────────
 const FORM_ID = '1FAIpQLSfWP1-vcPrdCCNk2uKGz37jxM0XLS_tiSFqSh3h4q9O0bjGSQ';
 const E = {
   name:    'entry.1009431343',
@@ -1290,40 +771,24 @@ const E = {
   l3: 'entry.417732031',
   l4: 'entry.290041697',
 };
-// ─────────────────────────────────────────────────────────────────────────────
 
 const vParam = new URLSearchParams(location.search).get('v');
 
-// ── VARIANT PICKER ────────────────────────────────────────────────────────────
 function showVariant(letter) {
   document.getElementById('variant-picker').hidden = true;
   document.querySelectorAll('.variant-card').forEach(card => {
     card.classList.toggle('active', card.classList.contains('v' + letter.toLowerCase()));
   });
 }
+
 document.querySelectorAll('.picker-btn').forEach(btn => {
   btn.addEventListener('click', () => showVariant(btn.dataset.v));
 });
 
-// ── TASK STATUS ───────────────────────────────────────────────────────────────
-(async () => {
-  let isOpen = true;
-  try {
-    const r = await fetch('config.json?t=' + Date.now());
-    const cfg = await r.json();
-    isOpen = cfg.lessons?.['6'] === true;
-  } catch {}
+if (vParam) {
+  showVariant(vParam);
+}
 
-  if (vParam) { showVariant(vParam); return; }
-
-  if (isOpen) {
-    document.getElementById('variant-picker').hidden = false;
-  } else {
-    document.getElementById('task-locked').hidden = false;
-  }
-})();
-
-// ── SUBMIT BUTTON ─────────────────────────────────────────────────────────────
 document.querySelectorAll('.submit-btn').forEach(btn => {
   btn.addEventListener('click', async () => {
     const card = btn.closest('.variant-card');
